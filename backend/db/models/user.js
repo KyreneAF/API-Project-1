@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'ownerId',
         onDelete:'CASCADE'
       })
-      User.hasMany(models.Bookings,{
+      User.hasMany(models.Booking,{
         foreignKey:'userId',
         onDelete:'CASCADE'
       })
