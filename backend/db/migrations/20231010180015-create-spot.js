@@ -25,9 +25,7 @@ module.exports = {
       state: {
         type: Sequelize.STRING
       },
-      state: {
-        type: Sequelize.STRING
-      },
+
       country: {
         type: Sequelize.STRING
       },
@@ -62,6 +60,6 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     options.tableName = 'Spots'
-    await queryInterface.dropTable('Spots');
+    await queryInterface.dropTable(options);
   }
 };

@@ -1,7 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+// const {
+//   Model
+// } = require('sequelize');
+const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -39,9 +40,6 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING
     },
     city: {
-      type:DataTypes.STRING
-    },
-    state: {
       type:DataTypes.STRING
     },
     state: {
