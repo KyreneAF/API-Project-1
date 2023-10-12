@@ -17,47 +17,62 @@ const validateLogin = [
   check('password')
     .exists({ checkFalsy: true })
     .withMessage('Please provide a password.'),
+
   handleValidationErrors
 ];
 
+
 router.post(
-    '/',
-    validateLogin,
-    async (req, res, next) => {
-      const { credential, password } = req.body;
+  '/',
+  // validateLogin,
+  async (req, res, next) => {
+    const { credential, password } = req.body;
 
-      const user = await User.unscoped().findOne({
-        where: {
-          [Op.or]: {
-            username: credential,
-            email: credential
-          }
-        }
-      });
-
-      if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
-        const err = new Error('Login failed');
-        err.status = 401;
-        err.title = 'Login failed';
-        err.errors = { credential: 'The provided credentials were invalid.' };
-        return next(err);
-      }
-
-      const safeUser = {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        // firstName: user.firstName,
-        // lastName: user.lastName
-      };
-
-      await setTokenCookie(res, safeUser);
-
-      return res.json({
-        user: safeUser
-      });
+    if(credential === '' && password === ''){
+      const errors = { credential:"Email or username is required",
+      password:"Password is required"}
+      return res.status(400).json({
+          message:'Bad Request',
+          errors,
+      })
     }
-  );
+    if(!credential.includes('@') ){
+      return res.status(401).json({message:"Invalid credentials"})
+
+    }
+
+    const user = await User.unscoped().findOne({
+      where: {
+        [Op.or]: {
+          username: credential,
+          email: credential
+        }
+      }
+    });
+
+    if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+      const err = new Error('Login failed');
+      err.status = 401;
+      err.title = 'Login failed';
+      err.errors = { credential: 'The provided credentials were invalid.' };
+      return next(err);
+    }
+
+    const safeUser = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName
+    };
+
+    await setTokenCookie(res, safeUser);
+
+    return res.json({
+      user: safeUser
+    });
+  }
+);
 
 router.delete('/',(_req,res)=>{
     res.clearCookie('token');

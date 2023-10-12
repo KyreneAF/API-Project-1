@@ -12,12 +12,36 @@ const handleValidationErrors = (req, _res, next) => {
       const err = Error("Bad request.");
       err.errors = errors;
       err.status = 400;
-      err.title = "Bad request.";
+     err.title = "Bad request.";
+
       next(err);
     }
     next();
   };
 
+  const handleSignupValidation = (req, res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      let errors = {};
+      validationErrors.array().forEach(error => {
+
+        errors[error.param] = error.msg;
+      });
+      // let errors = {
+      //   errors:errors
+
+      return res.status(400).json({
+        message:"Bad Request",
+        errors,
+      });
+    }
+
+    next();
+  };
+
+
   module.exports = {
-    handleValidationErrors
+    handleValidationErrors,
+    handleSignupValidation
   };

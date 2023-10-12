@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { handleValidationErrors,handleSignupValidation } = require('../../utils/validation');
 const router = express.Router();
 
 const validateSignup = [
@@ -20,56 +20,108 @@ const validateSignup = [
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage('Password must be 6 characters or more.'),
-  handleValidationErrors
+    // handleValidationErrors
 ];
+const signupErrorChecks = [
+  check('password')
+  .exists({ checkFalsy: true })
+  .isLength({ min: 6 })
+  .withMessage('Password must be 6 characters or more.'),
+  check('email')
+  .isEmail()
+  .withMessage('Invalid email'),
+
+check('username')
+  .notEmpty()
+  .withMessage('Username is required'),
+
+check('firstName')
+  .notEmpty()
+  .withMessage('First Name is required'),
+
+check('lastName')
+  .notEmpty()
+  .withMessage('Last Name is required'),
+  // handleSignupValidation
+]
 
 router.post(
-    '/',
-    async (req, res) => {
-      const { email, password, username,firstName,lastName } = req.body;
-      const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ email, username, hashedPassword,firstName,lastName });
+  '/',
+  validateSignup,
+  signupErrorChecks,
+  handleValidationErrors,
+  handleSignupValidation,
+  async (req, res) => {
+    const { email, password, username, firstName, lastName } = req.body;
+    const hashedPassword = bcrypt.hashSync(password);
+    const user = await User.create({ email, username, hashedPassword, firstName, lastName });
 
-      const safeUser = {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName
-      };
+    const safeUser = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
 
-      await setTokenCookie(res, safeUser);
+    await setTokenCookie(res, safeUser);
 
-      return res.json({
-        user: safeUser
-      });
-    }
-  );
+    return res.json({
+      user: safeUser,
+    });
+  }
+);
+// router.post(
+//     '/',
+//     async (req, res) => {
+//       const { email, password, username,firstName,lastName } = req.body;
+//       const hashedPassword = bcrypt.hashSync(password);
+//       const user = await User.create({ email, username, hashedPassword,firstName,lastName });
+
+//       const safeUser = {
+//         id: user.id,
+//         email: user.email,
+//         username: user.username,
+//         firstName: user.firstName,
+//         lastName: user.lastName
+//       };
 
 
-  router.post(
-    '/',
-    validateSignup,
-    async (req, res) => {
-      const { email, password, username } = req.body;
-      const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ email, username, hashedPassword });
+//       await setTokenCookie(res, safeUser);
 
-      const safeUser = {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      };
+//       return res.json({
+//         user: safeUser
+//       });
+//     }
+//   );
 
-      await setTokenCookie(res, safeUser);
 
-      return res.json({
-        user: safeUser
-      });
-    }
-  );
+  // router.post(
+  //   '/',
+  //   handleValidationErrors,
+  //   handleValidateSignup,
+  //   async (req, res) => {
+  //     let errors = handleValidateSignup(req);
+  //     console.log(errors,'!!!!!')
+
+  //     // if(!errors){
+  //     // }
+
+  //   //   const { email, password, username } = req.body;
+  //   //   const hashedPassword = bcrypt.hashSync(password);
+  //   //   const user = await User.create({ email, username, hashedPassword });
+
+  //   //   const safeUser = {
+  //   //     id: user.id,
+  //   //     email: user.email,
+  //   //     username: user.username,
+  //   //   };
+
+  //   //   await setTokenCookie(res, safeUser);
+
+  //   //   return res.json({
+  //   //     user: safeUser
+  //   //   });
+  //   }
+  // );
 module.exports = router;
