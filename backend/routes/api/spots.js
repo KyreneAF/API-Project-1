@@ -20,34 +20,35 @@ router.get('/', async(req,res)=>{
             attributes:['preview','url']
          }]
     })
-    const spots = allSpots.map(obj =>{
-        obj = obj.toJSON();
-        let avgRating = findAvg(obj.Reviews)
-        console.log(obj.Reviews.stars,'!!!!!!')
-    })
 
-console.log(spots)
-    res.json({
-        Spots:allSpots
+    let spotsArr = allSpots.map(spot => spot.toJSON())
+
+    spotsArr.forEach(spot => {
+        let sum = 0;
+
+        if (spot.Reviews && spot.Reviews.length > 0) {
+            spot.Reviews.forEach(review => {
+                sum += review.stars;
+            });
+            spot.avgRating = sum / spot.Reviews.length;
+        } else {
+            spot.avgRating = 0;
+        }
+        delete spot.Reviews
+    });
+
+    spotsArr.forEach(spot =>{
+        if(!spot.SpotImages) spot.previewImage = 'No preview image'
+        else{spot.SpotImages.forEach(img =>{
+            if (img.preview === false) spot.previewImage = 'No preview image'
+            else if(img.preview === true) spot.previewImage = img.url;
+        })
+    }
+     delete spot.SpotImages;
     })
+    res.json({Spots:spotsArr})
+
 })
 
 
-// allSpots.forEach( obj => {
-//     let count =0
-//    let avgRating = 0;
-//     if(obj === 'Reviews'){
-//         obj.forEach(stars =>{
-//             stars.stars += avgRating;
-//             count++
-//             avgRating /= count
-//         })
-//         obj.avgRating = avgRating
-//         if(obj === 'SpotImages'){
-//             if(obj.preview === true){
-//                 obj.previewImage = obj.url
-//             }
-//         }
-//     }
-// })
 module.exports = router;
