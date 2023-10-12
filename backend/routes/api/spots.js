@@ -1,13 +1,22 @@
 const express = require('express');
 const {Spot,Review,SpotImage} = require('../../db/models');
-
+const {requireAuth} = require('../../utils/auth');
+const { check } = require('express-validator');
+const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
 const router =express.Router();
-/* helper function */
-const findAvg = (reviewArr) =>{
-   const sum = reviewArr.reduce((acc,obj) => obj.stars += acc)
-   return sum/ reviewArr.length
 
-}
+
+const validateSpot = [
+    check('address').notEmpty().withMessage('Street address is required'),
+    check('city').notEmpty().withMessage('City is required'),
+    check('state').notEmpty().withMessage('State is required'),
+    check('country').notEmpty().withMessage('Country is required'),
+    check('lat').notEmpty().isFloat().withMessage('Latitude is not valid'),
+    check('lng').notEmpty().isNumeric().isFloat().withMessage('Longitude is not valid'),
+    check('name').notEmpty().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
+    check('description').notEmpty().withMessage('Description is required'),
+    check('price').notEmpty().withMessage('Price per day is required'),
+  ];
 
 router.get('/', async(req,res)=>{
     const allSpots = await Spot.findAll({
@@ -48,6 +57,14 @@ router.get('/', async(req,res)=>{
     })
     res.json({Spots:spotsArr})
 
+});
+
+router.post('/',requireAuth,validateSpot,handleCreateErrors, async(req,res) =>{
+    // requireAuth(req);
+    let obj = req.body
+    let createdSpot = await Spot.create(obj);
+
+    res.json(createdSpot)
 })
 
 
