@@ -17,6 +17,10 @@ const validateSpot = [
     check('description').notEmpty().withMessage('Description is required'),
     check('price').notEmpty().withMessage('Price per day is required'),
   ];
+const validateReview =[
+    check('review').notEmpty().withMessage('Review text is required'),
+    check('stars').notEmpty().isInt({ min: 1, max: 5 }),
+]
 
 /*  GET ALL SPOTS BY CURRENT USER  */
 router.get('/current',requireAuth,async(req,res) =>{
@@ -202,6 +206,29 @@ router.put('/:spotId',requireAuth,validateSpot,handleCreateErrors, async(req,res
     res.json(newSpot)
 
 })
+
+
+
+/* POST REVIEW FOR SPOT   */
+router.post('/:spotId/reviews',validateReview,handleCreateErrors, async(req,res) =>{
+let spotId = req.params.spotId;
+let userId = req.user.id
+let spot = await Spot.findByPk(spotId);
+console.log(spot,'!!!!!')
+if(!spot) res.status(404).json({"message": "Spot couldn't be found"})
+
+let newReview = await Review.create({
+    userId,
+    spotId,
+    ...req.body
+})
+return res.status(201).json(newReview)
+
+})
+
+
+
+
 
 
 
