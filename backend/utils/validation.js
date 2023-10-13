@@ -40,7 +40,7 @@ const handleValidationErrors = (req, _res, next) => {
     next();
   };
 
-  const handleCreateErrors =(req,res) =>{
+  const handleCreateErrors =(req,res,next) =>{
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {

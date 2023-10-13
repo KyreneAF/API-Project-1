@@ -71,8 +71,6 @@ const setTokenCookie = (res, user) => {
     return next(err);
   }
 
-  // const roleAuth = function (req,res,next){
 
-  // }
 
   module.exports = { setTokenCookie, restoreUser, requireAuth};
