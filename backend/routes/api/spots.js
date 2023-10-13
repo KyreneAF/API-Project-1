@@ -17,7 +17,51 @@ const validateSpot = [
     check('description').notEmpty().withMessage('Description is required'),
     check('price').notEmpty().withMessage('Price per day is required'),
   ];
+/*  GET ALL SPOTS BY CURRENT USER  */
+router.get('/current',requireAuth,async(req,res) =>{
+    let allSpots = await Spot.findAll({
+        where:{
+            ownerId:req.user.id
+        },
+        include:[{
+            model:Review,
+            attributes:['stars']
+        },{
+            model:SpotImage,
+        }]
+    });
+    let spotsArr = allSpots.map(spot => spot.toJSON())
 
+    spotsArr.forEach(spot => {
+        let sum = 0;
+
+        if (spot.Reviews && spot.Reviews.length > 0) {
+            spot.Reviews.forEach(review => {
+                sum += review.stars;
+            });
+            spot.avgRating = sum / spot.Reviews.length;
+        } else {
+            spot.avgRating = 0;
+        }
+        delete spot.Reviews
+    });
+
+    spotsArr.forEach(spot =>{
+        if(!spot.SpotImages) spot.previewImage = 'No preview image'
+        else{spot.SpotImages.forEach(img =>{
+            if (img.preview === false) spot.previewImage = 'No preview image'
+            else if(img.preview === true) spot.previewImage = img.url;
+        })
+    }
+     delete spot.SpotImages;
+    })
+    res.json({Spots:spotsArr})
+});
+
+
+
+
+  /*  GET ALL SPOTS   */
 router.get('/', async(req,res)=>{
     const allSpots = await Spot.findAll({
         include:[{
