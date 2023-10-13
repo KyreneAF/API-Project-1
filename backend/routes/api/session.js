@@ -23,7 +23,7 @@ const validateLogin = [
 
 
 router.post(
-  '/',
+  '/',restoreUser,
   // validateLogin,
   async (req, res, next) => {
     const { credential, password } = req.body;
