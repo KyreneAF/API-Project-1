@@ -17,61 +17,6 @@ const validateSpot = [
     check('description').notEmpty().withMessage('Description is required'),
     check('price').notEmpty().withMessage('Price per day is required'),
   ];
-/* GET DETAILS OF SPOT  */
-router.get('/:spotId',async(req,res) =>{
-    let spot = await Spot.findByPk(req.params.spotId,{
-        include:[{
-            model:User,
-            attributes:['id','firstName','lastName']
-        },
-        {
-            model:SpotImage,
-            attributes:['id','url','preview']
-
-        },{
-            model:Review,
-            attributes:['stars']
-        }]
-    })
-    // !spot? res.status(404).json({"message": "Spot couldn't be found"}):
-    if(!spot) res.status(404).json({"message": "Spot couldn't be found"})
-    pojoSpot = spot.toJSON()
-
-    let sum = 0
-    pojoSpot.Reviews.forEach(review => sum += review.stars );
-
-    let Owner = {
-        id:pojoSpot.User.id,
-        firstName:pojoSpot.User.firstName,
-        lastName:pojoSpot.User.lastName
-    }
-
-
-    let resObj ={
-        id:pojoSpot.id,
-        ownerId:pojoSpot.ownerId,
-        address:pojoSpot.address,
-        city:pojoSpot.city,
-        state:pojoSpot.state,
-        country:pojoSpot.country,
-        lat:pojoSpot.lat,
-        lng:pojoSpot.lng,
-        name:pojoSpot.name,
-        description:pojoSpot.description,
-        price:pojoSpot.price,
-        createdAt:pojoSpot.createdAt,
-        updatedAt:pojoSpot.updatedAt,
-        numReviews:pojoSpot.numReviews,
-        avgRating:pojoSpot.avgRating,
-        SpotImages:pojoSpot.SpotImages,
-        Owner,
-
-    }
-
-    return res.json(resObj)
-
-})
-
 
 /*  GET ALL SPOTS BY CURRENT USER  */
 router.get('/current',requireAuth,async(req,res) =>{
@@ -117,6 +62,66 @@ router.get('/current',requireAuth,async(req,res) =>{
     res.json({Spots:spotsArr})
 });
 
+
+
+
+
+/* GET DETAILS OF SPOT  */
+router.get('/:spotId',async(req,res) =>{
+    let spot = await Spot.findByPk(req.params.spotId,{
+        include:[{
+            model:User,
+            attributes:['id','firstName','lastName']
+        },
+        {
+            model:SpotImage,
+            attributes:['id','url','preview']
+
+        },{
+            model:Review,
+            attributes:['stars']
+        }]
+    })
+    // !spot? res.status(404).json({"message": "Spot couldn't be found"}):
+    if(!spot) res.status(404).json({"message": "Spot couldn't be found"})
+    pojoSpot = spot.toJSON()
+
+    let sum = 0
+    pojoSpot.Reviews.forEach(review => sum += review.stars );
+    pojoSpot.avgRating = sum/pojoSpot.Reviews.length ;
+    pojoSpot.numReviews = pojoSpot.Reviews.length
+
+    let Owner = {
+        id:pojoSpot.User.id,
+        firstName:pojoSpot.User.firstName,
+        lastName:pojoSpot.User.lastName
+    }
+
+
+    let resObj ={
+        id:pojoSpot.id,
+        ownerId:pojoSpot.ownerId,
+        address:pojoSpot.address,
+        city:pojoSpot.city,
+        state:pojoSpot.state,
+        country:pojoSpot.country,
+        lat:pojoSpot.lat,
+        lng:pojoSpot.lng,
+        name:pojoSpot.name,
+        description:pojoSpot.description,
+        price:pojoSpot.price,
+        createdAt:pojoSpot.createdAt,
+        updatedAt:pojoSpot.updatedAt,
+        numReviews:pojoSpot.numReviews,
+        avgRating:pojoSpot.avgRating,
+        SpotImages:pojoSpot.SpotImages,
+        Owner,
+
+    }
+
+    return res.json(resObj)
+
+})
 
 
 
@@ -167,7 +172,7 @@ router.get('/', async(req,res)=>{
 
 
 
-router.put('/:spotId',requireAuth,validateSpot,handleSignupValidation, async(req,res) =>{
+router.put('/:spotId',requireAuth,validateSpot,handleCreateErrors, async(req,res) =>{
    let spotId = req.params.spotId;
    let oldSpot = await Spot.findByPk(spotId);
    if(req.user.id !== oldSpot.ownerId){
