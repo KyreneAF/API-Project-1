@@ -1,8 +1,8 @@
 const express = require('express');
-const {Spot,Review,SpotImage} = require('../../db/models');
-const {requireAuth} = require('../../utils/auth');
+const {Spot,Review,SpotImage,User} = require('../../db/models');
 const { check } = require('express-validator');
 const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
+const {requireAuth} = require('../../utils/auth');
 const router =express.Router();
 
 
@@ -17,11 +17,69 @@ const validateSpot = [
     check('description').notEmpty().withMessage('Description is required'),
     check('price').notEmpty().withMessage('Price per day is required'),
   ];
+/* GET DETAILS OF SPOT  */
+router.get('/:spotId',async(req,res) =>{
+    let spot = await Spot.findByPk(req.params.spotId,{
+        include:[{
+            model:User,
+            attributes:['id','firstName','lastName']
+        },
+        {
+            model:SpotImage,
+            attributes:['id','url','preview']
+
+        },{
+            model:Review,
+            attributes:['stars']
+        }]
+    })
+    // !spot? res.status(404).json({"message": "Spot couldn't be found"}):
+    if(!spot) res.status(404).json({"message": "Spot couldn't be found"})
+    pojoSpot = spot.toJSON()
+
+    let sum = 0
+    pojoSpot.Reviews.forEach(review => sum += review.stars );
+
+    let Owner = {
+        id:pojoSpot.User.id,
+        firstName:pojoSpot.User.firstName,
+        lastName:pojoSpot.User.lastName
+    }
+
+
+    let resObj ={
+        id:pojoSpot.id,
+        ownerId:pojoSpot.ownerId,
+        address:pojoSpot.address,
+        city:pojoSpot.city,
+        state:pojoSpot.state,
+        country:pojoSpot.country,
+        lat:pojoSpot.lat,
+        lng:pojoSpot.lng,
+        name:pojoSpot.name,
+        description:pojoSpot.description,
+        price:pojoSpot.price,
+        createdAt:pojoSpot.createdAt,
+        updatedAt:pojoSpot.updatedAt,
+        numReviews:pojoSpot.numReviews,
+        avgRating:pojoSpot.avgRating,
+        SpotImages:pojoSpot.SpotImages,
+        Owner,
+
+    }
+
+    return res.json(resObj)
+
+})
+
+
 /*  GET ALL SPOTS BY CURRENT USER  */
 router.get('/current',requireAuth,async(req,res) =>{
+    let userId = req.user.id
+    console.log(userId)
     let allSpots = await Spot.findAll({
         where:{
-            ownerId:req.user.id
+            ownerId:userId
         },
         include:[{
             model:Review,
@@ -55,6 +113,7 @@ router.get('/current',requireAuth,async(req,res) =>{
     }
      delete spot.SpotImages;
     })
+
     res.json({Spots:spotsArr})
 });
 
@@ -102,6 +161,54 @@ router.get('/', async(req,res)=>{
     res.json({Spots:spotsArr})
 
 });
+
+
+
+
+
+
+router.put('/:spotId',requireAuth,validateSpot,handleSignupValidation, async(req,res) =>{
+   let spotId = req.params.spotId;
+   let oldSpot = await Spot.findByPk(spotId);
+   if(req.user.id !== oldSpot.ownerId){
+    return res.status(403).json({ "message": "Forbidden" })
+}
+
+    const updatedSpot = await Spot.update(
+        {
+            address: req.body.address,
+            city: req.body.city,
+            state: req.body.state,
+            country: req.body.country,
+            lat: req.body.lat,
+            lng: req.body.lng,
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+        },
+        {
+            where: {
+                id:spotId
+            },
+        }
+    );
+      let newSpot = await Spot.findByPk(spotId)
+
+    res.json(newSpot)
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.post('/:spotId/images', requireAuth, async (req, res) => {
 
