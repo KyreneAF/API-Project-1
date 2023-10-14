@@ -227,20 +227,7 @@ return res.status(201).json(newReview)
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* POST IMAGE FOR SPOT   */
 
 router.post('/:spotId/images', requireAuth, async (req, res) => {
 
