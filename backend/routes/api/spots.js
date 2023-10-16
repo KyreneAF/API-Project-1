@@ -19,7 +19,7 @@ const validateSpot = [
   ];
 const validateReview =[
     check('review').notEmpty().withMessage('Review text is required'),
-    check('stars').notEmpty().isInt({ min: 1, max: 5 }),
+    check('stars').notEmpty().isInt({ min: 1, max: 5 }).withMessage('Stars must be an integer from 1 to 5'),
 ]
 
 /*  GET ALL SPOTS BY CURRENT USER  */
@@ -241,7 +241,7 @@ router.post('/:spotId/reviews',validateReview,handleCreateErrors, async(req,res)
 let spotId = req.params.spotId;
 let userId = req.user.id
 let spot = await Spot.findByPk(spotId);
-console.log(spot,'!!!!!')
+
 if(!spot) res.status(404).json({"message": "Spot couldn't be found"})
 
 let newReview = await Review.create({

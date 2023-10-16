@@ -8,17 +8,9 @@ const router =express.Router();
 
 const validateReview =[
     check('review').notEmpty().withMessage('Review text is required'),
-    check('stars').notEmpty().isInt({ min: 1, max: 5 }),
+    check('stars').notEmpty().isInt({ min: 1, max: 5 }).withMessage('Stars must be an integer from 1 to 5'),
 ]
-const dateOptions = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    timeZoneName: 'short'
-  };
+
 
 router.get('/current',requireAuth, async(req,res) =>{
     let userId = req.user.id;
@@ -105,7 +97,7 @@ router.post('/:reviewId/images',requireAuth,async(req,res) =>{
 
 
 
-router.put('/:reviewId',requireAuth, validateReview,handleSignupValidation, async(req,res) =>{
+router.put('/:reviewId',requireAuth, validateReview,handleCreateErrors, async(req,res) =>{
     let userId = req.user.id;
     console.log(userId)
     let reviewId = req.params.reviewId;
