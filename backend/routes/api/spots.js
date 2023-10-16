@@ -1,5 +1,5 @@
 const express = require('express');
-const {Spot,Review,SpotImage,User} = require('../../db/models');
+const {Spot,Review,SpotImage,User,ReviewImage} = require('../../db/models');
 const { check } = require('express-validator');
 const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
 const {requireAuth} = require('../../utils/auth');
@@ -65,6 +65,65 @@ router.get('/current',requireAuth,async(req,res) =>{
 
     res.json({Spots:spotsArr})
 });
+
+/* GET ALL REVIEWS OF SPOT */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/:spotId/reviews', async(req,res) =>{
+    let spotId = req.params.spotId;
+
+    const allReviews = await Review.findAll({
+        where:{
+            spotId,
+        },
+        include:[{
+            model:User,
+            attributes:['id','firstName','lastName']
+        },{
+            model:ReviewImage,
+            attributes:['id','url']
+        }]
+    })
+    if(!allReviews){
+        return res.status(404).json(allReviews)
+    }
+    return res.json({'Reviews':allReviews})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
