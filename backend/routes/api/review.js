@@ -1,12 +1,61 @@
 const express = require('express');
-const {Review,ReviewImage} = require('../../db/models');
+const {Review,ReviewImage,Spot,User} = require('../../db/models');
 const { check } = require('express-validator');
 const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
 const {requireAuth} = require('../../utils/auth');
 const router =express.Router();
 
 
+router.get('/current',requireAuth, async(req,res) =>{
+    let userId = req.user.id;
 
+    let allReviews = await Review.findAll({
+        where:{
+            userId,
+        },
+        include:[{
+            model:Spot,
+            attributes:{exclude:['createdAt','updatedAt','description']}
+        },
+        {
+            model:User,
+            attributes:['id','firstName','lastName']
+
+        },
+        {
+            model:ReviewImage,
+            attributes:['id','url']
+        }
+    ]
+    })
+
+//     allReviews.forEach(objs => objs.toJSON())
+//     // let allReviewsPojo = allReviews.toJSON();
+//     // console.log(allReviews)
+//     if(allReviews.ReviewImages){
+//      allReviews.ReviewImages.forEach(imgs =>{
+
+//             allReviews.Spots.previewImage = imgs.url
+
+//     })
+// }
+let reviewPojo = [];
+
+allReviews.forEach(objs =>{
+    reviewPojo.push(objs.toJSON())
+})
+reviewPojo.forEach(obj =>{
+    if(obj.ReviewImages){
+       obj.ReviewImages.forEach(img =>{
+        // console.log(obj.Spot,'!!!!!!!!')
+        obj.Spot.previewImage = img.url
+       })
+    }
+})
+
+    return res.json({Reviews:reviewPojo})
+
+})
 
 
 
