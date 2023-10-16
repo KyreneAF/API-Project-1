@@ -6,6 +6,20 @@ const {requireAuth} = require('../../utils/auth');
 const router =express.Router();
 
 
+const validateReview =[
+    check('review').notEmpty().withMessage('Review text is required'),
+    check('stars').notEmpty().isInt({ min: 1, max: 5 }),
+]
+const dateOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZoneName: 'short'
+  };
+
 router.get('/current',requireAuth, async(req,res) =>{
     let userId = req.user.id;
 
@@ -81,6 +95,43 @@ router.post('/:reviewId/images',requireAuth,async(req,res) =>{
     })
 })
 
+
+
+
+
+
+
+
+
+
+
+router.put('/:reviewId',requireAuth, validateReview,handleSignupValidation, async(req,res) =>{
+    let userId = req.user.id;
+    console.log(userId)
+    let reviewId = req.params.reviewId;
+
+    let oldReview = await Review.findByPk(reviewId)
+
+    if(!oldReview) return res.status(404).json({"message": "Review couldn't be found"})
+    if(oldReview.userId !== userId) return res.status(403).json({ "message": "Forbidden" })
+
+
+    let updatedReview = await Review.update({
+        userId:oldReview.userId,
+        spotId:oldReview.spotId,
+        review:req.body.review,
+        stars:req.body.stars,
+
+    },{
+        where:{
+           id:reviewId,
+        }
+    })
+    let newReview = await Review.findByPk(userId);
+
+    return res.json(newReview)
+
+})
 
 
 
