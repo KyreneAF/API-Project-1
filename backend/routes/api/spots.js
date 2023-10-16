@@ -69,23 +69,14 @@ router.get('/current',requireAuth,async(req,res) =>{
 /* GET ALL REVIEWS OF SPOT */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 router.get('/:spotId/reviews', async(req,res) =>{
     let spotId = req.params.spotId;
+
+    let spot = await Spot.findByPk(spotId);
+
+    if(!spot){
+        return res.status(404).json({"message": "Spot couldn't be found"})
+    }
 
     const allReviews = await Review.findAll({
         where:{
@@ -99,32 +90,9 @@ router.get('/:spotId/reviews', async(req,res) =>{
             attributes:['id','url']
         }]
     })
-    if(!allReviews){
-        return res.status(404).json(allReviews)
-    }
-    return res.json({'Reviews':allReviews})
+
+return res.json({Reviews:allReviews})
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
