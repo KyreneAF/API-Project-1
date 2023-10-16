@@ -29,16 +29,6 @@ router.get('/current',requireAuth, async(req,res) =>{
     ]
     })
 
-//     allReviews.forEach(objs => objs.toJSON())
-//     // let allReviewsPojo = allReviews.toJSON();
-//     // console.log(allReviews)
-//     if(allReviews.ReviewImages){
-//      allReviews.ReviewImages.forEach(imgs =>{
-
-//             allReviews.Spots.previewImage = imgs.url
-
-//     })
-// }
 let reviewPojo = [];
 
 allReviews.forEach(objs =>{
@@ -47,7 +37,7 @@ allReviews.forEach(objs =>{
 reviewPojo.forEach(obj =>{
     if(obj.ReviewImages){
        obj.ReviewImages.forEach(img =>{
-        // console.log(obj.Spot,'!!!!!!!!')
+
         obj.Spot.previewImage = img.url
        })
     }
