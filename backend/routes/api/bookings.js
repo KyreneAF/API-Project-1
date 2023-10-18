@@ -48,7 +48,7 @@ validateBooking = [
 
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
-    console.log(userId,'!!!!!!!')
+
 
         let bookings = await Booking.findAll({
             where: {
