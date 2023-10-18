@@ -120,6 +120,132 @@ return res.json({Reviews:allReviews})
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+/* GET ALL BOOKINGS BASED ON SPOT */
+
+router.get('/:spotId/bookings', requireAuth, async(req,res,next) =>{
+    const userId = req.user.id;
+    const spotId = req.params.spotId;
+    let where = {}
+
+    let spot = await Spot.findByPk(spotId);
+
+    if(!spot){
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        err.message = "Spot couldn't be found";
+        return next(err);
+      }
+    if(spot.ownerId === userId){
+        where = {
+            where:{
+                spotId,
+            },
+            include:[{
+                model:User,
+                attributes:['id','firstName','lastName']
+            }]
+
+    }
+    }else if(spot.ownerId !== userId){
+        where ={
+            where:{
+                spotId,
+            },
+            attributes:['spotId','startDate','endDate']
+        }
+    }
+    let booking = await Booking.findAll(where)
+    console.log(booking,'!!!!!!!!!')
+    return res.json({Bookings:booking})
+
+})
+
+
+
+
+
+
+
+// router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
+//     const { spotId } = req.params;
+//     const spot = await Spot.findByPk(spotId);
+
+//     if (!spot) {
+//       const err = new Error("Spot couldn't be found");
+//       err.status = 404;
+//       err.message = "Spot couldn't be found";
+//       return next(err);
+//     }
+
+//     let options;
+//     if (spot.ownerId === req.user.dataValues.id) {
+//       options = {
+//         where: { spotId },
+//         include: {
+//           model: User,
+//           attributes: ["id", "firstName", "lastName"],
+//         },
+//       };
+//     } else {
+//       options = {
+//         where: { spotId },
+//         attributes: ["spotId", "startDate", "endDate"],
+//       };
+//     }
+
+//     const bookings = await Booking.findAll(options);
+
+
+//     return res.json({ Bookings: bookings });
+//   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* GET DETAILS OF SPOT  */
 router.get('/:spotId',async(req,res) =>{
     let spot = await Spot.findByPk(req.params.spotId,{
@@ -409,27 +535,6 @@ router.post("/:spotId/bookings",requireAuth,validateBooking,handleCreateErrors,a
       res.json(newBooking);
     }
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
