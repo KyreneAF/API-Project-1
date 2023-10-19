@@ -12,6 +12,9 @@ const validateReview =[
 ]
 
 
+
+/* Get all Reviews of the Current User    */
+
 router.get('/current',requireAuth, async(req,res) =>{
     let userId = req.user.id;
 
@@ -60,8 +63,8 @@ reviewPojo.forEach(obj =>{
 
 
 
-/* POST IMAGE TO REVIEW    */
-router.post('/:reviewId/images',requireAuth,async(req,res) =>{
+/* Add an Image to a Review based on the Review's id   */
+router.post('/:reviewId/images',requireAuth,async(req,res,next) =>{
     let reviewId = req.params.reviewId;
     let userId = req.user.id;
     let review = await Review.findByPk(reviewId,{
@@ -70,12 +73,21 @@ router.post('/:reviewId/images',requireAuth,async(req,res) =>{
         }]
     });
 
-    if(!review) return res.status(404).json({ "message":"Review couldn't be found"});
-    if(userId !== review.userId) return res.status(403).json({ "message": "Forbidden"});
+    if(!review){
+        let err = new Error();
+        err.status = 403;
+        err.message = "Forbidden";
+        return next(err);
+    }
 
     reviewPojo = review.toJSON();
-    console.log(reviewPojo.ReviewImages)
-    if(reviewPojo.ReviewImages && reviewPojo.ReviewImages.length >= 10) return res.status(403).json({ "message": "Maximum number of images for this resource was reached"});
+
+    if(reviewPojo.ReviewImages && reviewPojo.ReviewImages.length >= 10){
+        let err = new Error();
+        err.status = 403;
+        err.message = "Maximum number of images for this resource was reached";
+        return next(err)
+    }
    let createdImg = await ReviewImage.create({
         reviewId,
         ...req.body
@@ -91,21 +103,27 @@ router.post('/:reviewId/images',requireAuth,async(req,res) =>{
 
 
 
+/*  Edit a Review  */
 
-
-
-
-
-
-router.put('/:reviewId',requireAuth, validateReview,handleCreateErrors, async(req,res) =>{
+router.put('/:reviewId',requireAuth, validateReview,handleCreateErrors, async(req,res,next) =>{
     let userId = req.user.id;
     console.log(userId)
     let reviewId = req.params.reviewId;
 
     let oldReview = await Review.findByPk(reviewId)
 
-    if(!oldReview) return res.status(404).json({"message": "Review couldn't be found"})
-    if(oldReview.userId !== userId) return res.status(403).json({ "message": "Forbidden" })
+    if(!oldReview){
+        let err = new Error();
+        err.status = 404;
+        err.message = "Review couldn't be found";
+        return next(err);
+    }
+    if(oldReview.userId !== userId){
+        let err = new Error();
+        err.status = 403;
+        err.message = "Forbidden";
+        return next(err)
+    }
 
 
     let updatedReview = await Review.update({
