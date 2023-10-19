@@ -3,6 +3,7 @@ const {Spot,Review,SpotImage,User,ReviewImage,Booking} = require('../../db/model
 const { check } = require('express-validator');
 const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
 const {requireAuth} = require('../../utils/auth');
+const { Op } = require('sequelize');
 const router =express.Router();
 
 
@@ -38,7 +39,25 @@ validateBooking = [
       })
       .withMessage("startDate cannot be the same as endDate"),
   ];
-
+// const validateBooking = [
+//     check('endDate')
+//       .custom((val, { req }) => {
+//         const endDate = new Date(val);
+//         const startDate = new Date(req.body.startDate);
+//         if (endDate <= startDate) {
+//           throw new Error('endDate cannot be on or before startDate');
+//         }
+//         return true;
+//       })
+//       .custom((val, { req }) => {
+//         const endDate = new Date(val);
+//         const startDate = new Date(req.body.startDate);
+//         if (endDate.getTime() === startDate.getTime()) {
+//           throw new Error('startDate cannot be the same as endDate');
+//         }
+//         return true;
+//       }),
+//   ];
 
 
 
@@ -365,103 +384,81 @@ return res.status(201).json(newReview)
 
 /*  Create a Booking from a Spot based on the Spot's id    */
 
-/*  POST  BOOKING FOR SPOT    */
-// router.post('/:spotId/bookings', requireAuth,validateBooking,handleCreateErrors, async(req,res) =>{
-//     let userId = req.user.id;
-//     let spotId = req.params.spotId;
-//     let {startDate,endDate} = req.body;
+router.post('/:spotId/bookings',requireAuth,validateBooking,handleCreateErrors, async(req,res,next) =>{
+    let userId = req.user.id;
+    let spotId = req.params.spotId;
 
-//     let spot = await Spot.findByPk(spotId);
+    let spot = await Spot.findByPk(spotId);
 
-//     if (!spot || spot.dataValues.ownerId === req.user.dataValues.id) {
-//         const err = new Error("Spot couldn't be found");
-//         err.status = 404;
-//         err.message = "Spot couldn't be found";
-//         return next(err);
-//       };
+    if(!spot){
+        let err = new Error();
+        err.status = 404;
+        err.message = "Spot couldn't be found";
+        return next(err);
+    };
+
+    if(spot.ownerId === userId){
+        let err = new Error();
+        err.status = 403;
+        err.message = "Forbidden";
+        return next(err);
+    };
+
+    let{startDate,endDate} = req.body;
+
+    let spotBookings = await Booking.findOne({
+        where:{
+            spotId,
+            startDate:{
+                [Op.lt]: endDate
+            },
+            endDate:{
+                [Op.gt]: startDate
+            }
+        }
+    });
+
+    if(spotBookings && spotBookings.startDate){
+        let errors = {}
+        errors.startDate = "Start date conflicts with an existing booking";
+        if(spotBookings.endDate){
+            errors.endDate = "End date conflicts with an existing booking";
+        }
+        if(errors.startDate || errors.endDate){
+            let err = new Error();
+            err.status = 403;
+            err.message = "Sorry, this spot is already booked for the specified dates";
+            err.errors = errors;
+            return next(err)
+        }
+
+    }
+
+    let dateOnlySD = startDate.split('T')[0];
+    let dateOnlyED = endDate.split('T')[0];
+
+   let newBooking = await Booking.create({
+    spotId:parseInt(spotId),
+    userId,
+    startDate,
+    endDate,
+   });
+
+ let resultObj = {
+    id:newBooking.id,
+    spotId:newBooking.spotId,
+    userId:newBooking.userId,
+    startDate:dateOnlySD,
+    endDate:dateOnlyED
+ }
+
+   return res.json(resultObj)
+
+
+});
 
 
 
-//       let newBooking = await Booking.create({
-//         spotId,
-//         userId,
-//         startDate: format(new Date(startDate), 'yyyy-MM-dd'),
-//         endDate: format(new Date(endDate), 'yyyy-MM-dd')
-//       })
-
-//     //   console.log(newBooking)
-//     return res.json(newBooking)
-
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// router.post("/:spotId/bookings",requireAuth,validateBooking,handleCreateErrors,async (req, res, next) => {
-//       const id = req.params.spotId;
-
-//       const { startDate, endDate } = req.body;
-
-//       const spot = await Spot.findByPk(id, {
-//             include: Booking
-//         });
-
-//       if (!spot || spot.dataValues.ownerId === req.user.dataValues.id) {
-//         const err = new Error("Spot couldn't be found");
-//         err.status = 404;
-//         err.message = "Spot couldn't be found";
-//         return next(err);
-//       }
-
-//       for (const booking of spot.Bookings) {
-//         let errors = {};
-//         let bookingStart = new Date(booking.dataValues.startDate);
-//         let bookingEnd = new Date(booking.dataValues.endDate);
-//         let start = new Date(startDate);
-//         let end = new Date(endDate);
-
-//         if (start.getTime() >= bookingStart.getTime() && start.getTime() <= bookingEnd.getTime() ) {
-//           errors.startDate = "Start date conflicts with an existing booking";
-//         }
-//         if (end.getTime() >= bookingStart.getTime() &&end.getTime() <= bookingEnd.getTime()) {
-//           errors.endDate = "End date conflicts with an existing booking";
-//         }
-//         if (start.getTime() <= bookingStart.getTime() &&end.getTime() >= bookingEnd.getTime()) {
-//           errors.startDate = "Start date conflicts with an existing booking";
-//           errors.endDate = "End date conflicts with an existing booking";
-//         }
-
-//         if (errors.startDate || errors.endDate) {
-//           const err = new Error()
-//           err.status = 403;
-//           err.message = "Sorry, this spot is already booked for the specified dates";
-//           err.errors = errors;
-//           return next(err);
-//         }
-//       }
-
-//       const newBooking = await Booking.create({
-//         startDate,
-//         endDate,
-//         spotId: Number(id),
-//         userId: req.user.dataValues.id,
-//       });
-
-//       res.json(newBooking);
-//     }
-//   );
 
 
 
