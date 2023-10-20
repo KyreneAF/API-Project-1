@@ -75,9 +75,16 @@ router.post('/:reviewId/images',requireAuth,async(req,res,next) =>{
 
     if(!review){
         let err = new Error();
+        err.status = 404;
+        err.message = "Review couldn't be found";
+        return next(err);
+    }
+
+    if(userId !== review.userId){
+        let err = new Error();
         err.status = 403;
         err.message = "Forbidden";
-        return next(err);
+        return next(err)
     }
 
     reviewPojo = review.toJSON();

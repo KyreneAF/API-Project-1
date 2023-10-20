@@ -24,42 +24,32 @@ const validateReview =[
 ]
 
 
-validateBooking = [
-    check("endDate")
+const validateBooking = [
+    check('endDate')
       .custom((val, { req }) => {
         const endDate = new Date(val);
         const startDate = new Date(req.body.startDate);
         return endDate.getTime() > startDate.getTime();
       })
-      .withMessage("endDate cannot come before startDate")
+      .withMessage('endDate cannot come before startDate')
       .custom((val, { req }) => {
         const endDate = new Date(val);
         const startDate = new Date(req.body.startDate);
         return endDate.getTime() !== startDate.getTime();
       })
-      .withMessage("startDate cannot be the same as endDate"),
+      .withMessage('startDate cannot be the same as endDate'),
   ];
-// const validateBooking = [
-//     check('endDate')
-//       .custom((val, { req }) => {
-//         const endDate = new Date(val);
-//         const startDate = new Date(req.body.startDate);
-//         if (endDate <= startDate) {
-//           throw new Error('endDate cannot be on or before startDate');
-//         }
-//         return true;
-//       })
-//       .custom((val, { req }) => {
-//         const endDate = new Date(val);
-//         const startDate = new Date(req.body.startDate);
-//         if (endDate.getTime() === startDate.getTime()) {
-//           throw new Error('startDate cannot be the same as endDate');
-//         }
-//         return true;
-//       }),
-//   ];
 
-
+const validateQuery =[
+    check('page').optional().isInt({min:1,max:10}).withMessage("Page must be greater than or equal to 1"),
+    check('size').optional().isInt({min:1,max:20}).withMessage("Size must be greater than or equal to 1"),
+    check('minLat').optional().isDecimal().isFloat({min:-90.0}).withMessage("Minimum latitude is invalid"),
+    check('maxLat').optional().isDecimal().isFloat({max:90.0}).withMessage("Maximum latitude is invalid"),
+    check('minLng').optional().isDecimal().isFloat({max:90.0}).withMessage("Minimum longitude is invalid"),
+    check('maxLng').optional().isDecimal().isFloat({max:180.0}).withMessage("Maximum longitude is invalid"),
+    check('minPrice').optional().isDecimal().isFloat({min:0.00}).withMessage("Minimum price must be greater than or equal to 0"),
+    check('maxPrice').optional().isDecimal().isFloat({min:0.00}).withMessage("Maximum price must be greater than or equal to 0"),
+]
 
 
 
@@ -138,13 +128,6 @@ router.get('/:spotId/reviews', async(req,res,next) =>{
 
 return res.json({Reviews:allReviews})
 })
-
-
-
-
-
-
-
 
 
 
@@ -266,8 +249,21 @@ router.get('/:spotId',async(req,res, next) =>{
 
 
   /*  GET ALL SPOTS   */
-router.get('/', async(req,res)=>{
+router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
+
+    let {page,size,maxLat,minLat,minLng,maxLng,minPrice,maxPrice} = req.query;
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    if (Number.isNaN(page) || page < 1) page = 1;
+    if (Number.isNaN(size) || size < 1) size = 20;
+    if(page > 10) page = 1;
+    if(size > 10) size = 20;
+
     const allSpots = await Spot.findAll({
+        limit: size,
+        offset:(page - 1) * size,
         include:[{
             model:Review,
             attributes:['stars']
@@ -370,6 +366,20 @@ if(!spot){
     err.status = 404;
     err.message = "Spot couldn't be found";
     return next(err);
+}
+
+let userSpot = await Review.findOne({
+    where:{
+        userId,
+        spotId
+    }
+})
+
+if(userSpot){
+    let err = new Error();
+    err.status = 500;
+    err.message = "User already has a review for this spot";
+    return next(err)
 }
 
 let newReview = await Review.create({
@@ -476,6 +486,8 @@ router.post('/:spotId/images', requireAuth, async (req, res,next) => {
         return next(err);
 
       }
+
+
       if (spot.ownerId === req.user.id) {
         const createImgSpot = await SpotImage.create({
           spotId,
@@ -484,7 +496,6 @@ router.post('/:spotId/images', requireAuth, async (req, res,next) => {
 
         return res.json({
             id:createImgSpot.id,
-            spotId,
             url:createImgSpot.url,
             preview:createImgSpot.preview
         });
@@ -497,6 +508,9 @@ router.post('/:spotId/images', requireAuth, async (req, res,next) => {
       }
 
   });
+
+
+
 
 
 /* create a spot */
