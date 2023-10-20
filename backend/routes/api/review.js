@@ -15,46 +15,62 @@ const validateReview =[
 
 /* Get all Reviews of the Current User    */
 
-router.get('/current',requireAuth, async(req,res) =>{
-    let userId = req.user.id;
 
-    let allReviews = await Review.findAll({
+
+router.get('/current', requireAuth, async(req,res,next) =>{
+    let userId = req.user.id;
+    let review = await Review.findAll({
         where:{
             userId,
         },
         include:[{
-            model:Spot,
-            attributes:{exclude:['createdAt','updatedAt','description']}
+            model:ReviewImage,
+            attributes:{exclude:['reviewId','createdAt','updatedAt']}
+
         },
         {
+            model: Spot,
+            attributes:{exclude:['createdAt','updatedAt','description']}
+        },{
             model:User,
             attributes:['id','firstName','lastName']
+        }]
+    });
 
-        },
-        {
-            model:ReviewImage,
-            attributes:['id','url']
+    let updatedReviews = review.map(review => {
+        const updatedReview = review.toJSON();
+
+        if(updatedReview.ReviewImages){
+            updatedReview.ReviewImages.forEach(reviews =>{
+                if(!reviews.preview || !reviews.url){
+                    updatedReview.Spot.previewImage = 'No preview Image'
+                }
+                updatedReview.Spot.previewImage = reviews.url
+            });
+
         }
-    ]
-    })
 
-let reviewPojo = [];
 
-allReviews.forEach(objs =>{
-    reviewPojo.push(objs.toJSON())
-})
-reviewPojo.forEach(obj =>{
-    if(obj.ReviewImages){
-       obj.ReviewImages.forEach(img =>{
+        return updatedReview;
+    });
 
-        obj.Spot.previewImage = img.url
-       })
-    }
-})
-
-    return res.json({Reviews:reviewPojo})
+    return res.json({Reviews:updatedReviews})
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
