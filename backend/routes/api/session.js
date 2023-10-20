@@ -23,7 +23,7 @@ const validateLogin = [
 
 
 router.post(
-  '/',
+  '/',restoreUser,
   // validateLogin,
   async (req, res, next) => {
     const { credential, password } = req.body;
@@ -37,7 +37,11 @@ router.post(
       })
     }
     if(!credential.includes('@') ){
-      return res.status(401).json({message:"Invalid credentials"})
+      let err = new Error();
+      err.status = 401;
+      err.message = "Invalid credentials";
+      return next(err);
+
 
     }
 
@@ -60,10 +64,10 @@ router.post(
 
     const safeUser = {
       id: user.id,
-      email: user.email,
-      username: user.username,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username
     };
 
     await setTokenCookie(res, safeUser);
@@ -86,10 +90,10 @@ router.get(
       if (user) {
         const safeUser = {
           id: user.id,
-          email: user.email,
-          username: user.username,
           firstName: user.firstName,
-          lastName: user.lastName
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username
         };
         return res.json({
           user: safeUser

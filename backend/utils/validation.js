@@ -24,8 +24,8 @@ const handleValidationErrors = (req, _res, next) => {
 
     if (!validationErrors.isEmpty()) {
       let errors = {};
-      validationErrors.array().forEach(error => {
 
+      validationErrors.array().forEach(error => {
         errors[error.param] = error.msg;
       });
       // let errors = {
@@ -40,8 +40,27 @@ const handleValidationErrors = (req, _res, next) => {
     next();
   };
 
+  const handleCreateErrors =(req,res,next) =>{
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      let errors = {};
+      validationErrors.array().forEach(error => {
+        // console.log(error.param,'!!!!',error.path,'!!!!',error.field)
+        errors[error.path] = error.msg;
+      });
+      return res.status(400).json({
+        message:"Bad Request",
+        errors,
+      });
+    }
+
+    next();
+  };
+
 
   module.exports = {
     handleValidationErrors,
-    handleSignupValidation
+    handleSignupValidation,
+    handleCreateErrors
   };
