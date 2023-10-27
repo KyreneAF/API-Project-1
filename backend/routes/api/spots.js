@@ -70,6 +70,14 @@ router.get('/current',requireAuth,async(req,res) =>{
         }]
     });
     let spotsArr = allSpots.map(spot => spot.toJSON())
+    //this does not change to number. still needs work
+    // let spotsArr = allSpots.map(spot => {
+    //     const newSpot = spot.toJSON();
+    //     if (newSpot.lat) newSpot.lat = parseInt(newSpot.lat);
+    //     if (newSpot.lng) newSpot.lng = parseInt(newSpot.lng);
+    //     if (newSpot.price) newSpot.price = parseInt(newSpot.price);
+    //     return newSpot;
+    // });
 
     spotsArr.forEach(spot => {
         let sum = 0;
@@ -97,42 +105,6 @@ router.get('/current',requireAuth,async(req,res) =>{
 
     res.json({Spots:spotsArr})
 });
-
-/* GET ALL REVIEWS OF SPOT */
-
-
-router.get('/:spotId/reviews', async(req,res,next) =>{
-    let spotId = req.params.spotId;
-
-    let spot = await Spot.findByPk(spotId);
-
-    if(!spot){
-        let err = new Error();
-        err.status = 404;
-        err.message = "Spot couldn't be found";
-        return next(err);
-    }
-
-    const allReviews = await Review.findAll({
-        where:{
-            spotId,
-        },
-        include:[{
-            model:User,
-            attributes:['id','firstName','lastName']
-        },{
-            model:ReviewImage,
-            attributes:['id','url']
-        }]
-    })
-
-return res.json({Reviews:allReviews})
-})
-
-
-
-
-
 
 
 
@@ -459,7 +431,9 @@ router.post('/:spotId/bookings',requireAuth,validateBooking,handleCreateErrors, 
     spotId:newBooking.spotId,
     userId:newBooking.userId,
     startDate:dateOnlySD,
-    endDate:dateOnlyED
+    endDate:dateOnlyED,
+    updatedAt:newBooking.updatedAt,
+    createdAt:newBooking.createdAt
  }
 
    return res.json(resultObj)

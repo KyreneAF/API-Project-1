@@ -53,30 +53,45 @@ app.use((_req, _res, next) => {
   err.status = 404;
   next(err);
 });
- /*  validation for sequelize  */
 
-//  app.use((err, _req, _res, next) => {
-//   // check if error is a Sequelize error:
-//   if (err instanceof ValidationError) {
-//     let errors = {};
-//     for (let error of err.errors) {
-//       errors[error.path] = error.message;
-//     }
-//     err.title = 'Validation error';
-//     err.errors = errors;
-//   }
-//   next(err);
-// });
-//this is the code given on the readings the following is from the video
-app.use((err,req,res,next) =>{
-  if(err instanceof ValidationError){
-    err.errors = err.errors.map((e) => e.message);
+
+app.use((err,req,res, next) => {
+
+  if (err instanceof ValidationError) {
+    let errors = {};
+    for (let error of err.errors) {
+      errors[error.path] = error.message;
+    }
     err.title = 'Validation error';
+    err.errors = errors;
   }
-  next(err)
-})
+  next(err);
+});
 
-//error handeler
+
+
+app.use((err, _req, res, _next) => {
+  res.status(err.status || 500);
+
+  if(err.status === 401){
+    return res.json({
+      message: err.message,
+    });
+  }
+
+  if(err.status === 403){
+    return res.json({message: err.message})
+  }
+
+ return res.json({
+    title: err.title,
+    message: err.message,
+    errors: err.errors,
+  });
+});
+
+
+// //error handeler
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);

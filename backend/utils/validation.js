@@ -40,6 +40,24 @@ const handleValidationErrors = (req, _res, next) => {
     next();
   };
 
+  // const handleCreateErrors =(req,res,next) =>{
+  //   const validationErrors = validationResult(req);
+
+  //   if (!validationErrors.isEmpty()) {
+  //     let errors = {};
+  //     validationErrors.array().forEach(error => {
+  //       // console.log(error.param,'!!!!',error.path,'!!!!',error.field)
+  //       errors[error.path] = error.msg;
+  //     });
+
+  //     return res.status(400).json({
+  //       message:"Bad Request",
+  //       errors,
+  //     });
+  //   }
+
+  //   next();
+  // };
   const handleCreateErrors =(req,res,next) =>{
     const validationErrors = validationResult(req);
 
@@ -49,15 +67,14 @@ const handleValidationErrors = (req, _res, next) => {
         // console.log(error.param,'!!!!',error.path,'!!!!',error.field)
         errors[error.path] = error.msg;
       });
-      return res.status(400).json({
-        message:"Bad Request",
-        errors,
-      });
+      const err = Error("Bad request");
+      err.errors = errors;
+      err.status = 400
+      next(err)
     }
 
     next();
   };
-
 
   module.exports = {
     handleValidationErrors,

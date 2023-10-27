@@ -130,7 +130,7 @@ router.post('/:reviewId/images',requireAuth,async(req,res,next) =>{
 
 router.put('/:reviewId',requireAuth, validateReview,handleCreateErrors, async(req,res,next) =>{
     let userId = req.user.id;
-    console.log(userId)
+
     let reviewId = req.params.reviewId;
 
     let oldReview = await Review.findByPk(reviewId)
@@ -160,7 +160,8 @@ router.put('/:reviewId',requireAuth, validateReview,handleCreateErrors, async(re
            id:reviewId,
         }
     })
-    let newReview = await Review.findByPk(userId);
+
+    let newReview = await Review.findByPk(reviewId);
 
     return res.json(newReview)
 
