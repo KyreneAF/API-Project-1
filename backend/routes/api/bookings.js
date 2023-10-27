@@ -27,11 +27,12 @@ validateBooking = [
 
 /*  get all bookings of current user    */
 
+
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
 
 
-        let bookings = await Booking.findAll({
+        const bookings = await Booking.findAll({
             where: {
                 userId,
             },
@@ -42,23 +43,28 @@ router.get('/current', requireAuth, async (req, res) => {
                 },
             }]
         });
-       for (let objs of bookings){
-            let previewImage = await SpotImage.findOne({
-                where:{
-                    spotId: objs.spotId,
-                    preview:true,
-                },
-                attributes:['url']
-            })
 
-            if(previewImage) objs.Spot.dataValues.previewImage = previewImage
+        for (let booking of bookings) {
+
+            const img = await SpotImage.findOne({
+                where: {
+                    spotId: booking.Spot.id,
+                },
+                attributes: ['url']
+            });
+
+            if (img) {
+
+                booking.Spot.dataValues.previewImage = img.url;
+            } else {
+
+                booking.Spot.dataValues.previewImage = 'No preview image';
+            }
         }
 
         res.json({ Bookings: bookings });
 
 });
-
-
 
 
 /* PUT EDIT BOOKING   */
