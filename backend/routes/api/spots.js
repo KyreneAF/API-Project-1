@@ -70,6 +70,14 @@ router.get('/current',requireAuth,async(req,res) =>{
         }]
     });
     let spotsArr = allSpots.map(spot => spot.toJSON())
+    //this does not change to number. still needs work
+    // let spotsArr = allSpots.map(spot => {
+    //     const newSpot = spot.toJSON();
+    //     if (newSpot.lat) newSpot.lat = parseInt(newSpot.lat);
+    //     if (newSpot.lng) newSpot.lng = parseInt(newSpot.lng);
+    //     if (newSpot.price) newSpot.price = parseInt(newSpot.price);
+    //     return newSpot;
+    // });
 
     spotsArr.forEach(spot => {
         let sum = 0;
@@ -97,7 +105,6 @@ router.get('/current',requireAuth,async(req,res) =>{
 
     res.json({Spots:spotsArr})
 });
-
 
 
 
