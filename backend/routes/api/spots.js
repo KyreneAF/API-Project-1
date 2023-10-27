@@ -431,7 +431,9 @@ router.post('/:spotId/bookings',requireAuth,validateBooking,handleCreateErrors, 
     spotId:newBooking.spotId,
     userId:newBooking.userId,
     startDate:dateOnlySD,
-    endDate:dateOnlyED
+    endDate:dateOnlyED,
+    updatedAt:newBooking.updatedAt,
+    createdAt:newBooking.createdAt
  }
 
    return res.json(resultObj)
