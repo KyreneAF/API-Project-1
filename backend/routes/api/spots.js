@@ -40,6 +40,7 @@ const validateBooking = [
       .withMessage('startDate cannot be the same as endDate'),
   ];
 
+
 const validateQuery =[
     check('page').optional().isInt({min:1,max:10}).withMessage("Page must be greater than or equal to 1"),
     check('size').optional().isInt({min:1,max:20}).withMessage("Size must be greater than or equal to 1"),
@@ -50,9 +51,6 @@ const validateQuery =[
     check('minPrice').optional().isDecimal().isFloat({min:0.00}).withMessage("Minimum price must be greater than or equal to 0"),
     check('maxPrice').optional().isDecimal().isFloat({min:0.00}).withMessage("Maximum price must be greater than or equal to 0"),
 ]
-
-
-
 
 /*  GET ALL SPOTS BY CURRENT USER  */
 router.get('/current',requireAuth,async(req,res) =>{
@@ -263,6 +261,9 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
     });
 
     spotsArr.forEach(spot =>{
+        if(spot.price)spot.price = Number(spot.price)
+        if(spot.lat)spot.lat = Number(spot.lat)
+        if(spot.lng)spot.lng = Number(spot.lng)
         if(!spot.SpotImages) spot.previewImage = 'No preview image'
         else{spot.SpotImages.forEach(img =>{
             if (img.preview === false) spot.previewImage = 'No preview image'
@@ -271,7 +272,7 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
     }
      delete spot.SpotImages;
     })
-    res.json({Spots:spotsArr})
+    res.json({Spots:spotsArr,page:Number(page),size:Number(size)})
 
 });
 
