@@ -63,10 +63,7 @@ router.post(
       username: user.username
     };
 
-    if(addDates){
-      safeUser.createdAt = user.createdAt
-      safeUser.updatedAt = user.updatedAt
-    }
+
 
     await setTokenCookie(res, safeUser);
 
