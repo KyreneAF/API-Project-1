@@ -496,7 +496,7 @@ router.post('/',requireAuth,validateSpot,handleCreateErrors, async(req,res) =>{
         ...req.body
     });
 
-    res.status(201).json(createdSpot)
+   return res.status(201).json(createdSpot)
 });
 
 
