@@ -52,6 +52,10 @@ const validateQuery =[
     check('maxPrice').optional().isDecimal().isFloat({min:0.00}).withMessage("Maximum price must be greater than or equal to 0"),
 ]
 
+
+
+
+
 /*  GET ALL SPOTS BY CURRENT USER  */
 router.get('/current',requireAuth,async(req,res) =>{
     let userId = req.user.id
@@ -218,6 +222,21 @@ router.get('/:spotId',async(req,res, next) =>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*  GET ALL SPOTS   */
 router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
 
@@ -275,6 +294,36 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
     res.json({Spots:spotsArr,page:Number(page),size:Number(size)})
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -491,10 +540,15 @@ router.post('/:spotId/images', requireAuth, async (req, res,next) => {
 /* create a spot */
 router.post('/',requireAuth,validateSpot,handleCreateErrors, async(req,res) =>{
     // requireAuth(req);
-    let obj = req.body
+    let {lat,lng,price,...reqRest} = req.body;
+
     let createdSpot = await Spot.create({
         ownerId:req.user.id,
-        ...req.body
+        lat:Number(lat),
+        lng:Number(lng),
+        price:Number(price),
+        ...reqRest,
+
     });
 
    return res.status(201).json(createdSpot)
