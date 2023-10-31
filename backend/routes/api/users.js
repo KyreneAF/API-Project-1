@@ -21,8 +21,8 @@ const validateSignup = [
     .isEmail()
     .withMessage('Username cannot be an email.'),
     // handleValidationErrors
-];
-const signupErrorChecks = [
+// ];
+// const signupErrorChecks = [
   check('password')
   .exists({ checkFalsy: true })
   .isLength({ min: 6 })
@@ -48,9 +48,9 @@ check('lastName')
 router.post(
   '/',
   validateSignup,
-  signupErrorChecks,
+  // signupErrorChecks,
   handleValidationErrors,
-  handleSignupValidation,
+  // handleSignupValidation,
   async (req, res,next) => {
     const { email, password, username, firstName, lastName } = req.body;
     const hashedPassword = bcrypt.hashSync(password);

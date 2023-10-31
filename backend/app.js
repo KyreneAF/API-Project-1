@@ -82,6 +82,13 @@ app.use((err, _req, res, _next) => {
   if(err.status === 403){
     return res.json({message: err.message})
   }
+  if(err.status === 400){
+    return res.json({
+      message:err.message,
+      errors:err.errors
+
+    })
+  }
 
  return res.json({
     title: err.title,
