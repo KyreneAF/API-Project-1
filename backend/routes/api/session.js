@@ -36,14 +36,7 @@ router.post(
           errors,
       })
     }
-    if(!credential.includes('@') ){
-      let err = new Error();
-      err.status = 401;
-      err.message = "Invalid credentials";
-      return next(err);
 
-
-    }
 
     const user = await User.unscoped().findOne({
       where: {
@@ -55,7 +48,7 @@ router.post(
     });
 
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
-      const err = new Error('Login failed');
+      const err = new Error('Invalid credentials');
       err.status = 401;
       err.title = 'Login failed';
       err.errors = { credential: 'The provided credentials were invalid.' };
@@ -69,6 +62,11 @@ router.post(
       email: user.email,
       username: user.username
     };
+
+    if(addDates){
+      safeUser.createdAt = user.createdAt
+      safeUser.updatedAt = user.updatedAt
+    }
 
     await setTokenCookie(res, safeUser);
 
