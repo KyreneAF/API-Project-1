@@ -360,6 +360,12 @@ router.put('/:spotId',requireAuth,validateSpot,handleCreateErrors, async(req,res
         }
     );
       let newSpot = await Spot.findByPk(spotId)
+      if(newSpot.price && newSpot.lat && newSpot.lng){
+          newSpot.price = Number(newSpot.price);
+          newSpot.lat = Number(newSpot.lat);
+          newSpot.lng = Number(newSpot.lng)
+
+      }
 
     res.json(newSpot)
 
@@ -396,7 +402,7 @@ if(userSpot){
 
 let newReview = await Review.create({
     userId,
-    spotId,
+    spotId:Number(spotId),
     ...req.body
 })
 return res.status(201).json(newReview)
