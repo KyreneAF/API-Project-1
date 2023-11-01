@@ -83,6 +83,11 @@ router.get('/current',requireAuth,async(req,res) =>{
 
     spotsArr.forEach(spot => {
         let sum = 0;
+        if(spot.price && spot.lat && spot.lng){
+            spot.price = Number(spot.price);
+            spot.lat = Number(spot.lat);
+            spot.lng = Number(spot.lng);
+        }
 
         if (spot.Reviews && spot.Reviews.length > 0) {
             spot.Reviews.forEach(review => {
