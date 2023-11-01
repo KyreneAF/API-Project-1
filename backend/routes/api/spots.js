@@ -208,11 +208,11 @@ router.get('/:spotId',async(req,res, next) =>{
         city:pojoSpot.city,
         state:pojoSpot.state,
         country:pojoSpot.country,
-        lat:pojoSpot.lat,
-        lng:pojoSpot.lng,
+        lat:Number(pojoSpot.lat),
+        lng:Number(pojoSpot.lng),
         name:pojoSpot.name,
         description:pojoSpot.description,
-        price:pojoSpot.price,
+        price:Number(pojoSpot.price),
         createdAt:pojoSpot.createdAt,
         updatedAt:pojoSpot.updatedAt,
         numReviews:pojoSpot.numReviews,
@@ -318,22 +318,6 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*  Updates and returns an existing spot   */
 
 router.put('/:spotId',requireAuth,validateSpot,handleCreateErrors, async(req,res,next) =>{
@@ -363,11 +347,11 @@ router.put('/:spotId',requireAuth,validateSpot,handleCreateErrors, async(req,res
             city: req.body.city,
             state: req.body.state,
             country: req.body.country,
-            lat: req.body.lat,
-            lng: req.body.lng,
+            lat: Number(req.body.lat),
+            lng: Number(req.body.lng),
             name: req.body.name,
             description: req.body.description,
-            price: req.body.price,
+            price: Number(req.body.price),
         },
         {
             where: {
