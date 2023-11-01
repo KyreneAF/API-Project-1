@@ -83,11 +83,6 @@ router.get('/current',requireAuth,async(req,res) =>{
 
     spotsArr.forEach(spot => {
         let sum = 0;
-        if(spot.price && spot.lat && spot.lng){
-            spot.price = Number(spot.price);
-            spot.lat = Number(spot.lat);
-            spot.lng = Number(spot.lng);
-        }
 
         if (spot.Reviews && spot.Reviews.length > 0) {
             spot.Reviews.forEach(review => {
@@ -101,6 +96,12 @@ router.get('/current',requireAuth,async(req,res) =>{
     });
 
     spotsArr.forEach(spot =>{
+        if(spot.price && spot.lat && spot.lng){
+            spot.price = Number(spot.price);
+            spot.lat = Number(spot.lat);
+            spot.lng = Number(spot.lng)
+        }
+
         if(!spot.SpotImages) spot.previewImage = 'No preview image'
         else{spot.SpotImages.forEach(img =>{
             if (img.preview === false) spot.previewImage = 'No preview image'
