@@ -455,85 +455,124 @@ return res.status(201).json(newReview)
 })
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /*  Create a Booking from a Spot based on the Spot's id    */
 
-router.post('/:spotId/bookings',requireAuth,validateBooking,handleCreateErrors, async(req,res,next) =>{
-    let userId = req.user.id;
-    let spotId = req.params.spotId;
 
-    let spot = await Spot.findByPk(spotId);
+
+router.post('/:spotId/bookings',requireAuth, validateBooking,handleCreateErrors, async(req,res,next) =>{
+    const userId = req.user.id;
+    const spotId = req.params.spotId;
+
+    let spot = await Spot.findByPk(spotId,{
+        include:{
+            model:Booking
+        }
+    });
 
     if(!spot){
         let err = new Error();
         err.status = 404;
         err.message = "Spot couldn't be found";
-        return next(err);
-    };
+        return next(err)
+    }
 
     if(spot.ownerId === userId){
         let err = new Error();
         err.status = 403;
         err.message = "Forbidden";
-        return next(err);
-    };
+        return next(err)
+    }
 
-    let{startDate,endDate} = req.body;
+    let {startDate, endDate} = req.body;
 
-    let spotBookings = await Booking.findOne({
-        where:{
-            spotId,
-            startDate:{
-                [Op.lt]: endDate
-            },
-            endDate:{
-                [Op.gt]: startDate
-            }
-        }
-    });
+    spot.Bookings.forEach(book =>{
+        // let errors = {};
+        let existSD = new Date(book.startDate);
+        let existED = new Date(book.endDate);
+        let reqSD = new Date(startDate);
+        let reqED = new Date(endDate);
 
-
-
-
-    if(spotBookings && spotBookings.startDate){
-        let errors = {}
-        errors.startDate = "Start date conflicts with an existing booking";
-        if(spotBookings.endDate){
-            errors.endDate = "End date conflicts with an existing booking";
-        }
-        if(errors.startDate || errors.endDate){
+        if(reqSD.getTime() >= existSD.getTime() && reqSD.getTime() <= existED.getTime()){
             let err = new Error();
             err.status = 403;
-            err.message = "Sorry, this spot is already booked for the specified dates";
-            err.errors = errors;
+            err.message = "Start date conflicts with an existing booking";
+            return next(err)
+        }
+        if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()){
+            let err = new Error();
+            err.status = 403;
+            err.message = "End date conflicts with an existing booking";
             return next(err)
         }
 
-    }
 
-    let dateOnlySD = startDate.split('T')[0];
-    let dateOnlyED = endDate.split('T')[0];
+
+    })
+
 
    let newBooking = await Booking.create({
-    spotId:parseInt(spotId),
+    spotId:Number(spotId),
     userId,
     startDate,
     endDate,
    });
 
- let resultObj = {
-    id:newBooking.id,
-    spotId:newBooking.spotId,
-    userId:newBooking.userId,
-    startDate:dateOnlySD,
-    endDate:dateOnlyED,
-    updatedAt:newBooking.updatedAt,
-    createdAt:newBooking.createdAt
- }
+   let resObj = {
+    id:Number(newBooking.id),
+    spotId:Number(newBooking.spotId),
+    userId:Number(newBooking.userId),
+    startDate,
+    endDate,
+    createdAt:newBooking.createdAt,
+    updatedAt:newBooking.updatedAt
+   }
 
-   return res.json(resultObj)
+   return res.json(resObj)
 
 
-});
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
