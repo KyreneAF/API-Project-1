@@ -153,7 +153,9 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
         }
     });
 
-    spot.Booking.forEach(book =>{
+    // console.log(spot.Bookings,'###########')
+
+    spot.Bookings.forEach(book =>{
         let errors = {}
         let existSD = new Date(book.startDate);
         let existED = new Date(book.endDate);
@@ -167,6 +169,10 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
         if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED){
             errors.endDate = "End date conflicts with an existing booking"
         }
+        if(reqSD.getTime() <= existSD.getTime() && reqED.getTime() >= existED.getTime()){
+            errors.startDate = "Start date conflicts with an existing booking";
+            errors.endDate = "End date conflicts with an existing booking";
+        }
         if(errors.startDate || errors.endDate){
             let err = new Error();
             err.status = 403;
@@ -174,19 +180,21 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
             err.errors = errors
             return next(err)
         }
-å
+
 
     })
 
-    await Booking.update({
-    startDate,
-    endDate,
-    where:{
-        id:bookingId
-    }
-
-    })
-
+    await Booking.update(
+        {
+          startDate,
+          endDate,
+        },
+        {
+          where: {
+            id: bookingId,
+          },
+        }
+      );
     let updatedBook = await Booking.findByPk(bookingId);
 
 return res.json(updatedBook)
