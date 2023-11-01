@@ -62,40 +62,6 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      get() {
-        const createdAt = this.getDataValue('createdAt');
-        if (createdAt) {
-          const year = createdAt.getFullYear();
-          const month = String(createdAt.getMonth());
-          const day = String(createdAt.getDate());
-          const hours = String(createdAt.getHours());
-          const minutes = String(createdAt.getMinutes());
-          const seconds = String(createdAt.getSeconds());
-          return year + '-' + month + '-' + day +' '+hours +':'+minutes +':'+seconds
-        } else {
-          return null;
-        }
-      },
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      get() {
-        const updatedAt = this.getDataValue('updatedAt');
-        if (updatedAt) {
-          const year = updatedAt.getFullYear();
-          const month = String(updatedAt.getMonth());
-          const day = String(updatedAt.getDate());
-          const hours = String(updatedAt.getHours());
-          const minutes = String(updatedAt.getMinutes());
-          const seconds = String(updatedAt.getSeconds());
-          return year + '-' + month + '-' + day +' '+hours +':'+minutes +':'+seconds
-        } else {
-          return null;
-        }
-      },
-    },
 
     price: {
       type: DataTypes.DECIMAL,
