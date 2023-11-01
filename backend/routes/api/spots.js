@@ -498,24 +498,41 @@ router.post('/:spotId/bookings',requireAuth, validateBooking,handleCreateErrors,
     let {startDate, endDate} = req.body;
 
     spot.Bookings.forEach(book =>{
-        // let errors = {};
+        let errors = {};
         let existSD = new Date(book.startDate);
         let existED = new Date(book.endDate);
         let reqSD = new Date(startDate);
         let reqED = new Date(endDate);
 
-        if(reqSD.getTime() >= existSD.getTime() && reqSD.getTime() <= existED.getTime()){
+        // if(reqSD.getTime() >= existSD.getTime() && reqSD.getTime() <= existED.getTime()){
+        //     let err = new Error();
+        //     err.status = 403;
+        //     err.message = "Start date conflicts with an existing booking";
+        //     return next(err)
+        // }
+        // if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()){
+        //     let err = new Error();
+        //     err.status = 403;
+        //     err.message = "End date conflicts with an existing booking";
+        //     return next(err)
+        // }        if(reqSD.getTime() >= existSD.getTime() && reqSD.getTime() <= existED){
+        //     errors.startDate = "Start date conflicts with an existing booking"
+        // }
+        if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED){
+            errors.endDate = "End date conflicts with an existing booking"
+        }
+        if(reqSD.getTime() <= existSD.getTime() && reqED.getTime() >= existED.getTime()){
+            errors.startDate = "Start date conflicts with an existing booking";
+            errors.endDate = "End date conflicts with an existing booking";
+        }
+        if(errors.startDate || errors.endDate){
             let err = new Error();
             err.status = 403;
-            err.message = "Start date conflicts with an existing booking";
+            err.message = "Sorry, this spot is already booked for the specified dates";
+            err.errors = errors
             return next(err)
         }
-        if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()){
-            let err = new Error();
-            err.status = 403;
-            err.message = "End date conflicts with an existing booking";
-            return next(err)
-        }
+
 
 
 
