@@ -491,6 +491,9 @@ router.post('/:spotId/bookings',requireAuth,validateBooking,handleCreateErrors, 
         }
     });
 
+
+
+
     if(spotBookings && spotBookings.startDate){
         let errors = {}
         errors.startDate = "Start date conflicts with an existing booking";

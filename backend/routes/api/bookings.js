@@ -45,6 +45,11 @@ router.get('/current', requireAuth, async (req, res) => {
         });
 
         for (let booking of bookings) {
+            if(booking.Spot.price && booking.Spot.lat && booking.Spot.lng){
+                booking.Spot.price = Number(booking.Spot.price)
+                booking.Spot.lat = Number(booking.Spot.lat)
+                booking.Spot.lng = Number(booking.Spot.lng)
+            }
 
             const img = await SpotImage.findOne({
                 where: {
