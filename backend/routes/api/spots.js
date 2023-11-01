@@ -544,14 +544,20 @@ router.post('/',requireAuth,validateSpot,handleCreateErrors, async(req,res) =>{
 
     let createdSpot = await Spot.create({
         ownerId:req.user.id,
-        lat:Number(lat),
-        lng:Number(lng),
-        price:Number(price),
-        ...reqRest,
-
+        ...req.body
     });
+    const newSpot = await Spot.findOne({
+        where:{
+            id:createdSpot.id
+        }
+    });
+    if(newSpot.price && newSpot.lat && newSpot.lng){
+        newSpot.price = Number(newSpot.price);
+        newSpot.lat = Number(newSpot.lat);
+        newSpot.lng = Number(newSpot.lng);
+    }
 
-   return res.status(201).json(createdSpot)
+   return res.status(201).json(newSpot)
 });
 
 
