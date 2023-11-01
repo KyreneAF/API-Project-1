@@ -49,6 +49,11 @@ router.get('/current', requireAuth, async(req,res,next) =>{
             });
 
         }
+        if(updatedReview.Spot.price && updatedReview.Spot.lat && updatedReview.Spot.lng){
+            updatedReview.Spot.price = Number(updatedReview.Spot.price);
+            updatedReview.Spot.lat = Number(updatedReview.Spot.lat);
+            updatedReview.Spot.lng = Number(updatedReview.Spot.lng)
+        }
 
 
         return updatedReview;
