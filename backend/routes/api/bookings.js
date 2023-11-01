@@ -74,43 +74,211 @@ router.get('/current', requireAuth, async (req, res) => {
 
 /* PUT EDIT BOOKING   */
 
-router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors, async(req,res,next) =>{
-    const bookingId = req.params.bookingId
-    const userId = req.user.id;
+// router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors, async(req,res,next) =>{
+//     const bookingId = req.params.bookingId
+//     const userId = req.user.id;
 
-    const booking = await Booking.findByPk(bookingId);
+//     const booking = await Booking.findByPk(bookingId);
+
+//     if(!booking){
+//         let err = new Error();
+//         err.status = 404;
+//         err.message = "Booking couldn't be found";
+//         return next(err)
+//     }
+
+//     if(booking.userId !== userId){
+//         let err = new Error()
+//         err.status = 403;
+//         err.message = 'Forbidden'
+//         return next(err)
+//     };
+
+//     if(booking.endDate < Date.now() && booking.startDate < Date.now()){
+//         let err = new Error()
+//         err.status = 403;
+//         err.message = "Past bookings can't be modified"
+//         return next(err)
+//     }
+
+//     booking.update({
+//         startDate :req.body.startDate,
+//         endDate:req.body.endDate,
+//     });
+
+//     const updatedBooking = await Booking.findByPk(bookingId);
+
+//     return res.json(updatedBooking)
+
+// })
+
+router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(req,res,next) =>{
+    let bookingId = req.params.bookingId;
+    let userId = req.user.id;
+    let {startDate,endDate} = req.body;
+
+    let booking = await Booking.findByPk(bookingId,{
+        include:{
+            model:Spot
+        }
+    });
 
     if(!booking){
         let err = new Error();
         err.status = 404;
-        err.message = "Booking couldn't be found";
+        err.message = "Booking couldn't be found"
         return next(err)
     }
 
-    if(booking.userId !== userId){
-        let err = new Error()
+    if(userId !== booking.userId){
+        let err = new Error();
         err.status = 403;
-        err.message = 'Forbidden'
+        err.message = "Forbidden"
         return next(err)
-    };
+    }
+    let dateSD = new Date(startDate);
+    let dateED = new Date(endDate)
 
-    if(booking.endDate < Date.now() && booking.startDate < Date.now()){
+    if(dateSD.getTime() < Date.now() || dateED.getTime() < Date.now()){
         let err = new Error()
         err.status = 403;
         err.message = "Past bookings can't be modified"
         return next(err)
     }
+    let spotId = booking.spotId;
 
-    booking.update({
-        startDate :req.body.startDate,
-        endDate:req.body.endDate,
+    let spot = await Spot.findByPk(spotId,{
+        include:{
+            model:Booking
+        }
     });
 
-    const updatedBooking = await Booking.findByPk(bookingId);
+    spot.Booking.forEach(book =>{
+        let errors = {}
+        let existSD = new Date(book.startDate);
+        let existED = new Date(book.endDate);
+        let reqSD = new Date(startDate);
+        let reqED = new Date(endDate);
 
-    return res.json(updatedBooking)
+
+        if(reqSD.getTime() >= existSD.getTime() && reqSD.getTime() <= existED){
+            errors.startDate = "Start date conflicts with an existing booking"
+        }
+        if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED){
+            errors.endDate = "End date conflicts with an existing booking"
+        }
+        if(errors.startDate || errors.endDate){
+            let err = new Error();
+            err.status = 403;
+            err.message = "Sorry, this spot is already booked for the specified dates";
+            err.errors = errors
+            return next(err)
+        }
+å
+
+    })
+
+    await Booking.update({
+    startDate,
+    endDate,
+    where:{
+        id:bookingId
+    }
+
+    })
+
+    let updatedBook = await Booking.findByPk(bookingId);
+
+return res.json(updatedBook)
+
 
 })
+
+
+// router.put('/:bookingId', requireAuth, validateBooking, handleCreateErrors, async(req, res, next) => {
+
+//         const bookingId = req.params.bookingId;
+//         const userId = req.user.id;
+//         const { startDate, endDate } = req.body;
+
+//         const booking = await Booking.findByPk(bookingId, {
+//             include: {
+//                 model: Spot
+//             }
+//         });
+
+//         if (!booking) {
+//             const err = new Error("Booking couldn't be found");
+//             err.status = 404;
+//             return next(err);
+//         }
+
+//         if (userId !== booking.userId) {
+//             const err = new Error('Forbidden');
+//             err.status = 403;
+//             return next(err);
+//         }
+
+//         const currentTime = Date.now();
+//         if (startDate.getTime() < currentTime || endDate.getTime() < currentTime) {
+//             const err = new Error("Past bookings can't be modified");
+//             err.status = 403;
+//             return next(err);
+//         }
+
+//         const spotId = booking.spotId;
+
+//         const spot = await Spot.findByPk(spotId, {
+//             include: {
+//                 model: Booking
+//             }
+//         });
+
+//         const errors = {};
+
+//         spot.Bookings.forEach((book) => {
+//             const existSD = new Date(book.startDate);
+//             const existED = new Date(book.endDate);
+
+//             if (
+//                 (startDate.getTime() >= existSD.getTime() && startDate.getTime() <= existED.getTime()) ||
+//                 (endDate.getTime() >= existSD.getTime() && endDate.getTime() <= existED.getTime())
+//             ) {
+//                 errors.startDate = 'Start date conflicts with an existing booking';
+//                 errors.endDate = 'End date conflicts with an existing booking';
+//             }
+//         });
+
+//         if (errors.startDate || errors.endDate) {
+//             const err = new Error("Sorry, this spot is already booked for the specified dates");
+//             err.status = 403;
+//             err.errors = errors;
+//             return next(err);
+//         }
+
+//         await Booking.update(
+//             {
+//                 startDate,
+//                 endDate,
+//             },
+//             {
+//                 where: {
+//                     id: bookingId,
+//                 },
+//             }
+//         );
+
+//         const updatedBooking = await Booking.findByPk(bookingId);
+//         return res.json(updatedBooking);
+
+//         return next(error);
+
+// });
+
+
+
+
+
 
 
 /* DELETE BOOKING     */
