@@ -525,12 +525,13 @@ router.post('/:spotId/bookings',requireAuth, validateBooking,handleCreateErrors,
             errors.startDate = "Start date conflicts with an existing booking";
             errors.endDate = "End date conflicts with an existing booking";
         }
+
         if(errors.startDate || errors.endDate){
             let err = new Error();
             err.status = 403;
             err.message = "Sorry, this spot is already booked for the specified dates";
             err.errors = errors
-            return next(err)
+            return err
         }
 
 
