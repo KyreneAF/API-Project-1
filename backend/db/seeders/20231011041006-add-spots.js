@@ -94,8 +94,8 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     options.tableName = 'Spots';
     const Op = Sequelize.Op; // Ensure Op is accessed through Sequelize
-    return queryInterface.bulkDelete('Spots', {
+    return queryInterface.bulkDelete(options, {
       name: { [Op.in]: spotArr.map(spot1 => spot1.name) }
-    }, options);
+    }, {});
   }
 };
