@@ -2,7 +2,7 @@
 const {Review} = require('../models');
 let options = {}
 if(process.env.NODE_ENV === 'production'){
-  options.schema = process.env.Schema;
+  options.schema = process.env.SCHEMA;
 }
 
 let reviewArr =[
