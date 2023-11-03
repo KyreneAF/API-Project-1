@@ -2,7 +2,7 @@
 // const {
 //   Model
 // } = require('sequelize');
-const { Model, Validator } = require('sequelize');
+const { Model, Validator,Sequelize } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -28,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
+
+
   Spot.init({
     ownerId: {
       type:DataTypes.INTEGER,
@@ -66,10 +68,57 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.DECIMAL,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      get() {
+        const createdAt = this.getDataValue('createdAt');
+        if (createdAt) {
+          const year = createdAt.getFullYear();
+          const month = String(createdAt.getMonth() + 1);
+          const day = String(createdAt.getDate());
+          const hours = String(createdAt.getHours());
+          const minutes = String(createdAt.getMinutes());
+          const seconds = String(createdAt.getSeconds());
+
+          if(month.length < 1) month = '0' + month
+          if(day.length < 1) day = '0' + day
+          if(hours < 1) hours = '0' + hours;
+          if(minutes < 1) minutes = '0' + minutes
+          if(minutes < 1) minutes = '0' + minutes
+          return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        } else {
+          return null;
+        }
+      },
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      get() {
+        const updatedAt = this.getDataValue('updatedAt');
+        if (updatedAt) {
+          const year = updatedAt.getFullYear();
+          const month = String(updatedAt.getMonth() + 1);
+          const day = String(updatedAt.getDate());
+          const hours = String(updatedAt.getHours());
+          const minutes = String(updatedAt.getMinutes());
+          const seconds = String(updatedAt.getSeconds());
+
+          if(month.length < 1) month = '0' + month
+          if(day.length < 1) day = '0' + day
+          if(hours < 1) hours = '0' + hours;
+          if(minutes < 1) minutes = '0' + minutes
+          if(minutes < 1) minutes = '0' + minutes
+          return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        } else {
+          return null;
+        }
+      },
+    },
   },
  {
     sequelize,
     modelName: 'Spot',
   });
+
   return Spot;
 };
