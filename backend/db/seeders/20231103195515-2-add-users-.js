@@ -45,7 +45,7 @@ let usersArr =[
     }
 ]
 
-/** @type {import('sequelize-cli').Migration} */
+// /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     await User.bulkCreate(usersArr,{validate:true})
@@ -53,7 +53,8 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Users';
-    const Op = Sequelize.bulkDelete(options,{
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options,{
       username:{[Op.in]:usersArr.map(user => user.username)}
     },{})
   }
