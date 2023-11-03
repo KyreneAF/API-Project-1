@@ -139,7 +139,7 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
         } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() > existED.getTime()) {
           errors.startDate = "Start date conflicts with an existing booking";
         }
-        else if(reqSD.getTime() <= (existSD.getTime() && existED.getTime) && reqED.getTime() >=( existED.getTime() && existSD.getTime())){
+        else if(reqSD.getTime() < (existSD.getTime() && existED.getTime()) && reqED.getTime() > ( existED.getTime() && existSD.getTime())){
             errors.startDate = "Start date conflicts with an existing booking";
             errors.endDate = "End date conflicts with an existing booking";
         }
