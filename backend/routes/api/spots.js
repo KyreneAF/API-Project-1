@@ -684,6 +684,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
       return next(err);
     }
 
+
     const { startDate, endDate } = req.body;
     let checkErr = false;
 
@@ -695,6 +696,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
       const reqED = new Date(endDate);
 
       if (reqSD.getTime() <= existED.getTime() && reqED.getTime() >= existSD.getTime()) {
+
         if (reqSD.getTime() === existSD.getTime() && reqED.getTime() === existED.getTime()) {
           errors.startDate = "Start date conflicts with an existing booking";
           errors.endDate = "End date conflicts with an existing booking";
@@ -705,6 +707,10 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
           errors.endDate = "End date conflicts with an existing booking";
         } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() > existED.getTime()) {
           errors.startDate = "Start date conflicts with an existing booking";
+        }
+        else if(reqSD.getTime() <= (existSD.getTime() && existED.getTime) && reqED.getTime() >=( existED.getTime() && existSD.getTime())){
+            errors.startDate = "Start date conflicts with an existing booking";
+            errors.endDate = "End date conflicts with an existing booking";
         }
       }
 
