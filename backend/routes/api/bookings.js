@@ -74,43 +74,6 @@ router.get('/current', requireAuth, async (req, res) => {
 
 /* PUT EDIT BOOKING   */
 
-// router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors, async(req,res,next) =>{
-//     const bookingId = req.params.bookingId
-//     const userId = req.user.id;
-
-//     const booking = await Booking.findByPk(bookingId);
-
-//     if(!booking){
-//         let err = new Error();
-//         err.status = 404;
-//         err.message = "Booking couldn't be found";
-//         return next(err)
-//     }
-
-//     if(booking.userId !== userId){
-//         let err = new Error()
-//         err.status = 403;
-//         err.message = 'Forbidden'
-//         return next(err)
-//     };
-
-//     if(booking.endDate < Date.now() && booking.startDate < Date.now()){
-//         let err = new Error()
-//         err.status = 403;
-//         err.message = "Past bookings can't be modified"
-//         return next(err)
-//     }
-
-//     booking.update({
-//         startDate :req.body.startDate,
-//         endDate:req.body.endDate,
-//     });
-
-//     const updatedBooking = await Booking.findByPk(bookingId);
-
-//     return res.json(updatedBooking)
-
-// })
 
 router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(req,res,next) =>{
     let bookingId = req.params.bookingId;
@@ -155,34 +118,44 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
 
     // console.log(spot.Bookings,'###########')
 
-    spot.Bookings.forEach(book =>{
-        let errors = {}
-        let existSD = new Date(book.startDate);
-        let existED = new Date(book.endDate);
-        let reqSD = new Date(startDate);
-        let reqED = new Date(endDate);
+    let checkErr = false;
 
+    for (const book of spot.Bookings) {
+      const errors = {};
+      const existSD = new Date(book.startDate);
+      const existED = new Date(book.endDate);
+      const reqSD = new Date(startDate);
+      const reqED = new Date(endDate);
 
-        if(reqSD.getTime() >= existSD.getTime() && reqSD.getTime() <= existED){
-            errors.startDate = "Start date conflicts with an existing booking"
+      if (reqSD.getTime() <= existED.getTime() && reqED.getTime() >= existSD.getTime()) {
+        if (reqSD.getTime() === existSD.getTime() && reqED.getTime() === existED.getTime()) {
+          errors.startDate = "Start date conflicts with an existing booking";
+          errors.endDate = "End date conflicts with an existing booking";
+        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()) {
+          errors.startDate = "Start date conflicts with an existing booking";
+          errors.endDate = "End date conflicts with an existing booking";
+        } else if (reqSD.getTime() < existSD.getTime() && reqED.getTime() <= existED.getTime()) {
+          errors.endDate = "End date conflicts with an existing booking";
+        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() > existED.getTime()) {
+          errors.startDate = "Start date conflicts with an existing booking";
         }
-        if(reqED.getTime() >= existSD.getTime() && reqED.getTime() <= existED){
-            errors.endDate = "End date conflicts with an existing booking"
-        }
-        if(reqSD.getTime() <= existSD.getTime() && reqED.getTime() >= existED.getTime()){
+        else if(reqSD.getTime() <= (existSD.getTime() && existED.getTime) && reqED.getTime() >=( existED.getTime() && existSD.getTime())){
             errors.startDate = "Start date conflicts with an existing booking";
             errors.endDate = "End date conflicts with an existing booking";
         }
-        if(errors.startDate || errors.endDate){
-            let err = new Error();
-            err.status = 403;
-            err.message = "Sorry, this spot is already booked for the specified dates";
-            err.errors = errors
-            return next(err)
-        }
+      }
 
+      if (errors.startDate || errors.endDate) {
+        let err = new Error();
+        err.status = 403;
+        err.message = "Sorry, this spot is already booked for the specified dates";
+        err.errors = errors;
+        checkErr = true;
+        return next(err);
+      }
+    }
 
-    })
+if(!checkErr){
 
     await Booking.update(
         {
@@ -198,9 +171,33 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
     let updatedBook = await Booking.findByPk(bookingId);
 
 return res.json(updatedBook)
+}
 
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
