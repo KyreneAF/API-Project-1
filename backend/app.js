@@ -78,9 +78,18 @@ app.use((err, _req, res, _next) => {
       message: err.message,
     });
   }
+  //**this is a potential delete
+  // if(err.status === 403 ){
+  //   return res.json({
+  //     message:err.message,
+  //     errors:err.errors
+  //   })
+  // }
+
+  //
 
   if(err.status === 403){
-    return res.json({message: err.message})
+    return res.json({message: err.message,errors:err.errors})
   }
   if(err.status === 400){
     return res.json({
