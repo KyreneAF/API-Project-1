@@ -521,25 +521,25 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
 
     for (const book of spot.Bookings) {
       const errors = {};
-      const existSD = new Date(book.startDate);
-      const existED = new Date(book.endDate);
-      const reqSD = new Date(startDate);
-      const reqED = new Date(endDate);
+      const existSD = new Date(book.startDate).getTime();
+      const existED = new Date(book.endDate).getTime();
+      const reqSD = new Date(startDate).getTime();
+      const reqED = new Date(endDate).getTime();
 
-      if (reqSD.getTime() <= existED.getTime() && reqED.getTime() >= existSD.getTime()) {
+      if (reqSD <= existED && reqED >= existSD) {
 
-        if (reqSD.getTime() === existSD.getTime() && reqED.getTime() === existED.getTime()) {
+        if (reqSD === existSD && reqED === existED) {
           errors.startDate = "Start date conflicts with an existing booking";
           errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()) {
+        } else if (reqSD >= existSD && reqED <= existED) {
           errors.startDate = "Start date conflicts with an existing booking";
           errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() < existSD.getTime() && reqED.getTime() <= existED.getTime()) {
+        } else if (reqSD < existSD && reqED <= existED) {
           errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() > existED.getTime()) {
+        } else if (reqSD >= existSD && reqED > existED) {
           errors.startDate = "Start date conflicts with an existing booking";
         }
-        else if(reqSD.getTime() < (existSD.getTime() && existED.getTime()) && reqED.getTime() > ( existED.getTime() && existSD.getTime())){
+        else if(reqSD < (existSD && existED) && reqED > ( existED && existSD)){
             errors.startDate = "Start date conflicts with an existing booking";
             errors.endDate = "End date conflicts with an existing booking";
         }
