@@ -285,21 +285,46 @@ router.get('/:spotId',async(req,res, next) =>{
 
 
 
-
-
-
   /*  GET ALL SPOTS   */
-router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
+  router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
 
     let {page,size,maxLat,minLat,minLng,maxLng,minPrice,maxPrice} = req.query;
+    let queryFilter = {}
 
     page = parseInt(page);
     size = parseInt(size);
 
-    if (Number.isNaN(page) || page < 1) page = 1;
-    if (Number.isNaN(size) || size < 1) size = 20;
+    if (page === undefined || Number.isNaN(page) || page < 1) page = 1;
+    if (size === undefined || Number.isNaN(size) || size < 1) size = 20;
     if(page > 10) page = 1;
     if(size > 10) size = 20;
+
+    queryFilter.limit = size;
+    queryFilter.offset = (page-1) * size;
+    queryFilter.where = {}
+
+
+    queryFilter.where = {
+      lng: {
+        [Op.between]: [
+
+          minLng !== undefined ? minLng : -180,
+          maxLng !== undefined ? maxLng : 180,
+        ],
+      },
+      lat: {
+        [Op.between]: [
+          minLat !== undefined ? minLat : -90,
+          maxLat !== undefined ? maxLat : 90,
+        ],
+      },
+      price: {
+        [Op.between]: [
+          minPrice !== undefined ? minPrice : 0,
+          maxPrice !== undefined ? maxPrice : 10000,
+        ],
+      },
+    };
 
     const allSpots = await Spot.findAll({
         limit: size,
@@ -311,7 +336,8 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
          {
             model:SpotImage,
             attributes:['preview','url']
-         }]
+         }],
+         ...queryFilter
     })
 
     let spotsArr = allSpots.map(spot => spot.toJSON())
@@ -345,13 +371,6 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
     res.json({Spots:spotsArr,page:Number(page),size:Number(size)})
 
 });
-
-
-
-
-
-
-
 
 
 
@@ -502,25 +521,25 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
 
     for (const book of spot.Bookings) {
       const errors = {};
-      const existSD = new Date(book.startDate);
-      const existED = new Date(book.endDate);
-      const reqSD = new Date(startDate);
-      const reqED = new Date(endDate);
+      const existSD = new Date(book.startDate).getTime();
+      const existED = new Date(book.endDate).getTime();
+      const reqSD = new Date(startDate).getTime();
+      const reqED = new Date(endDate).getTime();
 
-      if (reqSD.getTime() <= existED.getTime() && reqED.getTime() >= existSD.getTime()) {
+      if (reqSD <= existED && reqED >= existSD) {
 
-        if (reqSD.getTime() === existSD.getTime() && reqED.getTime() === existED.getTime()) {
+        if (reqSD === existSD && reqED === existED) {
           errors.startDate = "Start date conflicts with an existing booking";
           errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()) {
+        } else if (reqSD >= existSD && reqED <= existED) {
           errors.startDate = "Start date conflicts with an existing booking";
           errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() < existSD.getTime() && reqED.getTime() <= existED.getTime()) {
+        } else if (reqSD < existSD && reqED <= existED) {
           errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() > existED.getTime()) {
+        } else if (reqSD >= existSD && reqED > existED) {
           errors.startDate = "Start date conflicts with an existing booking";
         }
-        else if(reqSD.getTime() < (existSD.getTime() && existED.getTime()) && reqED.getTime() > ( existED.getTime() && existSD.getTime())){
+        else if(reqSD < (existSD && existED) && reqED > ( existED && existSD)){
             errors.startDate = "Start date conflicts with an existing booking";
             errors.endDate = "End date conflicts with an existing booking";
         }
@@ -644,12 +663,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
 //       return next(err);
 //     }
 //   });
-
-
-
-
-
-
 
 
 

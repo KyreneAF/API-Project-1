@@ -30,7 +30,7 @@ let spotArr =[
     lng:27.8531,
     name:'Black Box',
     description:'Concert Venue',
-    price:100.20
+    price:95.00
 
   },
   {
@@ -39,11 +39,11 @@ let spotArr =[
     city:'Las Cruces',
     state:'NM',
     country:'America',
-    lat: 80.2341,
-    lng: 15.8531,
+    lat: 35.2359,
+    lng: 37.2359,
     name:'Cabin Inn',
     description:'A beautiful spot to view the mountains',
-    price:250.00
+    price:95.00
 
   },
   {
@@ -65,8 +65,8 @@ let spotArr =[
     city:'Carrollton',
     state:'TX',
     country:'USA',
-    lat: 30.2341,
-    lng: 30.8531,
+    lat: 32.2341,
+    lng: 38.8531,
     name:'Sky Lounge',
     description:'A beautiful seaside front',
     price:100.00

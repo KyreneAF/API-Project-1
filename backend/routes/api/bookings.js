@@ -3,6 +3,7 @@ const {requireAuth} = require('../../utils/auth');
 const {Spot,SpotImage,Review,User,Booking} = require('../../db/models');
 const { check } = require('express-validator');
 const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
+const {Op} = require('sequelize');
 const router = express.Router();
 
 
@@ -72,6 +73,27 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* PUT EDIT BOOKING   */
 
 
@@ -112,7 +134,13 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
 
     let spot = await Spot.findByPk(spotId,{
         include:{
-            model:Booking
+            model:Booking,
+             where:{
+                id:{
+                    [Op.not]:bookingId
+                }
+            }
+
         }
     });
 
@@ -121,29 +149,30 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
     let checkErr = false;
 
     for (const book of spot.Bookings) {
-      const errors = {};
-      const existSD = new Date(book.startDate);
-      const existED = new Date(book.endDate);
-      const reqSD = new Date(startDate);
-      const reqED = new Date(endDate);
 
-      if (reqSD.getTime() <= existED.getTime() && reqED.getTime() >= existSD.getTime()) {
-        if (reqSD.getTime() === existSD.getTime() && reqED.getTime() === existED.getTime()) {
-          errors.startDate = "Start date conflicts with an existing booking";
-          errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() <= existED.getTime()) {
-          errors.startDate = "Start date conflicts with an existing booking";
-          errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() < existSD.getTime() && reqED.getTime() <= existED.getTime()) {
-          errors.endDate = "End date conflicts with an existing booking";
-        } else if (reqSD.getTime() >= existSD.getTime() && reqED.getTime() > existED.getTime()) {
-          errors.startDate = "Start date conflicts with an existing booking";
-        }
-        else if(reqSD.getTime() < (existSD.getTime() && existED.getTime()) && reqED.getTime() > ( existED.getTime() && existSD.getTime())){
-            errors.startDate = "Start date conflicts with an existing booking";
-            errors.endDate = "End date conflicts with an existing booking";
-        }
+    const errors = {};
+    const existSD = new Date(book.startDate).getTime();
+    const existED = new Date(book.endDate).getTime();
+    const reqSD = new Date(startDate).getTime();
+    const reqED = new Date(endDate).getTime();
+
+    if (reqSD <= existED && reqED >= existSD) {
+      if (reqSD === existSD && reqED === existED) {
+        errors.startDate = "Start date conflicts with an existing booking";
+        errors.endDate = "End date conflicts with an existing booking";
+      } else if (reqSD >= existSD && reqED <= existED) {
+        errors.startDate = "Start date conflicts with an existing booking";
+        errors.endDate = "End date conflicts with an existing booking";
+      } else if (reqSD < existSD && reqED <= existED) {
+        errors.endDate = "End date conflicts with an existing booking";
+      } else if (reqSD >= existSD && reqED > existED) {
+        errors.startDate = "Start date conflicts with an existing booking";
       }
+      else if(reqSD < (existSD && existED) && reqED > ( existED && existSD)){
+          errors.startDate = "Start date conflicts with an existing booking";
+          errors.endDate = "End date conflicts with an existing booking";
+      }
+    }
 
       if (errors.startDate || errors.endDate) {
         let err = new Error();
