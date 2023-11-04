@@ -285,21 +285,46 @@ router.get('/:spotId',async(req,res, next) =>{
 
 
 
-
-
-
   /*  GET ALL SPOTS   */
-router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
+  router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
 
     let {page,size,maxLat,minLat,minLng,maxLng,minPrice,maxPrice} = req.query;
+    let queryFilter = {}
 
     page = parseInt(page);
     size = parseInt(size);
 
-    if (Number.isNaN(page) || page < 1) page = 1;
-    if (Number.isNaN(size) || size < 1) size = 20;
+    if (page === undefined || Number.isNaN(page) || page < 1) page = 1;
+    if (size === undefined || Number.isNaN(size) || size < 1) size = 20;
     if(page > 10) page = 1;
     if(size > 10) size = 20;
+
+    queryFilter.limit = size;
+    queryFilter.offset = (page-1) * size;
+    queryFilter.where = {}
+
+
+    queryFilter.where = {
+      lng: {
+        [Op.between]: [
+
+          minLng !== undefined ? minLng : -180,
+          maxLng !== undefined ? maxLng : 180,
+        ],
+      },
+      lat: {
+        [Op.between]: [
+          minLat !== undefined ? minLat : -90,
+          maxLat !== undefined ? maxLat : 90,
+        ],
+      },
+      price: {
+        [Op.between]: [
+          minPrice !== undefined ? minPrice : 0,
+          maxPrice !== undefined ? maxPrice : 10000,
+        ],
+      },
+    };
 
     const allSpots = await Spot.findAll({
         limit: size,
@@ -311,7 +336,8 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
          {
             model:SpotImage,
             attributes:['preview','url']
-         }]
+         }],
+         ...queryFilter
     })
 
     let spotsArr = allSpots.map(spot => spot.toJSON())
@@ -345,13 +371,6 @@ router.get('/', validateQuery, handleCreateErrors, async(req,res,next)=>{
     res.json({Spots:spotsArr,page:Number(page),size:Number(size)})
 
 });
-
-
-
-
-
-
-
 
 
 
@@ -644,12 +663,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, handleCreateError
 //       return next(err);
 //     }
 //   });
-
-
-
-
-
-
 
 
 

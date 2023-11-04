@@ -3,6 +3,7 @@ const {requireAuth} = require('../../utils/auth');
 const {Spot,SpotImage,Review,User,Booking} = require('../../db/models');
 const { check } = require('express-validator');
 const {handleSignupValidation, handleCreateErrors} = require('../../utils/validation');
+const {Op} = require('sequelize');
 const router = express.Router();
 
 
@@ -72,6 +73,27 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* PUT EDIT BOOKING   */
 
 
@@ -112,7 +134,13 @@ router.put('/:bookingId', requireAuth, validateBooking,handleCreateErrors,async(
 
     let spot = await Spot.findByPk(spotId,{
         include:{
-            model:Booking
+            model:Booking,
+             where:{
+                id:{
+                    [Op.not]:bookingId
+                }
+            }
+
         }
     });
 
