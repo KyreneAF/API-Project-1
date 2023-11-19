@@ -13,7 +13,7 @@ export const Splash = () =>{
 
 
     },[dispatch])
-    https://miro.medium.com/v2/resize:fit:1358/1*RlvEvBN5QszQoqjsuWOH6A.gif
+    // https://miro.medium.com/v2/resize:fit:1358/1*RlvEvBN5QszQoqjsuWOH6A.gif
 
     return (
         <div>
@@ -22,9 +22,16 @@ export const Splash = () =>{
                 <div>
                     { spots && spots.map(spot =>(
                         <div key={spot.id}>
+                         {spot.previewImage ? (
                             <img src={spot.previewImage} onError={e => {
-                        e.target.src = 'https://miro.medium.com/v2/resize:fit:1358/1*RlvEvBN5QszQoqjsuWOH6A.gif';
+                        e.target.src = 'https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0';
                     }} />
+                    ) : (
+                        <img
+                          src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"
+                          alt="Fallback Image"
+                        />
+                      )}
                         <div>
                             <div>{spot.city}, {spot.state}</div>
                             <div>&#9733; {spot.avgRating}</div>
