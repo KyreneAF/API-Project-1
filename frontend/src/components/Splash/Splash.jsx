@@ -30,6 +30,8 @@ export const Splash = () =>{
                             <div>&#9733; {spot.avgRating}</div>
 
                         </div>
+                            <div>${spot.price} night</div>
+
                         </div>
                     ) )}
                 </div>
