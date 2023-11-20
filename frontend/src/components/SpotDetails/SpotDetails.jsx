@@ -23,6 +23,12 @@ export const SpotDetails = () => {
         <div>
             {spotDetails && (
                 <>
+            <div className='spot-info'>
+                <h2>{spotDetails.name}</h2>
+                <div>{spotDetails.city}, {spotDetails.state}, {spotDetails.country}</div>
+
+            </div>
+
             <div className='spot-img-container'>
                 {
                     spotDetails.SpotImages.map(imgObj =>(
