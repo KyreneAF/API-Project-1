@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider, Outlet} from 'react-router-dom';
 // import LoginFormPage from './components/LoginFormPage/LoginFormPage'; removed because we are creating a modal
 // import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 import { Splash } from './components/Splash/Splash';
+import { SpotDetails } from './components/SpotDetails/SpotDetails';
 import Navigation from './components/Navigation/Navigation';
 
 import * as sessionActions from './store/session';
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Splash />
+      },
+      {
+        path: '/:spotId',
+        element:<SpotDetails />
       }
     ]
   }
