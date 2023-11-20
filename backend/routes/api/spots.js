@@ -102,10 +102,10 @@ router.get('/current',requireAuth,async(req,res) =>{
             spot.lng = Number(spot.lng)
         }
 
-        if(!spot.SpotImages) spot.previewImage = 'No preview image'
-        else{spot.SpotImages.forEach(img =>{
-            if (img.preview === false) spot.previewImage = 'No preview image'
-            else if(img.preview === true) spot.previewImage = img.url;
+        // if(!spot.SpotImages) spot.previewImage = 'No preview image'
+        if(spot.SpotImages.length > 0){ spot.SpotImages.forEach(img =>{
+            // if (img.preview === false) spot.previewImage = 'No preview image'
+            if(img.preview === true) spot.previewImage = img.url;
         })
     }
      delete spot.SpotImages;
@@ -362,8 +362,8 @@ router.get('/:spotId',async(req,res, next) =>{
         if(spot.lng)spot.lng = Number(spot.lng)
         if(!spot.SpotImages) spot.previewImage = null//'No preview image'
         else{spot.SpotImages.forEach(img =>{
-            if (img.preview === false) spot.previewImage = null//'No preview image'
-            else if(img.preview === true) spot.previewImage = img.url;
+            // if (img.preview === false) spot.previewImage = null//'No preview image'
+            if(img.preview === true) spot.previewImage = img.url;
         })
     }
      delete spot.SpotImages;
