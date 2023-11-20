@@ -70,40 +70,6 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) =>{
 
 
 
-// reducer.js
-// const initialState = {
-//     Spots: {
-//       allSpots: [], // Initial state for all spots
-//       spotDetails: null, // Initial state for spot details
-//     },
-//   };
-
-//   export const spotReducer = (state = initialState, action) => {
-//     switch (action.type) {
-//       case LOAD_ALLSPOTS:
-//         return {
-//           ...state,
-//           Spots: {
-//             ...state.Spots,
-//             allSpots: action.spots,
-//           },
-//         };
-//       case LOAD_SPOTDETAILS:
-//         return {
-//           ...state,
-//           Spots: {
-//             ...state.Spots,
-//             spotDetails: action.spot,
-//           },
-//         };
-//       default:
-//         return state;
-//     }
-//   };
-
-//   export default spotsReducer;
-
-
 
 
 let initialState = {}
@@ -119,27 +85,10 @@ export const spotReducer = (state = initialState, action) => {
         return newState;
 
       case LOAD_SPOTDETAILS:
-        newState = {...state,...state.Spots,spotDetails:action.spot };
+        newState = {...state,spot:action.spot};
         return newState;
 
       default:
         return state;
     }
   };
-
-
-// export const spotReducer = (state = initialState, action) => {
-
-//     const newState = {...state};
-//    switch(action.type){
-//        case LOAD_ALLSPOTS:{
-//            const spots ={}
-//            const arr = []
-//            action.spots.Spots.forEach(spot => arr.push(spots[spot.id] = spot))
-//            return(newState.spots = arr);
-//            }
-//        default:
-//            return state;
-
-//    }
-// }

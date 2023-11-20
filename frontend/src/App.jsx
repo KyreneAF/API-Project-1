@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <Splash />
       },
       {
-        path: '/:spotId',
+        path: '/spots/:id',
         element:<SpotDetails />
       }
     ]

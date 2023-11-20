@@ -6,9 +6,9 @@ import { thunkGetDetailsSpot } from '../../store/spots';
 export const SpotDetails = () => {
     const dispatch = useDispatch();
     const {id} = useParams()
-    console.log(id)
+    console.log('this is id',id)
 
-    const spotDetails = useSelector(state => state.spots.Spots.spotDetails)
+    const spotDetails = useSelector(state => state.spots)
     console.log("!!!!!!this is spot details",spotDetails)
 
     useEffect(() =>{
