@@ -360,9 +360,9 @@ router.get('/:spotId',async(req,res, next) =>{
         if(spot.price)spot.price = Number(spot.price)
         if(spot.lat)spot.lat = Number(spot.lat)
         if(spot.lng)spot.lng = Number(spot.lng)
-        if(!spot.SpotImages) spot.previewImage = 'No preview image'
+        if(!spot.SpotImages) spot.previewImage = null//'No preview image'
         else{spot.SpotImages.forEach(img =>{
-            if (img.preview === false) spot.previewImage = 'No preview image'
+            if (img.preview === false) spot.previewImage = null//'No preview image'
             else if(img.preview === true) spot.previewImage = img.url;
         })
     }
