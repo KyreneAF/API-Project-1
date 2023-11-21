@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import {useEffect,useState} from 'react'
+import {useDispatch,useSelector} from 'react-redux';
 import './CreateSpot.css'
 
 
@@ -10,25 +11,21 @@ export const CreateSpot = () => {
     const [city,setCity] = useState('');
     const [state,setState] = useState('');
     const [country,setCountry] = useState('');
-    const [lat,setLat] = useState(1.1);
-    const [lng,setLng] = useState(1.1);
+    const [lat,setLat] = useState('');
+    const [lng,setLng] = useState('');
     const [name,setName] = useState('');
     const [description,setDescription] = useState('');
-    const [price,setPrice] = useState(1);
+    const [price,setPrice] = useState('');
     const [previewImg, setPreviewImg] = useState('')
     const [validations,setValidations] = useState({})
 
 
 
-  useEffect(() =>{
-    const errObj = {};
+  // useEffect(() =>{
+  //   const errObj = {};
+  //   dispatch
 
-    if(!price || price <= 0) errObj.price = 'Price per night is required'
-    if(description.length < 30) errObj.description = 'Description needs 30 or more characters'
-    if(previewImg.length < 0 || !previewImg.endsWith('jpg') || !previewImg.endsWith('png'))  errObj.previewImg = 'Preview Image URL is required'
-
-    setValidations(errObj)
-  })
+  // })
 
 
 
