@@ -94,3 +94,8 @@ font-container h3{
 .sec h2{
     margin:0px 0px 0px 0px
 }
+
+
+.error-text{
+    color: red;
+}
