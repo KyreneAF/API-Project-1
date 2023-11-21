@@ -2,10 +2,12 @@ import { useNavigate } from "react-router-dom"
 import {useEffect,useState} from 'react'
 import {useDispatch,useSelector} from 'react-redux';
 import './CreateSpot.css'
+import { thunkCreateSpot } from "../../store/spots";
 
 
 export const CreateSpot = () => {
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [address,setAddress] = useState('');
     const [city,setCity] = useState('');
@@ -16,30 +18,94 @@ export const CreateSpot = () => {
     const [name,setName] = useState('');
     const [description,setDescription] = useState('');
     const [price,setPrice] = useState('');
-    const [previewImg, setPreviewImg] = useState('')
-    const [validations,setValidations] = useState({})
-
-
-
-  // useEffect(() =>{
-  //   const errObj = {};
-  //   dispatch
-
-  // })
+    const [previewImg, setPreviewImg] = useState('');
+    const [validations,setValidations] = useState({});
+    const [image1, setImage1] = useState('');
+    const [image2, setImage2] = useState('');
+    const [image3, setImage3] = useState('');
+    const [image4, setImage4] = useState('');
 
 
 
 
-    const onSubmit = (e) =>{
-        e.preventDefault();
+    useEffect(() => {
+      const errObj ={}
 
-    }
+      if(!address) errObj.address = 'Address is required';
+      if(!city) errObj.city = 'City is required';
+      if(!state) errObj.state = 'State is required';
+      if(!country) errObj.country = 'Country is required';
+      if(!description || description.length < 30) errObj.description = 'Description needs 30 or more characters';
+      if(!previewImg) errObj.previewImg = 'Preview Image is required';
+      if(!price) errObj.price = "Price per night is required"
+
+      setValidations(errObj)
+
+    },[address,city,state,country,name,description,price,previewImg,image1,image2,image3,image4])
+
+
+
+
+    const onSubmit = async(e) =>{
+      e.preventDefault();
+
+
+      if (!Object.values(validations).length){
+
+          const newPreviewImage = {
+              url: previewImg,
+              preview: true
+          }
+          let Images = [newPreviewImage];
+
+          if (image1) {
+            Images.push({url: image1, preview: false});
+          }
+          if (image2) {
+            Images.push({url: image2, preview: false});
+          }
+          if (image3) {
+            Images.push({url: image3, preview: false});
+          }
+          if (image4) {
+            Images.push({url: image4, preview: false});
+          }
+
+          let newSpot = {
+              Spot: {
+                  address,
+                  city,
+                  state,
+                  country,
+                  lat: lat || 0,
+                  lng: lng || 0,
+                  name,
+                  price,
+                  description
+              },
+              Images,
+          }
+
+          newSpot = await dispatch(thunkCreateSpot(newSpot))
+
+          navigate(`/spots/${newSpot.id}`)
+      }
+
+  }
+
+
+
+
+
+
 
     return (
         <>
           <div className='form-main-container'>
             <div className="form-container">
-              <form className='spot-form'>
+              <form className='spot-form'
+                    onSubmit={onSubmit}
+              >
                 <div className='sec'>
                   <h2>Create a new Spot</h2>
                   <h3>Where's your place located?</h3>
@@ -55,6 +121,7 @@ export const CreateSpot = () => {
                       onChange={e => setCountry(e.target.value)}
                     />
                   </label>
+                  {validations.country && <div>{validations.country}</div> }
                   <label>
                     Address
                     <input
@@ -65,6 +132,7 @@ export const CreateSpot = () => {
                       onChange={e => setAddress(e.target.value)}
                     />
                   </label>
+                  {validations.address && <div>{validations.address}</div> }
                   <div className="side-by-side" >
                   <label>
                     City
@@ -76,6 +144,7 @@ export const CreateSpot = () => {
                       onChange={e => setCity(e.target.value)}
                     />
                   </label>
+                  {validations.city && <div>{validations.city}</div> }
                   <div className="comma"> , </div>
                   <label>
                     State
@@ -87,6 +156,7 @@ export const CreateSpot = () => {
                       onChange={e => setState(e.target.value)}
                     />
                   </label>
+                  {validations.state && <div>{validations.state}</div> }
                   </div>
                   <div className="side-by-side-2" >
                   <label>
@@ -124,6 +194,7 @@ export const CreateSpot = () => {
                       onChange={e => setDescription(e.target.value)}
                     />
                   </label>
+                  {validations.description && <div>{validations.description}</div> }
                 </div>
                 <div className="sec">
                   <h3>Create a title for your spot</h3>
@@ -137,6 +208,7 @@ export const CreateSpot = () => {
                       onChange={e => setName(e.target.value)}
                     />
                   </label>
+                  {validations.name && <div>{validations.name}</div> }
                 </div>
                 <div className='sec'>
                   <h3>Set a base price for your spot</h3>
@@ -144,7 +216,7 @@ export const CreateSpot = () => {
                   <div className='side-by-side' >
                     <div> $ </div>
                     <label>
-                      {"price" in validations && <p>{validations.price}</p>}
+
                       <input
                         type='text'
                         name='price'
@@ -153,13 +225,14 @@ export const CreateSpot = () => {
                         onChange={e => setPrice(e.target.value)}
                       />
                     </label>
+                    {validations.price && <div>{validations.price}</div> }
                   </div>
                 </div>
                 <div className='sec'>
                   <h3>Liven up your spot with photos</h3>
                   <div>Submit a link to at least one photo to publish your spot.</div>
                   <label>
-                    {"previewImg" in validations && <p>{validations.previewImg}</p>}
+                    {/* {"previewImg" in validations && <p>{validations.previewImg}</p>} */}
                     <input
                       type='text'
                       name='preview url'
@@ -168,11 +241,14 @@ export const CreateSpot = () => {
                       onChange={e => setPreviewImg(e.target.value)}
                     />
                   </label>
+                  {validations.previewImg && <div>{validations.previewImg}</div> }
                   <label>
                     <input
                       type='text'
                       name='photo url'
                       placeholder="Image URL"
+                      value={image1}
+                      onChange={e => setImage1(e.target.value)}
                     />
                   </label>
                   <label>
@@ -180,6 +256,8 @@ export const CreateSpot = () => {
                       type='text'
                       name='photo url'
                       placeholder="Image URL"
+                      value={image2}
+                      onChange={e => setImage2(e.target.value)}
                     />
                   </label>
                   <label>
@@ -187,6 +265,8 @@ export const CreateSpot = () => {
                       type='text'
                       name='photo url'
                       placeholder="Image URL"
+                      value={image3}
+                      onChange={e => setImage3(e.target.value)}
                     />
                   </label>
                   <label>
@@ -194,11 +274,19 @@ export const CreateSpot = () => {
                       type='text'
                       name='photo url'
                       placeholder="Image URL"
+                      value={image4}
+                      onChange={e => setImage4(e.target.value)}
                     />
                   </label>
                 </div>
                 <div className='button-container'>
-                  <button>Create Spot</button>
+                  <button
+                  type="submit"
+                  disabled={Object.values(validations).length > 0}
+
+                  >
+                    Create Spot
+                    </button>
                 </div>
               </form>
             </div>

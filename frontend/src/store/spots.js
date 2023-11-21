@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf"
 const LOAD_ALLSPOTS = 'spots/LOAD_ALLSPOTS'
 const LOAD_SPOTDETAILS = 'spots/LOAD_SPOTDETAILS'
 const CREATE_SPOT = 'spots/CREATE_SPOT'
+const ADD_SPOTIMAGE = 'spots/ADD_SPOTIMAGE'
 
 //ACTION CREATOR
 export const loadSpots = (spots) =>{
@@ -25,7 +26,14 @@ export const loadSpotDetails = (spot) => {
     }
 }
 
-
+// ADD AN IMAGE TO SPOT
+const addSpotImage = (image, spotId) => {
+    return {
+        type: ADD_SPOTIMAGE,
+        image,
+        spotId
+    }
+}
 
 
 //  CREATE A SPOT
@@ -50,14 +58,14 @@ export const createSpot = (spot) => {
 //THUNK
 export const thunkGetAllSpots = () => async (dispatch) =>{
 
-    const response = await fetch('/api/spots')
+    const res = await fetch('/api/spots')
 
-    if(response.ok){
+    if(res.ok){
 
-        const spots = await response.json();
+        const spots = await res.json();
         dispatch(loadSpots(spots))
     }else{
-        return await response.json()
+        return await res.json()
     }
 
 }
@@ -67,39 +75,56 @@ export const thunkGetAllSpots = () => async (dispatch) =>{
 
 export const thunkGetDetailsSpot = (id) => async (dispatch) =>{
 
-    const response = await fetch(`/api/spots/${id}`);
+    const res = await fetch(`/api/spots/${id}`);
 
-    if(response.ok){
-        const data = await response.json();
+    if(res.ok){
+        const data = await res.json();
         dispatch(loadSpotDetails(data))
     }
     else{
-        return await response.json()
+        return await res.json()
     }
 }
 
 
-// CREATE A SPOT
 
-export const thunkCreateSpot = (spot) => async(dispatch) =>{
 
-    try{
-        const response = await csrfFetch('/api/spots',{method:'POST', body:JSON.stringify(spot)});
 
-        if(response.ok){
-            const data = await response.json();
-            dispatch(createSpot(data))
+
+
+// THUNK TO ADD SPOT IMAGE
+export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
+    for (let image of images) {
+
+        if (image) {
+            const res = await csrfFetch(`/api/spots/${spotId}/images`, {method: 'POST',body: JSON.stringify(image)})
+
+            if (res.ok) {
+                const data = await res.json();
+                dispatch(addSpotImage(data, spotId))
+            }
         }
-
     }
-    catch(e){
-        let errObj ={}
+}
 
-        return errObj.e = e.message
 
+
+
+
+
+
+
+//THUNK TO CREATE SPOT
+export const thunkCreateSpot = (spot) => async (dispatch) => {
+    const res = await csrfFetch('/api/spots', { method: 'POST',body: JSON.stringify(spot.Spot)});
+
+    if (res.ok) {
+        const data = await res.json();
+        await dispatch(createSpot(data))
+        dispatch(thunkAddSpotImage(spot.Images, data.id))
+        return data;
     }
-
-
+    return res;
 }
 
 
