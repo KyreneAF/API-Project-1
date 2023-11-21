@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {useDispatch,useSelector} from 'react-redux';
-import { loadSpots, thunkGetAllSpots } from '../../store/spots';
+import {thunkGetAllSpots } from '../../store/spots';
 import {useNavigate} from 'react-router-dom';
 // import {SpotDetails} from '../Splash/Splash';
 import './Splash.css';

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet} from 'react-router-dom';
 // import LoginFormPage from './components/LoginFormPage/LoginFormPage'; removed because we are creating a modal
 // import SignupFormPage from './components/SignupFormPage/SignupFormPage';
-import {Header} from './components/Header'
+
 import { Splash } from './components/Splash/Splash';
 import { SpotDetails } from './components/SpotDetails/SpotDetails';
 import {CreateSpot} from './components/CreateSpot/CreateSpot';
