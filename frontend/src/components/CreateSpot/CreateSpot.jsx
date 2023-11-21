@@ -27,8 +27,28 @@ export const CreateSpot = () => {
 
 
 
+  //THIS WILL KEEP FORM FROM SUBMITTING BUT I WANT IT TO SUBMIT AND THEN RETURN ERROR SO I MOVED DOWN
+    // useEffect(() => {
+    //   const errObj ={}
 
-    useEffect(() => {
+    //   if(!address) errObj.address = 'Address is required';
+    //   if(!city) errObj.city = 'City is required';
+    //   if(!state) errObj.state = 'State is required';
+    //   if(!country) errObj.country = 'Country is required';
+    //   if(!description || description.length < 30) errObj.description = 'Description needs 30 or more characters';
+    //   if(!previewImg) errObj.previewImg = 'Preview Image is required';
+    //   if(!price) errObj.price = "Price per night is required"
+    //   if(!name) errObj.name = 'Title for Spot is required'
+
+    //   setValidations(errObj)
+
+    // },[address,city,state,country,name,description,price,previewImg,image1,image2,image3,image4])
+
+
+
+
+    const onSubmit = async(e) =>{
+      e.preventDefault();
       const errObj ={}
 
       if(!address) errObj.address = 'Address is required';
@@ -38,16 +58,9 @@ export const CreateSpot = () => {
       if(!description || description.length < 30) errObj.description = 'Description needs 30 or more characters';
       if(!previewImg) errObj.previewImg = 'Preview Image is required';
       if(!price) errObj.price = "Price per night is required"
+      if(!name) errObj.name = 'Title for Spot is required'
 
       setValidations(errObj)
-
-    },[address,city,state,country,name,description,price,previewImg,image1,image2,image3,image4])
-
-
-
-
-    const onSubmit = async(e) =>{
-      e.preventDefault();
 
 
       if (!Object.values(validations).length){
@@ -121,7 +134,7 @@ export const CreateSpot = () => {
                       onChange={e => setCountry(e.target.value)}
                     />
                   </label>
-                  {validations.country && <div>{validations.country}</div> }
+                  {validations.country && <div className='error-text' >{validations.country}</div> }
                   <label>
                     Address
                     <input
@@ -132,7 +145,7 @@ export const CreateSpot = () => {
                       onChange={e => setAddress(e.target.value)}
                     />
                   </label>
-                  {validations.address && <div>{validations.address}</div> }
+                  {validations.address && <div className='error-text' >{validations.address}</div> }
                   <div className="side-by-side" >
                   <label>
                     City
@@ -144,7 +157,7 @@ export const CreateSpot = () => {
                       onChange={e => setCity(e.target.value)}
                     />
                   </label>
-                  {validations.city && <div>{validations.city}</div> }
+                  {validations.city && <div className='error-text' >{validations.city}</div> }
                   <div className="comma"> , </div>
                   <label>
                     State
@@ -156,7 +169,7 @@ export const CreateSpot = () => {
                       onChange={e => setState(e.target.value)}
                     />
                   </label>
-                  {validations.state && <div>{validations.state}</div> }
+                  {validations.state && <div className="error-text">{validations.state}</div> }
                   </div>
                   <div className="side-by-side-2" >
                   <label>
@@ -194,7 +207,7 @@ export const CreateSpot = () => {
                       onChange={e => setDescription(e.target.value)}
                     />
                   </label>
-                  {validations.description && <div>{validations.description}</div> }
+                  {validations.description && <div className='error-text' >{validations.description}</div> }
                 </div>
                 <div className="sec">
                   <h3>Create a title for your spot</h3>
@@ -208,7 +221,7 @@ export const CreateSpot = () => {
                       onChange={e => setName(e.target.value)}
                     />
                   </label>
-                  {validations.name && <div>{validations.name}</div> }
+                  {validations.name && <div className='error-text' >{validations.name}</div> }
                 </div>
                 <div className='sec'>
                   <h3>Set a base price for your spot</h3>
@@ -225,7 +238,7 @@ export const CreateSpot = () => {
                         onChange={e => setPrice(e.target.value)}
                       />
                     </label>
-                    {validations.price && <div>{validations.price}</div> }
+                    {validations.price && <div className='error-text' >{validations.price}</div> }
                   </div>
                 </div>
                 <div className='sec'>
@@ -241,7 +254,7 @@ export const CreateSpot = () => {
                       onChange={e => setPreviewImg(e.target.value)}
                     />
                   </label>
-                  {validations.previewImg && <div>{validations.previewImg}</div> }
+                  {validations.previewImg && <div className='error-text' >{validations.previewImg}</div> }
                   <label>
                     <input
                       type='text'
@@ -281,8 +294,8 @@ export const CreateSpot = () => {
                 </div>
                 <div className='button-container'>
                   <button
-                  type="submit"
-                  disabled={Object.values(validations).length > 0}
+                  // type="submit"
+                  // disabled={Object.values(validations).length > 0}
 
                   >
                     Create Spot
