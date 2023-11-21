@@ -6,9 +6,6 @@ export const  Header = () =>{
             <div>
             <i className="fa-brands fa-airbnb" style={{ color: '#ec3818' }}>ZenLair</i>
             </div>
-            <div>
-                <Navigation />
-            </div>
 
         </div>
     )

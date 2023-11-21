@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
-import {useEffect,useState} from 'react'
-import {useDispatch,useSelector} from 'react-redux';
+import {useState} from 'react'
+import {useDispatch} from 'react-redux';
 import './CreateSpot.css'
 import { thunkCreateSpot } from "../../store/spots";
 
@@ -121,7 +121,7 @@ export const CreateSpot = () => {
               >
                 <div className='sec'>
                   <h2>Create a new Spot</h2>
-                  <h3>Where's your place located?</h3>
+                  <h3>Where&apos;s your place located?</h3>
                   <div>Guests will only get your exact address once they book a reservation.</div>
 
                   <label>
@@ -211,7 +211,7 @@ export const CreateSpot = () => {
                 </div>
                 <div className="sec">
                   <h3>Create a title for your spot</h3>
-                  <div>Catch guests' attention with a spot title that highlights what makes your place special.</div>
+                  <div>Catch guests&apos; attention with a spot title that highlights what makes your place special.</div>
                   <label>
                     <input
                       type='text'
