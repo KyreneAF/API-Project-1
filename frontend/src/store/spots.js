@@ -79,6 +79,29 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) =>{
 }
 
 
+// CREATE A SPOT
+
+export const thunkCreateSpot = (spot) => async(dispatch) =>{
+
+    try{
+        const response = await csrfFetch('/api/spots',{method:'POST', body:JSON.stringify(spot)});
+
+        if(response.ok){
+            const data = await response.json();
+            dispatch(createSpot(data))
+        }
+
+    }
+    catch(e){
+        let errObj ={}
+
+        return errObj.e = e.message
+
+    }
+
+
+}
+
 
 
 

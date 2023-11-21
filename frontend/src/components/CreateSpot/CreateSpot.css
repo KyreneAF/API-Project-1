@@ -38,10 +38,19 @@
     flex-direction: column;
     gap:10px;
     padding: 20px;
+    border-bottom: 2px solid black;
 }
 
 
 .side-by-side {
+    display: flex;
+    align-items: baseline;
+    margin:0px 10px;
+    gap: 10px;
+    width: 100%
+  }
+
+  .side-by-side-2 {
     display: flex;
     align-items: baseline;
     margin:0px 10px;
