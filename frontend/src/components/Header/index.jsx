@@ -10,9 +10,6 @@ export const  Header = () =>{
                 <Navigation />
             </div>
 
-
-
-
         </div>
     )
 

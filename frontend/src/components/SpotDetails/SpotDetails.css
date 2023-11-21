@@ -1,10 +1,21 @@
 
+.spot-img-container{
+    height:20%;
 
+}
 
+.img-div-1{
+    height:100;
+    width: 50%;
 
+}
 
+.big-img-container{
+    height:100%;
+    width:100%;
+}
 
-/* .single-img{
-    height:10px;
-    width:10px
-} */
+.big-Img{
+    height:100px;
+    width:100px;
+}

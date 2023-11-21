@@ -11,14 +11,14 @@ export const Splash = () =>{
     const navigate = useNavigate();
     const spots = useSelector(state => state.spots.Spots)
     // const spots = useSelector(state => state.spots)
-    console.log('!!!!!this is state',spots)
+
 
     useEffect(() =>{
         dispatch(thunkGetAllSpots())
 
 
     },[dispatch])
-    // https://miro.medium.com/v2/resize:fit:1358/1*RlvEvBN5QszQoqjsuWOH6A.gif
+
 
     const handleOnClick = (id) =>{
 
