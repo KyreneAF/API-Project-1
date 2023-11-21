@@ -1,9 +1,9 @@
-
-//localhost:8000/api
+import { csrfFetch } from "./csrf"
 //ACTION TYPE
 
 const LOAD_ALLSPOTS = 'spots/LOAD_ALLSPOTS'
 const LOAD_SPOTDETAILS = 'spots/LOAD_SPOTDETAILS'
+const CREATE_SPOT = 'spots/CREATE_SPOT'
 
 //ACTION CREATOR
 export const loadSpots = (spots) =>{
@@ -28,6 +28,20 @@ export const loadSpotDetails = (spot) => {
 
 
 
+//  CREATE A SPOT
+export const createSpot = (spot) => {
+    return{
+        type:CREATE_SPOT,
+        spot
+    }
+
+}
+
+
+
+
+
+
 
 
 
@@ -35,7 +49,7 @@ export const loadSpotDetails = (spot) => {
 
 //THUNK
 export const thunkGetAllSpots = () => async (dispatch) =>{
-    console.log('********my thunk was hit')
+
     const response = await fetch('/api/spots')
 
     if(response.ok){
