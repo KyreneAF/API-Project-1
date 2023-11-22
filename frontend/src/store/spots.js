@@ -1,11 +1,28 @@
 import { csrfFetch } from "./csrf"
 //ACTION TYPE
 
+
+const LOAD_CURRENT_SPOTS = 'spots/LOAD_CURRENT_SPOTS'
 const LOAD_ALLSPOTS = 'spots/LOAD_ALLSPOTS'
 const LOAD_SPOTDETAILS = 'spots/LOAD_SPOTDETAILS'
 const CREATE_SPOT = 'spots/CREATE_SPOT'
 const ADD_SPOTIMAGE = 'spots/ADD_SPOTIMAGE'
-const LOAD_CURRENT_SPOTS = 'spots/LOAD_CURRENT_SPOTS'
+
+
+
+
+
+// GET ALL SPOTS CURRENT USER
+export const loadCurrentSpots = () =>{
+    return{
+        type:LOAD_CURRENT_SPOTS,
+        spots
+
+    }
+}
+
+
+
 
 
 //ACTION CREATOR
@@ -50,13 +67,13 @@ export const createSpot = (spot) => {
 
 
 // GET ALL SPOTS CURRENT USER
-export const loadCurrentSpots = (spots) =>{
-    return{
-        type:LOAD_CURRENT_SPOTS,
-        spots
+// export const loadCurrentSpots = (spots) =>{
+//     return{
+//         type:LOAD_CURRENT_SPOTS,
+//         spots
 
-    }
-}
+//     }
+// }
 
 
 
@@ -78,6 +95,25 @@ export const thunkGetAllSpots = () => async (dispatch) =>{
     }
 
 }
+
+
+// THUNK GET CURRENT SPOTS
+export const thunkLoadCurrSpots = () => async (dispatch) =>{
+    const res = await csrfFetch('api/spots/current');
+
+
+    if(res.ok){
+        const data = await res.json();
+        await dispatch(loadCurrentSpots(data.Spots))
+        return data;
+    }
+    return res;
+}
+
+
+
+
+
 
 
 
@@ -106,6 +142,8 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) =>{
 
 // THUNK TO ADD SPOT IMAGE
 export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
+    // let imgArr = [];
+
     for (let image of images) { //cant use array methods inside async
 
         if (image) {
@@ -136,7 +174,7 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
         dispatch(thunkAddSpotImage(spot.Images, data.id))
         return data;
     }
-    return res.json()
+    return res
 }
 
 
@@ -144,17 +182,6 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
 
 
 
-// THUNK GET CURRENT SPOTS
-export const thunkLoadCurrSpots = (spots) => async (dispatch) =>{
-    const res = await csrfFetch('api/spots/current');
-
-    if(res.ok){
-        const data = await res.json();
-        await dispatch(loadCurrentSpots(spots))
-        return data;
-    }
-    return res;
-}
 
 
 
@@ -172,25 +199,28 @@ let initialState = {}
 
 
 export const spotReducer = (state = initialState, action) => {
-    let newState = { ...state };
 
     switch (action.type) {
       case LOAD_ALLSPOTS:
-        newState = { ...state,...action.spots };
-        return newState;
+        return {...state,...action.spots}
+
+      case LOAD_CURRENT_SPOTS:
+        return {...state,...action.spots}
+
 
       case LOAD_SPOTDETAILS:
-        newState = {...state,spot:action.spot};
-        return newState;
+        return {...state,spot:action.spot};
 
-        // case CREATE_SPOT:
-        //     // need a key of id for map to work in SpotDetails
-        //     newState = {...state,[action.spot.id]: action.spot};
-        //     return newState;
 
-        // case LOAD_CURRENT_SPOTS:
-        //     newState = {...state,...action.spots};
-        //     return newState;
+        case CREATE_SPOT:
+           return {...state,...action.spot}
+
+        // case ADD_SPOTIMAGE:
+        //
+        // NOT SURE HOW TO IMPLEMENT WILL UPDATE LATER
+
+
+
 
 
       default:

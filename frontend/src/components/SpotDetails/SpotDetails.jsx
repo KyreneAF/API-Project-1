@@ -7,10 +7,10 @@ import "./SpotDetails.css";
 export const SpotDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log("this is id", id);
+  // console.log("this is id", id);
 
   const spotDetails = useSelector((state) => state.spots.spot);
-  console.log("!!!!!!this is spot details", spotDetails);
+  // console.log("!!!!!!this is spot details", spotDetails);
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
@@ -40,7 +40,7 @@ export const SpotDetails = () => {
           </div>
 
           <div className="spot-img-container">
-            {spotDetails.SpotImages.map((imgObj) => (
+            {spotDetails.SpotImages && spotDetails.SpotImages.map((imgObj) => (
               <div key={imgObj.id} className={`img-div-${imgObj.id}`}>
                 {imgObj.url &&
                   (imgSort(imgObj) ? (

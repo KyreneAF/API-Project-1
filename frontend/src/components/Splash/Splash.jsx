@@ -12,7 +12,7 @@ export const Splash = () =>{
     const spots = useSelector(state => state.spots.Spots)
     // const spots = useSelector(state => state.spots)
 
-console.log('this is state!!!!!!!!',spots)
+// console.log('this is state!!!!!!!!',spots)
 
     useEffect(() =>{
         dispatch(thunkGetAllSpots())
