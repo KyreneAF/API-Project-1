@@ -8,12 +8,7 @@ const LOAD_SPOTDETAILS = 'spots/LOAD_SPOTDETAILS'
 const CREATE_SPOT = 'spots/CREATE_SPOT'
 const ADD_SPOTIMAGE = 'spots/ADD_SPOTIMAGE'
 const UPDATE_SPOT = 'spots/UPDATE_SPOT'
-
-
-
-
-
-
+const DELETE_SPOT = 'spots/DELETE_SPOT'
 
 
 
@@ -82,7 +77,12 @@ export const updateSpot = (spot) =>{
     }
 }
 
-
+export const deleteSpot = (spot) => {
+    return {
+        type:DELETE_SPOT,
+        spot
+    }
+}
 
 
 //THUNK
@@ -234,9 +234,7 @@ export const spotReducer = (state = initialState, action) => {
             return { ...state, spots: [...state.spots, action.spot] };
 
         // case ADD_SPOTIMAGE:
-        case UPDATE_SPOT:
-             newState =  newState.Spots[action.spotId] = action.spot
-            return newStatethun
+
         //
         // NOT SURE HOW TO IMPLEMENT WILL UPDATE LATER
 
