@@ -7,19 +7,15 @@ const LOAD_ALLSPOTS = 'spots/LOAD_ALLSPOTS'
 const LOAD_SPOTDETAILS = 'spots/LOAD_SPOTDETAILS'
 const CREATE_SPOT = 'spots/CREATE_SPOT'
 const ADD_SPOTIMAGE = 'spots/ADD_SPOTIMAGE'
+const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 
 
 
 
 
-// GET ALL SPOTS CURRENT USER
-export const loadCurrentSpots = () =>{
-    return{
-        type:LOAD_CURRENT_SPOTS,
-        spots
 
-    }
-}
+
+
 
 
 
@@ -66,17 +62,25 @@ export const createSpot = (spot) => {
 
 
 
+
+
 // GET ALL SPOTS CURRENT USER
-// export const loadCurrentSpots = (spots) =>{
-//     return{
-//         type:LOAD_CURRENT_SPOTS,
-//         spots
+export const loadCurrentSpots = (spots) =>{
+    console.log('my action creator was hit')
+    return{
+        type:LOAD_CURRENT_SPOTS,
+        spots
 
-//     }
-// }
+    }
+}
 
 
-
+export const updateSpot = (spot) =>{
+    return{
+        type:UPDATE_SPOT,
+        spot
+    }
+}
 
 
 
@@ -95,21 +99,6 @@ export const thunkGetAllSpots = () => async (dispatch) =>{
     }
 
 }
-
-
-// THUNK GET CURRENT SPOTS
-export const thunkLoadCurrSpots = () => async (dispatch) =>{
-    const res = await csrfFetch('api/spots/current');
-
-
-    if(res.ok){
-        const data = await res.json();
-        await dispatch(loadCurrentSpots(data.Spots))
-        return data;
-    }
-    return res;
-}
-
 
 
 
@@ -183,7 +172,32 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
 
 
 
+export const thunkLoadCurrSpots = () => async (dispatch) => {
+    const res = await csrfFetch("/api/spots/current");
+    // const res = await fetch('api/spots/current')
+    // console.log('my thunk is hit')
 
+    const data = await res.json();
+    if (res.ok) {
+        dispatch(loadCurrentSpots(data));
+        // console.log('res is good')
+    }
+    // return res;
+  };
+
+
+
+
+
+//  THUNK UPDATE A SPOT
+export const thunkUpdateSpot = (spotId,spot) => async (dispatch) =>{
+    const res = await csrfFetch(`api/spots/${spotId}`,{method:'PUT', body: JSON.stringify(spot)})
+
+    if(res.ok){
+        const data = await res.json();
+        dispatch(updateSpot(data,data.id))
+    }
+}
 
 
 
@@ -198,30 +212,33 @@ let initialState = {}
 //REDUCER
 
 
+
 export const spotReducer = (state = initialState, action) => {
+    let newState = {}
 
     switch (action.type) {
       case LOAD_ALLSPOTS:
         return {...state,...action.spots}
 
       case LOAD_CURRENT_SPOTS:
-        return {...state,...action.spots}
-
+        newState = {...action.spots}
+        return newState
 
       case LOAD_SPOTDETAILS:
-        return {...state,spot:action.spot};
+        return {state,spot:action.spot};
 
 
+        // case CREATE_SPOT:
+        //    return {...state,spots:action.spot}
         case CREATE_SPOT:
-           return {...state,...action.spot}
+            return { ...state, spots: [...state.spots, action.spot] };
 
         // case ADD_SPOTIMAGE:
+        case UPDATE_SPOT:
+             newState =  newState.Spots[action.spotId] = action.spot
+            return newStatethun
         //
         // NOT SURE HOW TO IMPLEMENT WILL UPDATE LATER
-
-
-
-
 
       default:
         return state;

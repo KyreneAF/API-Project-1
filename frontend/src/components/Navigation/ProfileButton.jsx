@@ -109,6 +109,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
+    <div className='header-container' >
       <button onClick={toggleMenu}>
       <i className="fa-solid fa-user"></i>
       </button>
@@ -141,6 +142,7 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
+      </div>
     </>
   );
 }

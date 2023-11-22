@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet} from 'react-router-dom';
+
 // import LoginFormPage from './components/LoginFormPage/LoginFormPage'; removed because we are creating a modal
 // import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 
 import { Splash } from './components/Splash/Splash';
 import { SpotDetails } from './components/SpotDetails/SpotDetails';
 import {CreateSpot} from './components/CreateSpot/CreateSpot';
+import {ManageSpots} from './components/ManageSpots/ManageSpots';
+import {NotFound} from './components/NotFound/NotFound';
+import { UpdateSpot } from './components/UpdateSpot/UpdateSpot';
 import Navigation from './components/Navigation/Navigation';
 
 import * as sessionActions from './store/session';
@@ -46,8 +50,23 @@ const router = createBrowserRouter([
 
       },
       {
+        path: '/spots/:id/edit',
+        element:<UpdateSpot />
+      },
+      {
+        path: '/spots/current',
+        element:<ManageSpots />
+      },
+
+      {
         path: '/spots/:id',
         element:<SpotDetails />
+      },
+
+
+      {
+        path: '*',
+        element: <NotFound />
       }
     ]
   }

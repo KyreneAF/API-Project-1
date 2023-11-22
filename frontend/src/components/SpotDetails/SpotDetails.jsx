@@ -10,7 +10,7 @@ export const SpotDetails = () => {
   // console.log("this is id", id);
 
   const spotDetails = useSelector((state) => state.spots.spot);
-  // console.log("!!!!!!this is spot details", spotDetails);
+  console.log("!!!!!!this is spot details", spotDetails);
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
