@@ -1,5 +1,41 @@
+.spot-main-container{
+  margin-left:20px;
+  margin-right:40px;
+}
 
-.spot-img-container{
+
+.spot-img-container {
+    /* display: flex; */
+    height: 20%;
+    /* flex-direction: row; */
+    width: 100%;
+  }
+
+  .spot-img-container {
+    display: flex;
+    height: 100%;
+    width: 50%;
+  }
+
+.big-img {
+    height: 400px;
+  }
+
+  .small-img-container {
+    display: flex;
+    flex-wrap: wrap;
+    height:100%;
+    width:100%
+    /* align-content: center; */
+  }
+
+.small-img{
+    height:200px;
+    width:200px;
+}
+
+
+/* .spot-img-container{
     height:20%;
 
 }
@@ -19,3 +55,9 @@
     height:100px;
     width:100px;
 }
+
+.spot-info {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  } */

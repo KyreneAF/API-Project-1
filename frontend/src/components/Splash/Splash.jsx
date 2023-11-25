@@ -48,10 +48,10 @@ export const Splash = () =>{
 
                         <div className='city-stars'>
                             <div>{spot.city}, {spot.state}</div>
-                            <div>&#9733; {spot.avgRating}</div>
+                            <div>&#9733; {spot.avgRating.toFixed(1)}</div>
 
                         </div>
-                            <div className='price'>${spot.price} night</div>
+                            <div className='price'>${spot.price.toFixed(2)} night</div>
                             <div className='tool-tip'>{spot.name}</div>
 
                         </div>

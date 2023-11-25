@@ -1,14 +1,12 @@
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton/OpenModalButton';
-import LoginFormModal from '../LoginFormModal/LoginFormModal';
-import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ProfileButton from "./ProfileButton";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import LoginFormModal from "../LoginFormModal/LoginFormModal";
+import SignupFormModal from "../SignupFormModal/SignupFormModal";
+
 // import * as sessionActions from '../../store/session'; removed after adding modal
-import './Navigation.css';
-
-
-
+import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -16,45 +14,50 @@ function Navigation({ isLoaded }) {
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
-      </li>
+      <>
+        <NavLink to="/spots/new" className="create-spot">
+          Create a New Spot
+        </NavLink>
+        <div>
+          <ProfileButton user={sessionUser} />
+        </div>
+      </>
     );
   } else {
     sessionLinks = (
       <>
-      <li>
-        <OpenModalButton
-          buttonText="Log In"
-          modalComponent={<LoginFormModal />}
-        />
-      </li>
-      <li>
-        <OpenModalButton
-          buttonText="Sign Up"
-          modalComponent={<SignupFormModal />}
-        />
-      </li>
+        <li>
+          <OpenModalButton
+            buttonText="Log In"
+            modalComponent={<LoginFormModal />}
+          />
+        </li>
+        <li>
+          <OpenModalButton
+            buttonText="Sign Up"
+            modalComponent={<SignupFormModal />}
+          />
+        </li>
       </>
     );
   }
 
   return (
-    <div className='nav-box'>
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
-
+    <div className="nav-box">
+      <ul>
+        <div className="logo">
+          <NavLink to="/">
+            <i className="fa-brands fa-airbnb"></i>
+            airbnb
+          </NavLink>
+        </div>
+        {isLoaded && sessionLinks}
+      </ul>
     </div>
   );
 }
 
 export default Navigation;
-
-
 
 // THIS IS DIFFERENT STYLING TOP IS ORIGINAL
 
@@ -81,9 +84,6 @@ export default Navigation;
 // }
 
 // export default Navigation;
-
-
-
 
 // OPTION 3 THIS IS CONNECTED TO OpenModalMenuItem
 
@@ -167,7 +167,6 @@ export default Navigation;
 // import { useState, useEffect, useRef } from 'react';
 // import { useDispatch } from 'react-redux';
 // import * as sessionActions from '../../store/session';
-
 
 // export default function ProfileButton({ user }) {
 //   const dispatch = useDispatch();
