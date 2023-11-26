@@ -95,7 +95,7 @@ export const SpotDetails = () => {
           <div className="review-main-container">
             <div className="inLine-review">
               <div className="avg-review-container">
-                {spotDetails.avgRating && spotDetails.avgRating ? (
+                {spotDetails.avgRating && spotDetails.avgRating && spotDetails.numReviews > 0 ? (
                   <>
                     <div>&#9733;{spotDetails.avgRating.toFixed(1)}</div>
                     <div>&middot;</div>
@@ -110,6 +110,7 @@ export const SpotDetails = () => {
                   <div>&#9733;New</div>
                 )}
               </div>
+              {}
             </div>
             <SpotReviews />
           </div>
