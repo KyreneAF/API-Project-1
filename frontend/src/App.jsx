@@ -11,9 +11,11 @@ import { SpotDetails } from "./components/SpotDetails/SpotDetails";
 import { CreateSpot } from "./components/CreateSpot/CreateSpot";
 import { ManageSpots } from "./components/ManageSpots/ManageSpots";
 import { NotFound } from "./components/NotFound/NotFound";
-import { UpdateSpot } from "./components/UpdateSpot/UpdateSpot";
+import { UpdateSpot } from "./components/ManageSpots/UpdateSpot/UpdateSpot";
+import { DeleteSpot } from "./components/ManageSpots/DeleteSpot/DeleteSpot";
 // import { SpotReviews } from './components/SpotReviews/SpotReviews';
 import Navigation from "./components/Navigation/Navigation";
+
 
 import * as sessionActions from "./store/session";
 
@@ -50,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/spots/:id/edit",
         element: <UpdateSpot />,
+      },
+      {
+        path: "/spots/:id/delete",
+        element: <DeleteSpot />,
       },
       {
         path: "/spots/current",

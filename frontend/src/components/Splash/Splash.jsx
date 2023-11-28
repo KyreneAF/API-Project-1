@@ -1,66 +1,70 @@
-import {useEffect} from 'react';
-import {useDispatch,useSelector} from 'react-redux';
-import {thunkGetAllSpots } from '../../store/spots';
-import {useNavigate} from 'react-router-dom';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { thunkGetAllSpots } from "../../store/spots";
+import { useNavigate } from "react-router-dom";
 // import {SpotDetails} from '../Splash/Splash';
-import './Splash.css';
+import "./Splash.css";
 
-export const Splash = () =>{
+export const Splash = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const allSpots = useSelector((state) => state.spots);
+  // const spots = useSelector(state => state.spots)
+  const spots = Object.values(allSpots);
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate();
-    const spots = useSelector(state => state.spots.Spots)
-    // const spots = useSelector(state => state.spots)
+  useEffect(() => {
+    dispatch(thunkGetAllSpots());
+  }, [dispatch]);
 
-// console.log('this is state!!!!!!!!',spots)
+  const handleOnClick = (id) => {
+    navigate(`/spots/${id}`);
+  };
 
-    useEffect(() =>{
-        dispatch(thunkGetAllSpots())
+  if (!allSpots || !spots.length) return null;
 
+  return (
+    <div>
+      <div>
+        <div className="spots-main-container">
+          {spots &&
+            spots.map((spot) => (
+              <div
+                key={spot.id}
+                className="spot-tile"
+                onClick={() => handleOnClick(spot.id)}
+              >
+                {spot.previewImage ? (
+                  <img
+                    className="img"
+                    src={spot.previewImage}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0";
+                    }}
+                  />
+                ) : (
+                  <img
+                    className="img"
+                    src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"
+                    alt="Fallback Image"
+                  />
+                )}
 
-    },[dispatch])
-
-
-    const handleOnClick = (id) =>{
-
-        navigate(`/spots/${id}`)
-    }
-
-
-    return (
-        <div>
-            <div>
-                <div className='spots-main-container'>
-                    { spots && spots.map(spot =>(
-                        <div key={spot.id} className='spot-tile' onClick={() => handleOnClick(spot.id)}>
-                         {spot.previewImage ? (
-                            <img className='img' src={spot.previewImage} onError={e => {
-                        e.target.src = 'https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0';
-                    }} />
-
-                    ) : (
-                        <img
-                        className='img'
-                          src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"
-                          alt="Fallback Image"
-                        />
-                      )}
-
-                        <div className='city-stars'>
-                            <div>{spot.city}, {spot.state}</div>
-                            <div>&#9733; {spot.avgRating.toFixed(1)}</div>
-
-                        </div>
-                            <div className='price'>${spot.price.toFixed(2)} night</div>
-                            <div className='tool-tip'>{spot.name}</div>
-
-                        </div>
-                    ) )}
+                <div className="city-stars">
+                  <div>
+                    {spot.city}, {spot.state}
+                  </div>
+                  <div>
+                    &#9733;{" "}
+                    {spot.avgRating !== null && spot.avgRating.toFixed(1)}
+                  </div>
                 </div>
-
-            </div>
-
-
+                <div className="price">${spot.price.toFixed(2)} night</div>
+                <div className="tool-tip">{spot.name}</div>
+              </div>
+            ))}
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};

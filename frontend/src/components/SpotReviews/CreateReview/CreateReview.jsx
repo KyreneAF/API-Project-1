@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 // import { useDispatch} from "react-redux";
 import { useEffect, useState } from "react";
-import { thunkCreateReview } from "../../store/reviews";
+import { thunkCreateReview } from "../../../store/reviews.js";
 // import { thunkGetReviews } from "../../store/reviews";
-import { useModal } from "../../context/Modal.jsx";
+import { useModal } from "../../../context/Modal.jsx";
 import "./CreateReview.css";
 
 export const CreateReview = () => {

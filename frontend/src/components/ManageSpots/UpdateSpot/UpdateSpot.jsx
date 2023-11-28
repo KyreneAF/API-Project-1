@@ -1,7 +1,7 @@
 import { useNavigate,useParams } from "react-router-dom"
 import {useState} from 'react'
-import {useDispatch} from 'react-redux';
-import { thunkUpdateSpot } from "../../store/spots";
+import {useDispatch } from 'react-redux';
+import { thunkUpdateSpot } from "../../../store/spots";
 import './UpdateSpot.css'
 
 
@@ -9,7 +9,14 @@ export const UpdateSpot = () => {
 
 
 
-    const { spotId } = useParams();
+
+    const { id } = useParams();
+   const spotId = Number (id)
+    // console.log('IM SPOTID',spotId)
+
+    // const spot = useSelector((state) => state.spots)
+
+
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -38,7 +45,7 @@ export const UpdateSpot = () => {
         if(!state) errObj.state = 'State is required';
         if(!country) errObj.country = 'Country is required';
         if(!description || description.length < 30) errObj.description = 'Description needs 30 or more characters';
-        if(!previewImg) errObj.previewImg = 'Preview Image is required';
+        // if(!previewImg) errObj.previewImg = 'Preview Image is required'; // checklist says optional
         if(!price) errObj.price = "Price per night is required"
         if(!name) errObj.name = 'Title for Spot is required'
 
@@ -81,10 +88,10 @@ export const UpdateSpot = () => {
                 Images,
             }
 
-            newSpot = await dispatch(thunkUpdateSpot(newSpot))
+            newSpot = await dispatch(thunkUpdateSpot(spotId,newSpot))
 
-            console.log("New Spot:", newSpot);
-            navigate(`/spots/${newSpot.id}`)
+            console.log('!!!!', newSpot)
+            navigate(`/spots/${spotId}`)
         }
 
     }
@@ -103,7 +110,7 @@ export const UpdateSpot = () => {
                       onSubmit={onSubmit}
                 >
                   <div className='sec'>
-                    <h2>Create a new Spot</h2>
+                    <h2>Update your Spot</h2>
                     <h3>Where&apos;s your place located?</h3>
                     <div>Guests will only get your exact address once they book a reservation.</div>
 

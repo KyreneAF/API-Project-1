@@ -1,6 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkLoadCurrSpots } from "../../store/spots";
+import OpenModalButton from "../OpenModalButton/OpenModalButton"
+import {DeleteSpot} from "./DeleteSpot/DeleteSpot"
 import { useEffect } from "react";
 
 export const ManageSpots = () =>{
@@ -10,9 +12,12 @@ export const ManageSpots = () =>{
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const spots = useSelector(state => state.spots);
-    console.log("state from ManageSpots",spots)
+    const allSpots = useSelector(state => state.spots);
+    const user = useSelector(state => state.session.user.id)
 
+    const spots = Object.values(allSpots).filter(spot => spot.ownerId === user)
+
+    // console.log('!!!!',spots)
 
     useEffect(() =>{
         dispatch(thunkLoadCurrSpots())
@@ -32,11 +37,11 @@ export const ManageSpots = () =>{
         <div className='curr-main-container'>
             <div className='curr-text-header' >
                 <h1>Manage Your Spots</h1>
-                <button className='new-spot-bttn' onClick={handleOnClick}></button>
+                <button className='curr-new-spot-bttn' onClick={handleOnClick}>Create a New Spot</button>
             </div>
 
             <div className ='curr-spot-container'>
-            { spots.Spots && spots.Spots.map(spot =>(
+            { spots.length && spots.map(spot =>(
                         <div key={spot.id} className='spot-tile' >
                          {spot.previewImage ? (
                             <img className='img' src={spot.previewImage} onError={e => {
@@ -63,9 +68,13 @@ export const ManageSpots = () =>{
                             <button onClick={() => navigate(`/spots/${spot.id}/edit`)}>
                                 Update</button>
 
-                            <button onClick={() => navigate(`spots/${spot.id}/delete`)}>
-                                Delete
-                            </button>
+                            <div >
+                                { <OpenModalButton
+                                    buttonText='Delete'
+                                    modalComponent={<DeleteSpot />}
+                                /> }
+
+                            </div>
 
                             </div>
 
@@ -73,8 +82,6 @@ export const ManageSpots = () =>{
                     ) )}
 
             </div>
-
-
 
         </div>
         )

@@ -2,18 +2,23 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetDetailsSpot } from "../../store/spots";
-import { SpotReviews } from "../SpotReviews/SpotReviews";
+// import { SpotReviews } from "../SpotReviews/SpotReviews"; uncomment after debugging
 import "./SpotDetails.css";
 
 export const SpotDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const spotDetails = useSelector((state) => state.spots.spot);
+  const spotDetails = useSelector((state) => state.spots[id]);
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
   }, [dispatch, id]);
+
+  // console.log("THIS IS SPOTDETAILS", spotDetails);
+  if (!spotDetails || !spotDetails.SpotImages.length) {
+    return null;
+  }
 
   const imgSort = (imgObj) => {
     if (imgObj.preview === true) {
@@ -95,7 +100,9 @@ export const SpotDetails = () => {
           <div className="review-main-container">
             <div className="inLine-review">
               <div className="avg-review-container">
-                {spotDetails.avgRating && spotDetails.avgRating && spotDetails.numReviews > 0 ? (
+                {spotDetails.avgRating &&
+                spotDetails.avgRating &&
+                spotDetails.numReviews > 0 ? (
                   <>
                     <div>&#9733;{spotDetails.avgRating.toFixed(1)}</div>
                     <div>&middot;</div>
@@ -112,7 +119,7 @@ export const SpotDetails = () => {
               </div>
               {}
             </div>
-            <SpotReviews />
+            {/* <SpotReviews /> */}
           </div>
         </>
       )}

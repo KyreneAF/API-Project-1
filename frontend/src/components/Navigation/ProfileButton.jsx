@@ -68,6 +68,7 @@ import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
+import { NavLink } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -105,42 +106,54 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <div className="header-container">
-        <button onClick={toggleMenu}>
-          <i className="fa-solid fa-user"></i>
-        </button>
-        <ul className={ulClassName} ref={ulRef}>
-          {user ? (
-            <>
-              <li>{user.username}</li>
-              <li>
-                {user.firstName} {user.lastName}
-              </li>
-              <li>{user.email}</li>
-              <li>
-                <button onClick={logout}>Log Out</button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <OpenModalButton
-                  buttonText="Log In"
-                  onButtonClick={closeMenu}
-                  modalComponent={<LoginFormModal />}
-                />
-              </li>
-              <li>
-                <OpenModalButton
-                  buttonText="Sign Up"
-                  onButtonClick={closeMenu}
-                  modalComponent={<SignupFormModal />}
-                />
-              </li>
-            </>
-          )}
-        </ul>
-      </div>
+      <button onClick={toggleMenu} id="profile_button">
+        <i className="fa-solid fa-bars"></i>
+        <i className="fa-solid fa-user"></i>
+      </button>
+      <ul className={ulClassName} ref={ulRef}>
+        {user ? (
+          <>
+            <div className="login-signup">
+              <div id="user">
+                <div className="credentials">Hello, {user.firstName}</div>
+                <div className="credentials">{user.email}</div>
+              </div>
+              <div id="manage-spot">
+                <NavLink to={"/spots/current"} className="manage-spots">
+                  {" "}
+                  Manage Spots
+                </NavLink>
+              </div>
+              <div>
+                <button id="logout-bttn" onClick={logout}>
+                  Log Out
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <div className="login-signup">
+                <div className="login-hover">
+                  <OpenModalButton
+                    itemText="Log In"
+                    onItemClick={closeMenu}
+                    modalComponent={<LoginFormModal />}
+                  />
+                </div>
+                <div className="login-hover">
+                  <OpenModalButton
+                    itemText="Sign Up"
+                    onItemClick={closeMenu}
+                    modalComponent={<SignupFormModal />}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </ul>
     </>
   );
 }
