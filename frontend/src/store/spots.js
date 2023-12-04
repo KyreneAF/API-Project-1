@@ -23,6 +23,7 @@ export const loadSpots = (spots) => {
 
 //GET DETAILS OF SPOT SingleSpot
 export const loadSpotDetails = (spots) => {
+
   return {
     type: LOAD_SPOTDETAILS,
     spots,
@@ -35,7 +36,7 @@ export const loadSpotDetails = (spots) => {
 
 // ADD AN IMAGE TO SPOT
 const addSpotImage = (image, spotId) => {
-  console.log(image, "HI IM FROM ACTION");
+  // console.log(image, "HI IM FROM ACTION");
   return {
     type: ADD_SPOTIMAGE,
     image,
@@ -89,11 +90,11 @@ export const updateSpot = (spot) => {
 
 
 
-export const deleteSpot = (spotId) => {
+export const deleteSpot = (id) => {
 
   return {
     type: DELETE_SPOT,
-    spotId,
+    id,
   };
 };
 
@@ -226,14 +227,15 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
 
 
 // THUNK DELETE SPOT
- export const thunkDeleteSpot = (spotId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/spots/${spotId}`, {
+ export const thunkDeleteSpot = (id) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
 
     if(res.ok){
       const data = await res.json();
+
       dispatch(deleteSpot(data));
 
     }
@@ -301,10 +303,11 @@ export const spotReducer = (state = initialState, action) => {
     case LOAD_CURRENT_SPOTS:{
       let newState = {...state}
 
-      action.spots.Spots.forEach(spot =>{
-        let newSpot = { ...spot, SpotImages: [], Owner: {} };
-        newState[spot.id] = {...state[spot.id],...newSpot}
-      })
+      // action.spots.Spots.forEach(spot =>{
+        action.spots.Spots.forEach((spot) => {
+          let newSpot = { ...spot, SpotImages: [], Owner: {} };
+          newState[spot.id] = { ...state[spot.id], ...newSpot };
+        });
       return newState
 
     }
@@ -319,11 +322,14 @@ export const spotReducer = (state = initialState, action) => {
 
     case DELETE_SPOT:{
       let newState = {...state};
+      delete newState[action.id]
+
       return newState;
+
     }
 
-
-
+// https://redux.js.org/usage/structuring-reducers/immutable-update-patterns
+// visit below link for removing from state!!!!
 
 
 

@@ -17,7 +17,7 @@ export const ManageSpots = () =>{
 
     const spots = Object.values(allSpots).filter(spot => spot.ownerId === user)
 
-    // console.log('!!!!',spots)
+    if(!spots) return null
 
     useEffect(() =>{
         dispatch(thunkLoadCurrSpots())
@@ -71,7 +71,7 @@ export const ManageSpots = () =>{
                             <div >
                                 { <OpenModalButton
                                     buttonText='Delete'
-                                    modalComponent={<DeleteSpot />}
+                                    modalComponent={<DeleteSpot id={spot.id}/>}
                                 /> }
 
                             </div>

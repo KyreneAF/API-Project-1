@@ -30,3 +30,33 @@
     color: red;
 
 } */
+.dropDownLoginSignup {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    color: #e4fde1;
+    /* border-bottom: 1px solid gray*/
+    /* comment this back in later when more items are added to dropdown*/
+}
+
+.dropDownLoginSignup:hover {
+    cursor: pointer;
+
+}
+.profileDropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 10px;
+    top: 75px;
+    padding: 0 0px;
+    box-shadow: 0 0 10px black;
+    border-radius: 20px;
+    width: 250px;
+    overflow: hidden;
+}
+.hidden {
+    display: none;
+}
