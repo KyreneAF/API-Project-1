@@ -10,31 +10,31 @@ let reviewArr =[
     spotId:1,
     userId:3,
     review:'Best spot ever',
-    stars:5
+    stars:5.0
   },
   {
     spotId:2,
     userId:1,
     review:'Horrible spot',
-    stars:1
+    stars:1.0
   },
   {
     spotId:3,
     userId:1,
     review:'Nice',
-    stars:3
+    stars:3.0
   },
   {
     spotId:1,
     userId:1,
     review:'Loved the view',
-    stars:3
+    stars:3.0
   },
   {
     spotId:4,
     userId:3,
     review:'Nice spot',
-    stars:4
+    stars:4.0
   },
 ]
 module.exports = {
