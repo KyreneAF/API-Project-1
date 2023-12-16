@@ -1,75 +1,11 @@
-// import React from 'react';
-// import { useState,useEffect, useRef } from 'react';
-// import { useDispatch } from 'react-redux';
-// import * as sessionActions from '../../store/session';
-
-// //example of how to change icons
-// // {/* <div style={{ color: 'orange', fontSize: '24px' }}>
-// // {/* Assuming you choose the user icon from Font Awesome */}
-// // <i class="fa-solid fa-user"></i>
-// // </div> */}
-
-
-// function ProfileButton({ user }) {
-//   const dispatch = useDispatch();
-//   const [showMenu, setShowMenu] = useState(false);
-//   const ulRef = useRef();
-
-//   const toggleMenu = (e) => {
-//     e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
-//     // if (!showMenu) setShowMenu(true);
-//     setShowMenu(!showMenu);
-//   };
-
-//   useEffect(() => {
-//     if (!showMenu) return;
-
-//     const closeMenu = (e) => {
-//       if (!ulRef.current.contains(e.target)) {
-//         setShowMenu(false);
-//       }
-//     };
-
-//     document.addEventListener('click', closeMenu);
-
-//     return () => document.removeEventListener("click", closeMenu);
-//   }, [showMenu]);
-
-//   const logout = (e) => {
-//     e.preventDefault();
-//     dispatch(sessionActions.logout());
-//   };
-
-//   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
-//   return (
-//     <>
-//       <button onClick={toggleMenu}>
-//       <i class="fa-solid fa-user"></i>
-//       </button>
-//       <ul className={ulClassName} ref={ulRef}>
-//         <li>{user.username}</li>
-//         <li>{user.firstName} {user.lastName}</li>
-//         <li>{user.email}</li>
-//         <li>
-//           <button onClick={logout}>Log Out</button>
-//         </li>
-//       </ul>
-//     </>
-//   );
-// }
-
-// export default ProfileButton;
-
-// THIS IS DIFFERENT STYLING TOP IS ORIGINAL
-
-import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import * as sessionActions from '../../store/session';
-import OpenModalButton from '../OpenModalButton/OpenModalButton';
-import LoginFormModal from '../LoginFormModal/LoginFormModal';
-import SignupFormModal from '../SignupFormModal/SignupFormModal';
-
+import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import * as sessionActions from "../../store/session";
+import OpenModalMenuItem from "./OpenModalMenuItem";
+import LoginFormModal from "../LoginFormModal/LoginFormModal";
+import SignupFormModal from "../SignupFormModal/SignupFormModal";
+import { NavLink } from "react-router-dom";
+// import './Navigation.css'
 
 
 
@@ -92,7 +28,7 @@ function ProfileButton({ user }) {
       }
     };
 
-    document.addEventListener('click', closeMenu);
+    document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
@@ -110,13 +46,19 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={toggleMenu}>
-      <i className="fa-solid fa-user"></i>
+        <i className="fa-solid fa-bars user-icon"></i>
+        <i className="fas fa-user-circle user-icon" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            <li>
+              {user.firstName} {user.lastName}
+            </li>
+            <li>
+              <NavLink to="/spots/current">Manage Spots</NavLink>
+            </li>
             <li>{user.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>
@@ -124,20 +66,16 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            <li>
-              <OpenModalButton
-                buttonText="Log In"
-                onButtonClick={closeMenu}
-                modalComponent={<LoginFormModal />}
-              />
-            </li>
-            <li>
-              <OpenModalButton
-                buttonText="Sign Up"
-                onButtonClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
-            </li>
+            <OpenModalMenuItem
+              itemText="Log In"
+              onItemClick={closeMenu}
+              modalComponent={<LoginFormModal />}
+            />
+            <OpenModalMenuItem
+              itemText="Sign Up"
+              onItemClick={closeMenu}
+              modalComponent={<SignupFormModal />}
+            />
           </>
         )}
       </ul>
