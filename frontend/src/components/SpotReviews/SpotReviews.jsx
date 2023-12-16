@@ -66,9 +66,9 @@ return(
       {
       reviewsArr.map(review =>(
         <div className='indie-review-container' key={review.id}>
-        <p>{review.User.firstName}</p>
-        <div>{dateFormater({review})}</div>
-        <p>{review.review}</p>
+        <p className="name-p">{review.User.firstName}</p>
+        <div className='date'>{dateFormater({review})}</div>
+        <div className='review-cont'>{review.review}</div>
         {review.userId === currUserId && <button>Delete</button>}
         </div>
       ))

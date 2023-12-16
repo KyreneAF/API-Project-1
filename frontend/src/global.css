@@ -1,0 +1,14 @@
+body {
+    color: #222222 ;
+    font-family: 'Circular', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif ;
+  }
+
+button{
+  cursor: pointer;
+}
+
+/* this is the font from the airbnb site
+  body {
+    color: #222222 !important;
+    font-family: 'Circular', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif !important;
+  } */
