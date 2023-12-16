@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetDetailsSpot } from "../../store/spots";
-// import { SpotReviews } from "../SpotReviews/SpotReviews"; uncomment after debugging
+import { SpotReviews } from "../SpotReviews/SpotReviews";
 import "./SpotDetails.css";
 
 export const SpotDetails = () => {
@@ -106,7 +106,7 @@ export const SpotDetails = () => {
           </div>
 
           <div className="review-main-container">
-            <div className="inLine-review">
+            {/* <div className="inLine-review">
               <div className="avg-review-container">
                 {spotDetails.avgRating &&
                 spotDetails.avgRating &&
@@ -126,8 +126,8 @@ export const SpotDetails = () => {
                 )}
               </div>
               {}
-            </div>
-            {/* <SpotReviews /> */}
+            </div> */}
+            <SpotReviews spotId={id} ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
           </div>
         </>
       )}
