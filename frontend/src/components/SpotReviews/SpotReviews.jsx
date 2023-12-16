@@ -26,12 +26,12 @@ export function SpotReviews({spotId, ownerId, avgRating, numReviews}){
 
     //   console.log("issue with useEffect dispatch")
     // }
-
-  },[dispatch,spotId])
+  })
 
 
 
 const reviewSumCreator =  () => {
+
 
   if(!reviewsArr.length && ownerId !== currUserId){
    return <h3>Be the first to post a review!</h3>
@@ -47,10 +47,13 @@ const reviewSumCreator =  () => {
     <div>
       {numReviews} reviews
     </div>
+
     </div>
+
     )
   }
 }
+
 
 
 
@@ -75,10 +78,7 @@ return(
 
   </>
 
-)
-
-}
-
+)}
 
 
 
