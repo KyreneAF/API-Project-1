@@ -1,0 +1,105 @@
+
+
+.nav-container{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    margin-right: 0px;
+    justify-content: space-between;
+    margin:20px 20px 20px;
+
+}
+
+
+
+
+.header-container{
+    align-self: flex-end;
+}
+
+.signin-container {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    width: 400px;
+    align-items: center;
+    color: #717171;
+
+}
+
+
+
+.icon-img{
+    font-size: 250%;
+
+}
+
+.home-title{
+    font-size: 150%;
+}
+
+
+
+.logo {
+    display: flex;
+    width: 100%;
+    color: red;
+    gap:20px;
+    align-items: center;
+
+
+}
+.dropDownLoginSignup {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    color: #e4fde1;
+    /* border-bottom: 1px solid gray*/
+    /* comment this back in later when more items are added to dropdown*/
+}
+
+.dropDownLoginSignup:hover {
+    cursor: pointer;
+
+}
+.profileDropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 10px;
+    top: 75px;
+    padding: 0 0px;
+    box-shadow: 0 0 10px black;
+    border-radius: 20px;
+    width: 250px;
+    overflow: hidden;
+}
+.hidden {
+    display: none;
+}
+
+.nav-link {
+    text-decoration: none;
+    color:inherit;
+
+}
+
+
+.user-icon{
+   color: #717171;
+
+}
+
+
+.user-prof-bttn > button {
+    display: flex;
+    gap: 20px;
+     font-size: 150%;
+     border: 1px solid rgba(0, 0, 0, 0.3);
+     padding: 12px;
+     background: white;
+     border-radius: 25px;
+    cursor: pointer;
+ }

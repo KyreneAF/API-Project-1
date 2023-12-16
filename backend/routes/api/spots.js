@@ -59,7 +59,7 @@ const validateQuery =[
 /*  GET ALL SPOTS BY CURRENT USER  */
 router.get('/current',requireAuth,async(req,res) =>{
     let userId = req.user.id
-    console.log(userId)
+    // console.log(userId)
     let allSpots = await Spot.findAll({
         where:{
             ownerId:userId
@@ -111,7 +111,7 @@ router.get('/current',requireAuth,async(req,res) =>{
      delete spot.SpotImages;
     })
 
-    res.json({Spots:spotsArr})
+   return res.json({Spots:spotsArr})
 });
 
 
@@ -157,6 +157,11 @@ router.get('/:spotId/bookings', requireAuth, async(req,res,next) =>{
 })
 
 
+
+
+
+
+
 // Get all Reviews by a Spot's id
 
 router.get('/:spotId/reviews',async(req,res,next) =>{
@@ -185,13 +190,6 @@ router.get('/:spotId/reviews',async(req,res,next) =>{
     return res.json({Reviews:allReviews})
 
 })
-
-
-
-
-
-
-
 
 
 
@@ -431,7 +429,7 @@ router.put('/:spotId',requireAuth,validateSpot,handleCreateErrors, async(req,res
 
       }
 
-    res.json(newSpot)
+   return res.json(newSpot)
 
 })
 
