@@ -157,6 +157,11 @@ router.get('/:spotId/bookings', requireAuth, async(req,res,next) =>{
 })
 
 
+
+
+
+
+
 // Get all Reviews by a Spot's id
 
 router.get('/:spotId/reviews',async(req,res,next) =>{
@@ -185,13 +190,6 @@ router.get('/:spotId/reviews',async(req,res,next) =>{
     return res.json({Reviews:allReviews})
 
 })
-
-
-
-
-
-
-
 
 
 

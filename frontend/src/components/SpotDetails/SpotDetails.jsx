@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetDetailsSpot } from "../../store/spots";
-// import { SpotReviews } from "../SpotReviews/SpotReviews"; uncomment after debugging
+import { SpotReviews } from "../SpotReviews/SpotReviews";
 import "./SpotDetails.css";
 
 export const SpotDetails = () => {
@@ -31,7 +31,7 @@ export const SpotDetails = () => {
       {spotDetails && (
         <>
           <div className="spot-info">
-            <h2>{spotDetails.name}</h2>
+            <div className="title">{spotDetails.name}</div>
             <div>
               {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
             </div>
@@ -70,27 +70,35 @@ export const SpotDetails = () => {
           </div>
           <div
             className="text-main-container"
-            style={{ borderBottom: "2px solid black" }}
+            style={{ borderBottom: " 1px solid rgba(0, 0, 0, 0.3)" }}
           >
-            <div className="host-name-container" style={{ fontWeight: "bold" }}>
-              <div>
-                Hosted By {spotDetails.Owner.firstName}{" "}
-                {spotDetails.Owner.lastName}
+            <div className="host-deets-container">
+              <div
+                className="host-name-container"
+                style={{ fontWeight: "bold" }}
+              >
+                <div>
+                  Hosted By {spotDetails.Owner.firstName}{" "}
+                  {spotDetails.Owner.lastName}
+                </div>
               </div>
-            </div>
-            <div className="desc-container">
-              <div>{spotDetails.description}</div>
+              <div className="desc-container">
+                <div>{spotDetails.description}</div>
+              </div>
             </div>
 
             <div className="reserve-main-container">
-              <div style={{ fontWeight: "bold" }}>
-                ${spotDetails.price.toFixed(2)} night
+              <div className="price-container">
+                <div></div>
+                <div style={{ fontWeight: "bold" }}>
+                  ${spotDetails.price.toFixed(2)} night
+                  <div className="star-container">
+                    <div>&#9733;</div>
+                    {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)}
+                    <div>{spotDetails.numReviews} reviews</div>
+                  </div>
+                </div>
               </div>
-              <div>&#9733;</div>
-              <div>
-                {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)}
-              </div>
-              <div>{spotDetails.numReviews} reviews</div>
               <button onClick={() => window.alert("Feature Coming Soon...")}>
                 Reserve
               </button>
@@ -98,7 +106,7 @@ export const SpotDetails = () => {
           </div>
 
           <div className="review-main-container">
-            <div className="inLine-review">
+            {/* <div className="inLine-review">
               <div className="avg-review-container">
                 {spotDetails.avgRating &&
                 spotDetails.avgRating &&
@@ -118,8 +126,8 @@ export const SpotDetails = () => {
                 )}
               </div>
               {}
-            </div>
-            {/* <SpotReviews /> */}
+            </div> */}
+            <SpotReviews spotId={id} ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
           </div>
         </>
       )}

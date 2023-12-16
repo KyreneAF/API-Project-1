@@ -17,7 +17,7 @@ export const ManageSpots = () =>{
 
     const spots = Object.values(allSpots).filter(spot => spot.ownerId === user)
 
-    if(!spots) return null
+    // if(!spots) return null
 
     useEffect(() =>{
         dispatch(thunkLoadCurrSpots())
@@ -31,7 +31,7 @@ export const ManageSpots = () =>{
 
 
 
-
+    if(!spots) return null
 
     return(
         <div className='curr-main-container'>

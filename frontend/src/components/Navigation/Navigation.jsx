@@ -17,10 +17,10 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <>
-        <NavLink to="/spots/new" className="create-spot">
+        < NavLink className='nav-link' to="/spots/new" >
           Create a New Spot
-        </NavLink>
-        <div>
+        </ NavLink >
+        <div className='user-prof-bttn'>
           <ProfileButton user={sessionUser} />
         </div>
       </>
@@ -45,11 +45,17 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <div className="nav-box" style={{ borderBottom: "2px solid gray" }}>
+    <div
+      className="nav-box"
+      style={{ borderBottom: " 1px solid rgba(0, 0, 0, 0.3)" }}
+    >
       <div className="nav-container">
         <div className="logo">
-          <i className="fa-brands fa-airbnb"></i>
-          <NavLink to="/">airbnb</NavLink>
+
+          <i className="fa-brands fa-airbnb icon-img"></i>
+          <NavLink className="nav-link home-title" to="/">
+            airbnb
+          </NavLink>
         </div>
         <div className="signin-container">{isLoaded && sessionLinks}</div>
       </div>

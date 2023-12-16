@@ -17,22 +17,13 @@ export const loadSpots = (spots) => {
   };
 };
 
-
-
-
-
 //GET DETAILS OF SPOT SingleSpot
 export const loadSpotDetails = (spots) => {
-
   return {
     type: LOAD_SPOTDETAILS,
     spots,
   };
 };
-
-
-
-
 
 // ADD AN IMAGE TO SPOT
 const addSpotImage = (image, spotId) => {
@@ -44,11 +35,6 @@ const addSpotImage = (image, spotId) => {
   };
 };
 
-
-
-
-
-
 //  CREATE A SPOT
 export const createSpot = (spot) => {
   // console.log("I AM SPOT ACTION", spot);
@@ -58,24 +44,14 @@ export const createSpot = (spot) => {
   };
 };
 
-
-
-
-
-
 // GET ALL SPOTS CURRENT USER
 export const loadCurrentSpots = (spots) => {
-  console.log("LOAD SPOTS",spots);
+  console.log("LOAD SPOTS", spots);
   return {
     type: LOAD_CURRENT_SPOTS,
     spots,
   };
 };
-
-
-
-
-
 
 export const updateSpot = (spot) => {
   return {
@@ -84,23 +60,12 @@ export const updateSpot = (spot) => {
   };
 };
 
-
-
-
-
-
-
 export const deleteSpot = (id) => {
-
   return {
     type: DELETE_SPOT,
     id,
   };
 };
-
-
-
-
 
 //THUNK
 export const thunkGetAllSpots = () => async (dispatch) => {
@@ -113,10 +78,6 @@ export const thunkGetAllSpots = () => async (dispatch) => {
     return await res.json();
   }
 };
-
-
-
-
 
 //GET DETAILS OF SPOT SingleSpot
 
@@ -131,11 +92,6 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) => {
     return await res.json();
   }
 };
-
-
-
-
-
 
 // THUNK TO ADD SPOT IMAGE
 export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
@@ -160,12 +116,6 @@ export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
   }
 };
 
-
-
-
-
-
-
 //THUNK TO CREATE SPOT
 export const thunkCreateSpot = (spot) => async (dispatch) => {
   // console.log("IM SPOT THUNK", spot);
@@ -184,10 +134,6 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
   return res;
 };
 
-
-
-
-
 // THUNK LOAD CURRENT SPOT
 export const thunkLoadCurrSpots = () => async (dispatch) => {
   const res = await csrfFetch("/api/spots/current");
@@ -200,19 +146,15 @@ export const thunkLoadCurrSpots = () => async (dispatch) => {
   return res;
 };
 
-
-
-
-
 //  THUNK UPDATE A SPOT
 export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
-
-
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
-    body: JSON.stringify(spot.Spot)
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(spot.Spot),
   });
-
 
   if (res.ok) {
     const data = await res.json();
@@ -222,25 +164,21 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
   }
 };
 
-
-
-
-
 // THUNK DELETE SPOT
- export const thunkDeleteSpot = (id) => async (dispatch) => {
+export const thunkDeleteSpot = (id) => async (dispatch) => {
+  console.log('INSIDE THUNK ID', id)
   const res = await csrfFetch(`/api/spots/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
 
-    if(res.ok){
-      const data = await res.json();
+  if (res.ok) {
+    const data = await res.json();
 
-      dispatch(deleteSpot(data));
-
-    }
-    return res
- }
+    dispatch(deleteSpot(data));
+  }
+  return res;
+};
 
 
 
@@ -253,15 +191,16 @@ const initialState = {};
 
 export const spotReducer = (state = initialState, action) => {
   switch (action.type) {
-  case LOAD_ALLSPOTS:{
-    let newState = { ...state };
+    case LOAD_ALLSPOTS: {
+      let newState = { ...state };
 
-    action.spots.Spots.forEach((spot) => {
-      let newSpot = { ...spot, SpotImages: [], Owner: {} };
-      newState[spot.id] = newSpot;
-    });
+      action.spots.Spots.forEach((spot) => {
+        let newSpot = { ...spot, SpotImages: [], Owner: {} };
+        newState[spot.id] = newSpot;
+      });
 
-    return newState;}
+      return newState;
+    }
 
     case LOAD_SPOTDETAILS: {
       //make a copy of state
@@ -276,14 +215,12 @@ export const spotReducer = (state = initialState, action) => {
       return newState;
     }
 
-
     case CREATE_SPOT: {
       let newState = { ...state };
       let newSpot = { ...action.spot, SpotImages: [], Owner: {} };
       newState[action.spot.id] = { ...state[action.spot.id], ...newSpot };
       return newState;
     }
-
 
     case ADD_SPOTIMAGE: {
       //make a copy of state
@@ -298,41 +235,34 @@ export const spotReducer = (state = initialState, action) => {
       return newState;
     }
 
-
-
-    case LOAD_CURRENT_SPOTS:{
-      let newState = {...state}
+    case LOAD_CURRENT_SPOTS: {
+      let newState = { ...state };
 
       // action.spots.Spots.forEach(spot =>{
-        action.spots.Spots.forEach((spot) => {
-          let newSpot = { ...spot, SpotImages: [], Owner: {} };
-          newState[spot.id] = { ...state[spot.id], ...newSpot };
-        });
-      return newState
-
-    }
-
-    case UPDATE_SPOT:{
-      let newState = {...state};
-      let newSpot = {...action.spot}
-
-      newState[newSpot.id] = {...state[action.spot.id],...newSpot}
+      action.spots.Spots.forEach((spot) => {
+        let newSpot = { ...spot, SpotImages: [], Owner: {} };
+        newState[spot.id] = { ...state[spot.id], ...newSpot };
+      });
       return newState;
     }
 
-    case DELETE_SPOT:{
-      let newState = {...state};
-      delete newState[action.id]
+    case UPDATE_SPOT: {
+      let newState = { ...state };
+      let newSpot = { ...action.spot };
 
+      newState[newSpot.id] = { ...state[action.spot.id], ...newSpot };
       return newState;
-
     }
 
-// https://redux.js.org/usage/structuring-reducers/immutable-update-patterns
-// visit below link for removing from state!!!!
+    case DELETE_SPOT: {
+      let newState = { ...state };
+      delete newState[action.id];
 
+      return newState;
+    }
 
-
+    // https://redux.js.org/usage/structuring-reducers/immutable-update-patterns
+    // visit below link for removing from state!!!!
 
     default:
       return state;

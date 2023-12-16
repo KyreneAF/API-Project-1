@@ -24,7 +24,7 @@ export const Splash = () => {
 
   return (
     <div>
-      <div>
+      <div className='spl-main-cont'>
         <div className="spots-main-container">
           {spots &&
             spots.map((spot) => (

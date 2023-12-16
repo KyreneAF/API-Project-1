@@ -5,6 +5,10 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import { NavLink } from "react-router-dom";
+// import './Navigation.css'
+
+
+
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -42,7 +46,8 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+        <i className="fa-solid fa-bars user-icon"></i>
+        <i className="fas fa-user-circle user-icon" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
@@ -52,8 +57,7 @@ function ProfileButton({ user }) {
               {user.firstName} {user.lastName}
             </li>
             <li>
-              <NavLink to='/spots/current' >Manage Spots</NavLink>
-
+              <NavLink to="/spots/current">Manage Spots</NavLink>
             </li>
             <li>{user.email}</li>
             <li>
