@@ -3,14 +3,15 @@ import { csrfFetch } from "./csrf";
 const GET_SPOT_REVIEWS = "reviews/GET_SPOTS_REVIEWS";
 const CREATE_REVIEW = "reviews/CREATE_REVIEW";
 const DELETE_REVIEW = 'reviews/delete_review';
+const CLEAR_STATE = 'reviews/clear_state'
 
 
 
-
-export const loadSpotsRev = (reviews) => {
+export const loadSpotsRev = (reviews, id) => {
   return {
     type: GET_SPOT_REVIEWS,
     reviews,
+    id
 
   };
 };
@@ -31,8 +32,11 @@ const deleteReview = (id) =>{
     id
   }
 }
-
-
+export const clearState = () => {
+  return {
+    type:CLEAR_STATE
+  }
+}
 
 
 
@@ -44,8 +48,9 @@ export const thunkGetReviews = (id) => async (dispatch) => {
 
     if (res.ok) {
       const reviews = await res.json();
+      console.log('REVIEWS IN THUNK', reviews)
 
-      dispatch(loadSpotsRev(reviews));
+      dispatch(loadSpotsRev(reviews,id));
     }else{
       const errors = await res.json()
       console.log('ERRORS',errors)
@@ -114,23 +119,27 @@ export const reviewsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case GET_SPOT_REVIEWS:{
-      let newObj = {}
-      action.reviews.Reviews.forEach(review => {
-        newObj[review.id] = review
-        newObj[review.id].User = {...review.User}
-        newObj[review.id].ReviewImages = [...review.ReviewImages]
-      })
 
-      return {...state,...newObj}
+      let newObj = {};
+      console.log('action.review reducer', action.reviews.Reviews)
 
+      action.reviews.Reviews.forEach((review) => {
+          newObj[review.id] = review;
+
+      });
+
+      return {...newObj};
     }
+
 
     case DELETE_REVIEW: {
       let newState = {...state}
       delete newState[action.id]
       return newState
     }
-
+    case CLEAR_STATE:{
+      return {}
+    }
     // case CREATE_REVIEW:
     //   newState = { [action.review.id]: action.review };
 

@@ -1,15 +1,21 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { thunkGetReviews } from "../../store/reviews"
+import { useParams } from "react-router-dom";
+import { clearState, thunkGetReviews } from "../../store/reviews"
 import { dateFormater } from "./SpotReviewFuncs";
 import { DeleteReview } from "./DeleteReview";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import './SpotReviews.css'
 
-export function SpotReviews({spotId, ownerId, avgRating, numReviews}){
+export function SpotReviews({currSpotId, ownerId, avgRating, numReviews}){
 
 
   const reviews = useSelector(state => state.reviews)
+  const {id} = useParams();
+  // const spot = useSelector(state => state.spots[currSpotId])
+  const spotId = id
+  console.log('SPOTID', spotId)
+
   console.log('REVIEWS',reviews)
   let currUserId = useSelector(state => state.session.user?.id)
 
@@ -17,18 +23,18 @@ export function SpotReviews({spotId, ownerId, avgRating, numReviews}){
   const reviewsArr = Object.values(reviews)
   const dispatch = useDispatch()
 
-  console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId)
+  console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,'CURRSPOTID',currSpotId)
   // console.log('USER', userArr)
   console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
 
 
 
   useEffect(() => {
+    console.log('SPOT AT SPOTID UE', spotId)
     dispatch(thunkGetReviews(spotId))
-    // if(!res.ok){
 
-    //   console.log("issue with useEffect dispatch")
-    // }
+      return () => dispatch(clearState()) // clean up function to return empty obj after leaving page
+
   },[spotId,dispatch])
 
 
