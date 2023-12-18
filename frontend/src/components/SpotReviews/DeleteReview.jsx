@@ -2,14 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkDeleteReview } from "../../store/reviews"
 import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import { useState,useEffect } from "react";
 
 export function DeleteReview({currUserId,id,reviewOwner}){
     // console.log('CURRUSERID', currUserId, 'ID', id, 'OWNER ID', reviewOwner)
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    const reviewId = useSelector(state => state.reviews[id].id)
+    const reviews = useSelector(state => state.reviews)
     // console.log('review',reviews)
+    console.log('REVIEWS BEFORE DISPATCH',reviews)
 
     // let newReviews = {...reviews}
     // console.log('NEW REVIEWS BEFORE', newReviews)
@@ -17,12 +19,15 @@ export function DeleteReview({currUserId,id,reviewOwner}){
     // delete newReviews[id]
     // console.log('NEW REVIEWS AFTER', newReviews)
     // console.log('FINAL NEW REVIEWS',newReviews)
+        // Update the local state when the id prop changes
 
+
+    // console.log('!!!!!!! REVIEW ID',reviews[id].id)
 
     const onClickDelete = async (e) =>{
         e.preventDefault();
-         await dispatch(thunkDeleteReview(reviewId))
-         console.log('DISPATCH WAS HIT')
+         await dispatch(thunkDeleteReview(reviews[id].id))
+         console.log('REVIEWID AFTER DISPATCH',reviews)
 
 
         closeModal()

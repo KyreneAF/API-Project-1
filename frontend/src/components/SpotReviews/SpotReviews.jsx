@@ -10,15 +10,16 @@ export function SpotReviews({spotId, ownerId, avgRating, numReviews}){
 
 
   const reviews = useSelector(state => state.reviews)
+  console.log('REVIEWS',reviews)
   let currUserId = useSelector(state => state.session.user?.id)
 
   // currUserId ? currUserId = currUserId.id : null
   const reviewsArr = Object.values(reviews)
   const dispatch = useDispatch()
 
-  // console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId)
+  console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId)
   // console.log('USER', userArr)
-  // console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
+  console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
 
 
 
@@ -58,11 +59,29 @@ const reviewSumCreator =  () => {
 
 
 
+const addReviewClick = () =>{
+  const hasReview = reviewsArr.find(obj => obj.userId === currUserId )
+  console.log('HASREVIEW',hasReview)
+  if(!hasReview && ownerId !== currUserId || !currUserId){
+    return(
+      <div className="create-review-bttn-container">
+        <button>Post Your Review</button>
+
+      </div>
+    )
+  }
+
+
+}
+
+
+
 
 return(
   <>
 
     {reviewSumCreator()}
+    {addReviewClick()}
 
     <div className='review-list-container' >
       {

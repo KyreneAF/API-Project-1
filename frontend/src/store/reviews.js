@@ -10,7 +10,8 @@ const DELETE_REVIEW = 'reviews/delete_review';
 export const loadSpotsRev = (reviews) => {
   return {
     type: GET_SPOT_REVIEWS,
-    reviews
+    reviews,
+
   };
 };
 
@@ -24,6 +25,7 @@ export const createReview = (review) => {
 };
 
 const deleteReview = (id) =>{
+
   return{
     type: DELETE_REVIEW,
     id
@@ -69,7 +71,7 @@ export const thunkDeleteReview = (id) => async(dispatch) =>{
   if(res.ok){
     const deletedRev = await res.json();
     console.log('deletedRev',deletedRev)
-    dispatch(deleteReview())
+    dispatch(deleteReview(id))
   }else{
     const errors = await res.json();
     console.log('ERRORS',errors)

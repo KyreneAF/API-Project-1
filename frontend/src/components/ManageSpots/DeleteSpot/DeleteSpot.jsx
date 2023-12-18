@@ -22,7 +22,7 @@ export const DeleteSpot = ({ id }) => {
 
   return (
     <>
-      <div className="delete-main-container">
+      <div className="delete-main-container" >
         <div>Confirm Delete</div>
         <div>Are you sure you want to delete this spot?</div>
         <div className="delete-button-container">
