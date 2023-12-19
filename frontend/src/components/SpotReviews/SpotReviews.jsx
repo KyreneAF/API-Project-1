@@ -20,7 +20,7 @@ export function SpotReviews({ ownerId, avgRating, numReviews}){
   const reviewsArr = Object.values(reviews)
   const dispatch = useDispatch()
 
-  console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,)
+  // console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,)
   // console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
 
 

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { thunkCreateReview } from "../../../store/reviews.js";
+import { thunkGetReviews } from "../../../store/reviews.js";
 import { useModal } from "../../../context/Modal.jsx";
 import "./CreateReview.css";
 
@@ -35,29 +36,28 @@ export const CreateReview = ({spotId}) => {
         lastName:currUser.lastName
     }
 
-useEffect(() =>{
-        const errObj = {};
 
-
-        if (review.length < 10) {
-          errObj.review = "Review must be at least 10 characters";
-
-
-        }
-        if (stars === 0) {
-          errObj.stars = "Must have at least 1 star!";
-
-        }
-        if(currUser.id === currSpot.ownerId ) errObj.same = "same user"
-
-        setValidations(errObj);
-},[review,stars,currUser])
 
 
 
   const onSubmit = async (e) => {
     e.preventDefault();
     // const errObj = {};
+    const errObj = {};
+
+
+    if (review.length < 10) {
+      errObj.review = "Review must be at least 10 characters";
+
+
+    }
+    if (stars === 0) {
+      errObj.stars = "Must have at least 1 star!";
+
+    }
+    if(currUser.id === currSpot.ownerId ) errObj.same = "same user"
+
+    setErrors(errObj);
 
     const createdReview = {
       userId:user.id,
@@ -67,14 +67,17 @@ useEffect(() =>{
     }
     console.log('CREATED REVIEW', createdReview)
 
+    if(Object.values(errors).length === 0){
+      console.log('ERRORS', errors)
+      await dispatch(thunkCreateReview(spotId, user, createdReview));
 
-        await dispatch(thunkCreateReview(spotId, user, createdReview));
+    }
 
+    setReview("");
+    setStars(0);
+    closeModal();
 
-
-        setReview("");
-        setStars(0);
-        closeModal();
+    dispatch(thunkGetReviews(spotId))
 
         // return () => dispatch(thunkGetReviews(spotId))
 
@@ -90,7 +93,7 @@ useEffect(() =>{
 
       <div className="create-review-container">
         <h1>How was your stay?</h1>
-        {Object.keys(errors) && <div>User cannot post more than one review</div>}
+        { Object.keys(errors) && <div >{Object.values(errors).map((msg,index) => <div key={index}>{msg}</div>)}</div>}
 
         <form onSubmit={onSubmit}>
           <textarea
@@ -122,7 +125,7 @@ useEffect(() =>{
             <button
               type="submit"
               className="review-submit-btn"
-              disabled={validations.review || validations.stars || errors.same}
+              // disabled={validations.review || validations.stars || errors.same}
             >
               Submit Your Review
             </button>
