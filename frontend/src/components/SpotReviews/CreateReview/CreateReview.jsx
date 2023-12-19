@@ -1,14 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
-// import { useDispatch} from "react-redux";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { thunkCreateReview } from "../../../store/reviews.js";
-// import { thunkGetReviews } from "../../store/reviews";
 import { useModal } from "../../../context/Modal.jsx";
 import "./CreateReview.css";
 
-export const CreateReview = () => {
-//   const {id}  = useParams(); // <- this seems to not work bc there isn't a route. maybe findSpot instead?
+
+
+
+export const CreateReview = ({spotId}) => {
+  // const {id}  = useParams(); // <- this seems to not work bc there isn't a route. maybe findSpot instead?
+   spotId =  Number(spotId)
   const dispatch = useDispatch();
+
+  const reviews = useSelector(state => state.reviews)
 
   const [review, setReview] = useState("");
   const [validations, setValidations] = useState({});
@@ -19,11 +24,11 @@ export const CreateReview = () => {
 
 //   const [blackStars, setBlackStars] = useState(0)
 
+
     const currUser = useSelector((state) => state.session.user)
-    const currSpot = useSelector((state) => state.spots.spot)
-    const id = currSpot.id
-    // console.log(user,'Im User !!!!!!')
-    // console.log("im Spot from CreateReview", currSpot)
+    const currSpot = useSelector((state) => state.spots)
+
+
     const user = {
         id:currUser.id,
         firstName:currUser.firstName,
@@ -46,7 +51,7 @@ useEffect(() =>{
         if(currUser.id === currSpot.ownerId ) errObj.same = "same user"
 
         setValidations(errObj);
-},[review,stars,currSpot.ownerId,currUser.id])
+},[review,stars,currUser])
 
 
 
@@ -54,29 +59,24 @@ useEffect(() =>{
     e.preventDefault();
     // const errObj = {};
 
-    // console.log(id,review,user,"From CreateReview!!!!!!!!")
-
-    try{
-        await dispatch(thunkCreateReview(id, user, {
-            userId:user.id,
-            spotId:id,
-            review,
-            stars,
-          }
-
-          )
-        );
-            setReview("");
-            setStars(0);
-
-            closeModal();
-    }catch (res){
-        if(!res.ok){
-            const errData = await res.json();
-            if(errData && errData.errors) setErrors(errData.errors)
-            // console.log(errors,'!!!!!Hi im errors firstTine using try catch')
-        }
+    const createdReview = {
+      userId:user.id,
+      spotId:spotId,
+      review,
+      stars,
     }
+    console.log('CREATED REVIEW', createdReview)
+
+
+        await dispatch(thunkCreateReview(spotId, user, createdReview));
+
+
+
+        setReview("");
+        setStars(0);
+        closeModal();
+
+        // return () => dispatch(thunkGetReviews(spotId))
 
   };
 

@@ -129,7 +129,7 @@ export const SpotDetails = () => {
               </div>
               {}
             </div> */}
-            <SpotReviews currSpotId={id} ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
+            <SpotReviews  ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
           </div>
         </>
       )}

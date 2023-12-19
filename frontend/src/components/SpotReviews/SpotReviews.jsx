@@ -5,32 +5,28 @@ import { clearState, thunkGetReviews } from "../../store/reviews"
 import { dateFormater } from "./SpotReviewFuncs";
 import { DeleteReview } from "./DeleteReview";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import { CreateReview } from "./CreateReview/CreateReview";
 import './SpotReviews.css'
 
-export function SpotReviews({currSpotId, ownerId, avgRating, numReviews}){
+export function SpotReviews({ ownerId, avgRating, numReviews}){
 
 
   const reviews = useSelector(state => state.reviews)
   const {id} = useParams();
-  // const spot = useSelector(state => state.spots[currSpotId])
   const spotId = id
-  console.log('SPOTID', spotId)
-
-  console.log('REVIEWS',reviews)
   let currUserId = useSelector(state => state.session.user?.id)
 
-  // currUserId ? currUserId = currUserId.id : null
+
   const reviewsArr = Object.values(reviews)
   const dispatch = useDispatch()
 
-  console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,'CURRSPOTID',currSpotId)
-  // console.log('USER', userArr)
-  console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
+  console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,)
+  // console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
 
 
 
   useEffect(() => {
-    console.log('SPOT AT SPOTID UE', spotId)
+
     dispatch(thunkGetReviews(spotId))
 
       return () => dispatch(clearState()) // clean up function to return empty obj after leaving page
@@ -39,7 +35,7 @@ export function SpotReviews({currSpotId, ownerId, avgRating, numReviews}){
 
 
 
-const reviewSumCreator =  () => {
+const reviewSumCreator = () => {
 
 
   if(!reviewsArr.length && ownerId !== currUserId){
@@ -65,15 +61,18 @@ const reviewSumCreator =  () => {
 
 
 
-const addReviewClick = () =>{
+const addReviewClick =  () =>{
   const hasReview = reviewsArr.find(obj => obj.userId === currUserId )
-  console.log('HASREVIEW',hasReview)
-  if(!hasReview && ownerId !== currUserId || !currUserId){
-    return(
-      <div className="create-review-bttn-container">
-        <button>Post Your Review</button>
 
-      </div>
+  if(!hasReview && ownerId !== currUserId && currUserId !== undefined){
+    return(
+      <div >
+      { <OpenModalButton
+          buttonText='Post Your Review'
+          modalComponent={<CreateReview spotId={spotId}/>}
+      /> }
+
+  </div>
     )
   }
 

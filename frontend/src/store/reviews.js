@@ -48,12 +48,12 @@ export const thunkGetReviews = (id) => async (dispatch) => {
 
     if (res.ok) {
       const reviews = await res.json();
-      console.log('REVIEWS IN THUNK', reviews)
+      // console.log('REVIEWS IN THUNK', reviews)
 
       dispatch(loadSpotsRev(reviews,id));
     }else{
       const errors = await res.json()
-      console.log('ERRORS',errors)
+      // console.log('ERRORS',errors)
       return errors
     }
   }catch(e){
@@ -64,22 +64,22 @@ export const thunkGetReviews = (id) => async (dispatch) => {
 
 
 export const thunkDeleteReview = (id) => async(dispatch) =>{
-  console.log('ID IN THUNK',id)
+
   const res = await csrfFetch(`/api/reviews/${id}`,{
     method:"DELETE",
     headers:{
       "Content-Type":"application/json"
     }
   })
-  console.log('RES IN THUNK',res)
+
 
   if(res.ok){
     const deletedRev = await res.json();
-    console.log('deletedRev',deletedRev)
+
     dispatch(deleteReview(id))
   }else{
     const errors = await res.json();
-    console.log('ERRORS',errors)
+
     return errors
   }
 }
@@ -92,18 +92,24 @@ export const thunkCreateReview = (id, user, review) => async (dispatch) => {
   // console.log(review,'from thunk!!!!')
   const res = await csrfFetch(`/api/spots/${id}/reviews`, {
     method: "POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
     body: JSON.stringify(review),
   });
 
   if (res.ok) {
-    const data = await res.json();
-    data.User = {
+    const review = await res.json();
+    console.log('review in thunk', review)
+    review.User = {
       id: user.id,
       firsName: user.firstName,
       lastName: user.lastName,
     };
 
-    dispatch(createReview(data));
+    // console.log('review with user', review)
+    dispatch(createReview(review));
+    dispatch(thunkGetReviews(id));
   }
   return res;
 };
@@ -119,11 +125,8 @@ export const reviewsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case GET_SPOT_REVIEWS:{
-
       let newObj = {};
-      console.log('action.review reducer', action.reviews.Reviews)
-
-      action.reviews.Reviews.forEach((review) => {
+       action.reviews.Reviews.forEach((review) => {
           newObj[review.id] = review;
 
       });
@@ -140,10 +143,14 @@ export const reviewsReducer = (state = initialState, action) => {
     case CLEAR_STATE:{
       return {}
     }
-    // case CREATE_REVIEW:
-    //   newState = { [action.review.id]: action.review };
+    case CREATE_REVIEW:{
+      // console.log ('NEW STATE', newState)
+      return {[action.review.id]:{...action.review},...state}
+      // return newState;
 
-    //   return newState;
+    }
+
+
 
     default:
       return state;

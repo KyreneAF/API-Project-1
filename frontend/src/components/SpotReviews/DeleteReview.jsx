@@ -11,7 +11,7 @@ export function DeleteReview({currUserId,id,reviewOwner}){
     const { closeModal } = useModal();
     const reviews = useSelector(state => state.reviews)
     // console.log('review',reviews)
-    console.log('REVIEWS BEFORE DISPATCH',reviews)
+    // console.log('REVIEWS BEFORE DISPATCH',reviews)
 
     // let newReviews = {...reviews}
     // console.log('NEW REVIEWS BEFORE', newReviews)
