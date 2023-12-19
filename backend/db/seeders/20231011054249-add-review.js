@@ -31,6 +31,18 @@ let reviewArr =[
     stars:3.0
   },
   {
+    spotId:1,
+    userId:1,
+    review:'Loved the view',
+    stars:3.0
+  },
+  {
+    spotId:1,
+    userId:1,
+    review:'Loved the view',
+    stars:3.0
+  },
+  {
     spotId:4,
     userId:3,
     review:'Nice spot',

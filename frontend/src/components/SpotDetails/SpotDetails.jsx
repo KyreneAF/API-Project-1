@@ -9,7 +9,9 @@ export const SpotDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const spotDetails = useSelector((state) => state.spots[id]);
+  // const spotDetails = useSelector((state) => state.spots[id]);
+  const spots = useSelector(state => state.spots)
+  const spotDetails =spots[id]
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
@@ -127,7 +129,7 @@ export const SpotDetails = () => {
               </div>
               {}
             </div> */}
-            <SpotReviews spotId={id} ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
+            <SpotReviews  ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
           </div>
         </>
       )}

@@ -1,0 +1,45 @@
+#modal-content {
+    position: absolute;
+    background-color: white;
+    height: 200px;
+    border: 2px solid #222222;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+  }
+
+  .delete-review-main-container{
+    /* margin:5px 10px; */
+    display: flex;
+    flex-direction: column;
+
+  }
+
+
+  .delete-button-container {
+    display: flex;
+    flex-direction: column;
+    /* padding:10px; */
+    /* margin:10px 10px */
+
+  }
+
+  .delete-button-container > button {
+    padding: 8px;
+  }
+
+/* .delete-main-container {
+    position: absolute;
+    background-color: white;
+    height: 200px;
+    border: 2px solid #222222;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+  } */
