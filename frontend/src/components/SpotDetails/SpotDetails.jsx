@@ -13,6 +13,8 @@ export const SpotDetails = () => {
   const spots = useSelector(state => state.spots)
   const spotDetails =spots[id]
 
+
+
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
   }, [dispatch, id]);
@@ -22,11 +24,45 @@ export const SpotDetails = () => {
     return null;
   }
 
-  const imgSort = (imgObj) => {
-    if (imgObj.preview === true) {
-      return true;
-    } else return false;
-  };
+
+
+  const imageContCreator = () =>{
+
+    const bigImg = spotDetails.SpotImages[0]
+    console.log('BIG IMG', bigImg)
+    const smallImgs = spotDetails.SpotImages.slice(1)
+    console.log('small img', smallImgs)
+
+    return(
+      <div className="spot-img-container">
+        <div className='big-img-container'>
+          <img className="big-img" src={bigImg.url}
+              onError={e => e.target.src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"}
+          />
+        </div>
+
+        <div className='smallImgs-main-container'>
+          {
+            smallImgs.map(imgObj =>(
+              <div className='indie-smallImg-cont' key={imgObj.id}>
+              <img className='small-img' src={imgObj.url}
+              onError={e => e.target.src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"}
+
+              />
+            </div>
+
+            ))
+          }
+
+        </div>
+      </div>
+    )
+
+  }
+
+
+
+
 
   return (
     <div className="spot-main-container">
@@ -38,9 +74,10 @@ export const SpotDetails = () => {
               {spotDetails.city}, {spotDetails.state}, {spotDetails.country}
             </div>
           </div>
-
-          <div className="spot-img-container">
-            {spotDetails.SpotImages &&
+{/*
+          <div className="spot-img-container"> */}
+            {imageContCreator()}
+            {/* {spotDetails.SpotImages &&
               spotDetails.SpotImages.map((imgObj) => (
                 <div key={imgObj.id}>
                   {imgObj.url &&
@@ -68,8 +105,8 @@ export const SpotDetails = () => {
                       </div>
                     ))}
                 </div>
-              ))}
-          </div>
+              ))} */}
+          {/* </div> */}
           <div
             className="text-main-container"
             style={{ borderBottom: " 1px solid rgba(0, 0, 0, 0.3)" }}
