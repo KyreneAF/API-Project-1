@@ -2,7 +2,7 @@
     display: flex;
     /* align-items: center; */
     justify-items: center;
-    padding: 60px;
+    margin:40px;
 }
 
 .spots-main-container {
@@ -16,15 +16,6 @@
 
 
 
-.spot-tile{
-    display: flex;
-    flex-direction: column;
-    height:25%;
-    width:22%;
-    margin:15px;
-
-
-}
 
 
 .spot-tile .img {
@@ -36,25 +27,20 @@
     border-radius: 10px;
 }
 
-/* .city-stars{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
 
 
-} */
 .city-stars {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-    margin-bottom: 30px;
+
 }
+
 .city-stars > div.rating{
     font-weight: bold;
 }
 
 .price{
-    font-weight: bold;
+    font-weight: 500;
 }
 
 
@@ -74,3 +60,26 @@
 .spot-tile:hover.tool-tip{
     display:block
 }
+
+
+
+
+.spots-main-container {
+  display: grid;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  height: 100%;
+  width: 100%;
+  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.spot-tile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap:20px;
+
+
+  }

@@ -98,15 +98,19 @@ export const SpotDetails = () => {
 
             <div className="reserve-main-container">
               <div className="price-container">
-                <div></div>
-                <div style={{ fontWeight: "bold" }}>
-                  ${spotDetails.price.toFixed(2)} night
-                  <div className="star-container">
-                    <div>&#9733;</div>
-                    {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)}
-                    <div>{spotDetails.numReviews} reviews</div>
-                  </div>
+
+                <div className='left-cont'>
+                  <div>${spotDetails.price.toFixed(2)} night</div>
+
                 </div>
+
+                <div className='right-cont'>
+                  <div>&#9733; {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)} </div>
+                  <div>{spotDetails.numReviews} reviews</div>
+
+                </div>
+
+
               </div>
               <button onClick={() => window.alert("Feature Coming Soon...")}>
                 Reserve

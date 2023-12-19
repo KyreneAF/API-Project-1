@@ -7,7 +7,7 @@
 
 .spot-img-container {
   display: flex;
-  height: 600px;
+  height: 10%;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
@@ -21,8 +21,10 @@
 
 .big-img {
   width: 100%;
+  /* height: 100%; */
   height: 100%;
   object-fit: cover;
+  border-radius:10px
 }
 
 .smallImgs-main-container {
@@ -38,6 +40,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius:10px
 }
 
 
@@ -55,7 +58,7 @@
 }
 
 .reserve-main-container {
-  padding: 12px;
+  padding: 25px;
   gap: 10px;
   width: 300px;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -67,15 +70,13 @@
 }
 
 .price-container {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   width: 100%;
+  justify-content: space-between;
 }
 
-.price-container > div {
-  display: inline-block;
-  margin-right: 10px;
-}
+
 
 .star-container {
   display: inline-block;
@@ -106,37 +107,23 @@
   margin-right: 40px;
 }
 
-.spot-img-container {
+.host-name-container > div{
+  font-weight: 350;
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+
+.desc-container{
+  font-weight: 350;
+  margin-bottom: 20px;
+  font-size: 15px;
+
+}
+
+.right-cont {
   display: flex;
-  height: 600px;
-  width: 100%;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 15px;
-}
-
-.big-img-container {
-  flex: 1;
-  max-width: 50%;
-}
-
-.big-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.smallImgs-main-container {
-  display: grid;
-  grid-area: auto;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 10px;
-  max-width: 50%;
-}
-
-.small-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  justify-content: space-evenly;
+  margin-right: 0px;
+  gap: 12px;
 }

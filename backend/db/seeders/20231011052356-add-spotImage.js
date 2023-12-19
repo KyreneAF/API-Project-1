@@ -6,31 +6,59 @@ if(process.env.NODE_ENV === 'production'){
   options.schema = process.env.SCHEMA;
 }
 let spotImgArr =[
+  // {
+  //   spotId:1,
+  //   url:'https://a0.muscache.com/im/pictures/7b2dbe13-998c-4311-a7b9-72127ba16c4f.jpg?im_w=960',
+  //   preview:true,
+  // },
+  // {
+  //   spotId:1,
+  //   url:'https://a0.muscache.com/im/pictures/b14ddc75-77c0-4f62-9fa6-71c579e1a4b4.jpg?im_w=480',
+  //   preview:false,
+  // },
+  // {
+  //   spotId:1,
+  //   url:'https://a0.muscache.com/im/pictures/530b3711-ce47-4f24-9cbe-b1e7b60cf3ce.jpg?im_w=480',
+  //   preview:false,
+  // },
+  // {
+  //   spotId:1,
+  //   url:'https://a0.muscache.com/im/pictures/320e6363-ef22-4d71-b61a-e84d85e32eaf.jpg?im_w=480',
+  //   preview:false,
+  // },
+  // {
+  //   spotId:1,
+  //   url:'https://a0.muscache.com/im/pictures/89310e87-a671-4901-9d52-303227939f50.jpg?im_w=480',
+  //   preview:false,
+  // },
   {
     spotId:1,
-    url:'https://a0.muscache.com/im/pictures/7b2dbe13-998c-4311-a7b9-72127ba16c4f.jpg?im_w=960',
+    url:'https://a0.muscache.com/im/pictures/miso/Hosting-18506757/original/9542bfa8-844e-481f-9c5e-252b8f15110f.jpeg?im_w=960',
     preview:true,
   },
   {
     spotId:1,
-    url:'https://a0.muscache.com/im/pictures/b14ddc75-77c0-4f62-9fa6-71c579e1a4b4.jpg?im_w=480',
+    url:'https://a0.muscache.com/im/pictures/miso/Hosting-18506757/original/ed199105-5355-4690-a145-00d918b34b0b.jpeg?im_w=480',
     preview:false,
   },
   {
     spotId:1,
-    url:'https://a0.muscache.com/im/pictures/530b3711-ce47-4f24-9cbe-b1e7b60cf3ce.jpg?im_w=480',
+    url:'https://a0.muscache.com/im/pictures/10152f12-608f-4bb7-a526-11ad7ae61c88.jpg?im_w=480',
     preview:false,
   },
   {
     spotId:1,
-    url:'https://a0.muscache.com/im/pictures/320e6363-ef22-4d71-b61a-e84d85e32eaf.jpg?im_w=480',
+    url:'https://a0.muscache.com/im/pictures/1a8bbb95-ff25-481c-ad91-475d1296840d.jpg?im_w=480',
     preview:false,
   },
   {
     spotId:1,
-    url:'https://a0.muscache.com/im/pictures/89310e87-a671-4901-9d52-303227939f50.jpg?im_w=480',
+    url:'https://a0.muscache.com/im/pictures/beb95362-3f5a-48ae-b205-b895e2a19c48.jpg?im_w=480',
     preview:false,
   },
+
+
+
 
 
   {

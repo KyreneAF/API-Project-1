@@ -7,8 +7,8 @@
 .rating-sum-container {
     display: flex;
     flex-direction: row;
-    width: 25%;
-    margin-top: 15px;
+    width: 20%;
+    margin-top: 25px;
     justify-content: space-between;
   }
 
@@ -51,4 +51,9 @@
     border-radius: 2px;
     box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
     background-color: rgb(204, 200, 200);
+  }
+
+  .rating-sum-container {
+    margin-top:20px;
+    margin-bottom: 35px;
   }

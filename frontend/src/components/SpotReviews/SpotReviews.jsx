@@ -7,6 +7,7 @@ import { DeleteReview } from "./DeleteReview";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import { CreateReview } from "./CreateReview/CreateReview";
 import './SpotReviews.css'
+import '../OpenModalButton/OpenModalButton.css'
 
 export function SpotReviews({ ownerId, avgRating, numReviews}){
 
@@ -68,6 +69,7 @@ const addReviewClick =  () =>{
     return(
       <div >
       { <OpenModalButton
+
           buttonText='Post Your Review'
           modalComponent={<CreateReview spotId={spotId}/>}
       /> }
