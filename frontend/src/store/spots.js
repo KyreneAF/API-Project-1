@@ -26,21 +26,22 @@ export const loadSpotDetails = (spots) => {
 };
 
 // ADD AN IMAGE TO SPOT
-const addSpotImage = (image ) => {
-  console.log("IMG IN ADD IMG ACTION CREATOR",image);
-  return {
-    type: ADD_SPOTIMAGE,
-    image,
+// const addSpotImage = (image ) => {
+//   console.log("IMG IN ADD IMG ACTION CREATOR",image);
+//   return {
+//     type: ADD_SPOTIMAGE,
+//     image,
 
-  };
-};
+//   };
+// };
 
 //  CREATE A SPOT
-export const createSpot = (spot) => {
+export const createSpot = (spot,images) => {
   console.log("I AM SPOT IN ACTION METHOD", spot);
   return {
     type: CREATE_SPOT,
     spot,
+    images,
   };
 };
 
@@ -94,38 +95,16 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) => {
   }
 };
 
-// THUNK TO ADD SPOT IMAGE
-export const thunkAddSpotImage = (img, spotId) => async (dispatch) => {
-  // let imgArr = [];
-  console.log("IM IMAGES IN IMAGE THUNK", img);
-  console.log('SPOTID IN ADD SPOT THUNK', spotId)
 
-  // for (let img of images) {
-  //   //cant use array methods inside async
-  //   console.log("im img in for loop",img)
 
-  //   if (img) {
-      const res = await csrfFetch(`/api/spots/${spotId}/images`, {
-        method: "POST",
-        // headers:{
-        //   "Content-Type":"application/json"
-        // },
-        body: JSON.stringify(img),
-      });
 
-      if (res.ok) {
-        const image = await res.json();
-        console.log('IM IMAGE IN THUNK BEFORE DIS', image);
-        dispatch(addSpotImage(image));
-        console.log('IM IMAGE IN THUNK AFTER DIS', image);
-      }
-  //   }
-  // }
-};
+
+
+
 
 //THUNK TO CREATE SPOT
 export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
-  console.log("IM PARAM OF CREATE SPOT", spot, 'IM PARAM OF IMAGES', Images);
+  // console.log("IM PARAM OF CREATE SPOT", spot, 'IM PARAM OF IMAGES', Images);
   const res = await csrfFetch("/api/spots", {
     method: "POST",
     // headers:{
@@ -141,27 +120,44 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
 
   if (res.ok) {
     const newSpot = await res.json();
+
+
+    for(let img of Images){
+
+      const res = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
+        method: "POST",
+        body: JSON.stringify(img),
+      });
+
+      if (res.ok) {
+        const image = await res.json();
+
+
+      }
+
+    }
     await dispatch(createSpot(newSpot));
-    console.log("NEWSPOT AFT DIS FROM CREATE SPOT THUNK", newSpot)
-    console.log('I AM NEWSPOT ID SENT TO ADD IMAGE', newSpot.id)
-    Images.forEach(img => dispatch(thunkAddSpotImage(img, newSpot.id)))
-    // dispatch(thunkAddSpotImage(Images, newSpot.id));
-    return spot;
-  }
-  return res;
+    return newSpot;
+
 };
+}
+
+
+
 
 // THUNK LOAD CURRENT SPOT
 export const thunkLoadCurrSpots = () => async (dispatch) => {
   const res = await csrfFetch("/api/spots/current");
 
-  const data = await res.json();
+  const currSpots = await res.json();
   if (res.ok) {
-    dispatch(loadCurrentSpots(data));
+    dispatch(loadCurrentSpots(currSpots));
     // console.log('res is good')
+    return currSpots
   }
-  return res;
+
 };
+
 
 //  THUNK UPDATE A SPOT
 export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
@@ -208,15 +204,17 @@ const initialState = {};
 
 export const spotReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_ALLSPOTS: {
-      let newState = {}
-      console.log('ACTION SPOTS',action.spots)
-      action.spots.Spots.forEach(spot =>{
-        newState[spot.id] = spot
-      })
-      return {...state,...newState}
 
-    }
+    case LOAD_ALLSPOTS: { // CORRECT REDUCER
+        let newState = { ...state };
+
+        action.spots.Spots.forEach((spot) => {
+          let newSpot = { ...spot, SpotImages: [], Owner: {} };
+          newState[spot.id] = newSpot;
+        });
+
+        return newState;
+      }
 
 
     case LOAD_SPOTDETAILS: {
@@ -233,38 +231,13 @@ export const spotReducer = (state = initialState, action) => {
     }
 
     case CREATE_SPOT:{
-      let newState = {...state,[action.spot.id]:{...action.spot}}
-      console.log('STATE IN REDUCER', newState)
+      console.log("action.spot", action.spot)
+      let newState = {...state,[action.spot.id]:{Owner:{},SpotImages:[],...action.spot}}
+      // console.log('STATE IN REDUCER', newState)
       return newState
 
     }
-    case ADD_SPOTIMAGE:{
-      let newState = {...state,[action.image.id]:{...action.image}}
-      console.log('NEW STATE SPOT IMG', newState)
-    }
 
-    // case CREATE_SPOT: {
-    //   let newState = { ...state };
-    //   let newSpot = { ...action.spot, SpotImages: [], Owner: {} };
-    //   newState[action.spot.id] = { ...state[action.spot.id], ...newSpot };
-    //   return newState;
-    // }
-
-    case ADD_SPOTIMAGE: {
-
-
-    }
-      //make a copy of state
-    //   let newState = { ...state };
-    //   //make new ref of obj you are changing
-    //   let spot = newState[action.spotId];
-    //   if (action.image.preview === true) {
-    //     spot.previewImage = action.image.url;
-    //   }
-    //   //mutate the copies
-    //   newState[action.spotId] = { ...state[action.spotId], ...spot };
-    //   return newState;
-    // }
 
     case LOAD_CURRENT_SPOTS: {
       let newState = { ...state };

@@ -42,7 +42,7 @@ export const clearState = () => {
 
 // THUNK
 export const thunkGetReviews = (id) => async (dispatch) => {
-  try{
+
 
     const res = await csrfFetch(`/api/spots/${id}/reviews`);
 
@@ -51,14 +51,15 @@ export const thunkGetReviews = (id) => async (dispatch) => {
       // console.log('REVIEWS IN THUNK', reviews)
 
       dispatch(loadSpotsRev(reviews,id));
-    }else{
+    } else if (res.status === 404) {
+      console.log('Reviews not found for this spot.');
+    }
+    else{
       const errors = await res.json()
-      // console.log('ERRORS',errors)
+      console.log('ERRORS',errors)
       return errors
     }
-  }catch(e){
-    console.errors(e)
-  }
+
 
 };
 

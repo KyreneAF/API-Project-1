@@ -91,11 +91,12 @@ export const CreateSpot = () => {
 
       };
 
-      console.log('NEW SPOT', newSpot, 'IMAGES', Images)
+      // console.log('NEW SPOT', newSpot, 'IMAGES', Images)
 
-       await dispatch(thunkCreateSpot(newSpot,Images));
-      console.log('NEW SPOT 1',newSpot)
-      navigate(`/spots/${newSpot.id}`);
+    const createdSpot = await dispatch(thunkCreateSpot(newSpot,Images));
+      // console.log('CREATED SPOT COMPONENT',create
+
+      navigate(`/spots/${createdSpot.id}`);
     }
   };
 
