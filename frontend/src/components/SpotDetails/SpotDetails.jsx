@@ -20,7 +20,7 @@ export const SpotDetails = () => {
   }, [dispatch, id]);
 
   // console.log("THIS IS SPOTDETAILS", spotDetails);
-  if (!spotDetails || !spotDetails.SpotImages.length) {
+  if (!spotDetails || spotDetails.SpotImages.length === 0) {
     return null;
   }
 
