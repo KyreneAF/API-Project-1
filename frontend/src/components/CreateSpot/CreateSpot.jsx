@@ -78,6 +78,7 @@ export const CreateSpot = () => {
 
       let newSpot = {
 
+
           address,
           city,
           state,
@@ -88,14 +89,12 @@ export const CreateSpot = () => {
           price,
           description,
 
-
-
       };
 
       console.log('NEW SPOT', newSpot, 'IMAGES', Images)
 
-      newSpot = await dispatch(thunkCreateSpot(newSpot,Images));
-
+       await dispatch(thunkCreateSpot(newSpot,Images));
+      console.log('NEW SPOT 1',newSpot)
       navigate(`/spots/${newSpot.id}`);
     }
   };

@@ -95,31 +95,32 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) => {
 };
 
 // THUNK TO ADD SPOT IMAGE
-export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
+export const thunkAddSpotImage = (img, spotId) => async (dispatch) => {
   // let imgArr = [];
-  console.log("IM IMAGES IN IMAGE THUNK", images);
+  console.log("IM IMAGES IN IMAGE THUNK", img);
   console.log('SPOTID IN ADD SPOT THUNK', spotId)
 
-  for (let img of images) {
-    //cant use array methods inside async
-    console.log("im img in for loop",img)
+  // for (let img of images) {
+  //   //cant use array methods inside async
+  //   console.log("im img in for loop",img)
 
-    if (img) {
+  //   if (img) {
       const res = await csrfFetch(`/api/spots/${spotId}/images`, {
         method: "POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body: JSON.stringify({SpotImages:img}),
+        // headers:{
+        //   "Content-Type":"application/json"
+        // },
+        body: JSON.stringify(img),
       });
 
       if (res.ok) {
         const image = await res.json();
-        console.log('IM IMAGE IN THUNK AFTER DIS', image);
+        console.log('IM IMAGE IN THUNK BEFORE DIS', image);
         dispatch(addSpotImage(image));
+        console.log('IM IMAGE IN THUNK AFTER DIS', image);
       }
-    }
-  }
+  //   }
+  // }
 };
 
 //THUNK TO CREATE SPOT
@@ -127,18 +128,24 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
   console.log("IM PARAM OF CREATE SPOT", spot, 'IM PARAM OF IMAGES', Images);
   const res = await csrfFetch("/api/spots", {
     method: "POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body: JSON.stringify({Spots:spot}), //this had spot.Spot
+    // headers:{
+    //   "Content-Type":"application/json"
+    // },
+    body: JSON.stringify(spot), //this had spot.Spot
   });
+  if(!res.ok){
+    const errors = res.json()
+    console.log('ERRORS',errors)
+    return errors
+  }
 
   if (res.ok) {
     const newSpot = await res.json();
-    await dispatch(createSpot(spot));
+    await dispatch(createSpot(newSpot));
     console.log("NEWSPOT AFT DIS FROM CREATE SPOT THUNK", newSpot)
     console.log('I AM NEWSPOT ID SENT TO ADD IMAGE', newSpot.id)
-    dispatch(thunkAddSpotImage(Images, newSpot.id));
+    Images.forEach(img => dispatch(thunkAddSpotImage(img, newSpot.id)))
+    // dispatch(thunkAddSpotImage(Images, newSpot.id));
     return spot;
   }
   return res;
@@ -232,7 +239,7 @@ export const spotReducer = (state = initialState, action) => {
 
     }
     case ADD_SPOTIMAGE:{
-      let newState = {[action.image]:{...action.image}}
+      let newState = {...state,[action.image.id]:{...action.image}}
       console.log('NEW STATE SPOT IMG', newState)
     }
 
@@ -263,7 +270,7 @@ export const spotReducer = (state = initialState, action) => {
       let newState = { ...state };
 
       // action.spots.Spots.forEach(spot =>{
-      action.spots.Spots.forEach((spot) => {
+      action.spots.forEach((spot) => {
         let newSpot = { ...spot, SpotImages: [], Owner: {} };
         newState[spot.id] = { ...state[spot.id], ...newSpot };
       });
