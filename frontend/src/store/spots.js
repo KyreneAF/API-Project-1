@@ -26,11 +26,11 @@ export const loadSpotDetails = (spots) => {
 };
 
 // ADD AN IMAGE TO SPOT
-const addSpotImage = (image, spotId) => {
-  // console.log(image, "HI IM FROM ACTION");
+const addSpotImage = (images, spotId) => {
+  // console.log(images, "HI IM FROM ACTION ADD IMG");
   return {
     type: ADD_SPOTIMAGE,
-    image,
+    images,
     spotId,
   };
 };
@@ -46,7 +46,7 @@ export const createSpot = (spot) => {
 
 // GET ALL SPOTS CURRENT USER
 export const loadCurrentSpots = (spots) => {
-  console.log("LOAD SPOTS", spots);
+  // console.log("LOAD SPOTS", spots);
   return {
     type: LOAD_CURRENT_SPOTS,
     spots,
@@ -96,40 +96,48 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) => {
 // THUNK TO ADD SPOT IMAGE
 export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
   // let imgArr = [];
+  console.log('SPOTID IN ADD SPOT THUNK', spotId)
   console.log("IM IMAGES IN IMAGE THUNK", images);
 
-  for (let image of images) {
+  for (let img of images) {
     //cant use array methods inside async
 
-    if (image) {
+    if (img) {
       const res = await csrfFetch(`/api/spots/${spotId}/images`, {
         method: "POST",
-        body: JSON.stringify(image),
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify(img),
       });
 
       if (res.ok) {
-        const data = await res.json();
+        const image = await res.json();
         console.log;
-        dispatch(addSpotImage(data, spotId));
+        dispatch(addSpotImage(image));
       }
     }
   }
 };
 
 //THUNK TO CREATE SPOT
-export const thunkCreateSpot = (spot) => async (dispatch) => {
-  // console.log("IM SPOT THUNK", spot);
+export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
+  console.log("IM PARAM OF CREATE SPOT", spot);
   const res = await csrfFetch("/api/spots", {
     method: "POST",
-    body: JSON.stringify(spot.Spot), //this had spot.Spot
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body: JSON.stringify(spot), //this had spot.Spot
   });
 
   if (res.ok) {
-    const data = await res.json();
-    await dispatch(createSpot(data));
-    // console.log("DATA FROM THUNK", data);
-    dispatch(thunkAddSpotImage(spot.Images, data.id));
-    return data;
+    const newSpot = await res.json();
+    await dispatch(createSpot(spot));
+    console.log("SPOT AFT DIS FROM CREAT SPOT THUNK", newSpot)
+    console.log('IM SENDING THIS TO SPOT IMG THUNK', Images)
+    dispatch(thunkAddSpotImage(Images, newSpot.id));
+    return spot;
   }
   return res;
 };
@@ -192,15 +200,15 @@ const initialState = {};
 export const spotReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_ALLSPOTS: {
-      let newState = { ...state };
+      let newState = {}
+      console.log('ACTION SPOTS',action.spots)
+      action.spots.Spots.forEach(spot =>{
+        newState[spot.id] = spot
+      })
+      return {...state,...newState}
 
-      action.spots.Spots.forEach((spot) => {
-        let newSpot = { ...spot, SpotImages: [], Owner: {} };
-        newState[spot.id] = newSpot;
-      });
-
-      return newState;
     }
+
 
     case LOAD_SPOTDETAILS: {
       //make a copy of state
@@ -215,25 +223,35 @@ export const spotReducer = (state = initialState, action) => {
       return newState;
     }
 
-    case CREATE_SPOT: {
-      let newState = { ...state };
-      let newSpot = { ...action.spot, SpotImages: [], Owner: {} };
-      newState[action.spot.id] = { ...state[action.spot.id], ...newSpot };
-      return newState;
+    case CREATE_SPOT:{
+      let newState = {...state,[action.spot.id]:{...action.spot}}
+      console.log('STATE IN REDUCER', newState)
+      return newState
+
     }
 
+    // case CREATE_SPOT: {
+    //   let newState = { ...state };
+    //   let newSpot = { ...action.spot, SpotImages: [], Owner: {} };
+    //   newState[action.spot.id] = { ...state[action.spot.id], ...newSpot };
+    //   return newState;
+    // }
+
     case ADD_SPOTIMAGE: {
-      //make a copy of state
-      let newState = { ...state };
-      //make new ref of obj you are changing
-      let spot = newState[action.spotId];
-      if (action.image.preview === true) {
-        spot.previewImage = action.image.url;
-      }
-      //mutate the copies
-      newState[action.spotId] = { ...state[action.spotId], ...spot };
-      return newState;
+
+
     }
+      //make a copy of state
+    //   let newState = { ...state };
+    //   //make new ref of obj you are changing
+    //   let spot = newState[action.spotId];
+    //   if (action.image.preview === true) {
+    //     spot.previewImage = action.image.url;
+    //   }
+    //   //mutate the copies
+    //   newState[action.spotId] = { ...state[action.spotId], ...spot };
+    //   return newState;
+    // }
 
     case LOAD_CURRENT_SPOTS: {
       let newState = { ...state };
@@ -261,8 +279,6 @@ export const spotReducer = (state = initialState, action) => {
       return newState;
     }
 
-    // https://redux.js.org/usage/structuring-reducers/immutable-update-patterns
-    // visit below link for removing from state!!!!
 
     default:
       return state;

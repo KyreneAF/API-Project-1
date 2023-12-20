@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../context/Modal";
-import { thunkDeleteSpot } from "../../../store/spots";
+import { loadCurrentSpots, thunkDeleteSpot } from "../../../store/spots";
 import "./DeleteSpot.css";
 
 export const DeleteSpot = ({ id }) => {
@@ -9,13 +9,14 @@ export const DeleteSpot = ({ id }) => {
   const { closeModal } = useModal();
   const spot = useSelector((state) => state.spots[id]);
   // const spotID = Number (spot.id)
-
+  // console.log('SPOT', spot)
   if(!spot)return null
 
   const removeSpot = async () => {
     // console.log('SPOTID',spot.id)
     await dispatch(thunkDeleteSpot(spot.id));
 
+      // return () => dispatch(loadCurrentSpots())
 
     closeModal();
   };
