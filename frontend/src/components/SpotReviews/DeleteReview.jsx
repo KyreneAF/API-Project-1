@@ -27,7 +27,7 @@ export function DeleteReview({currUserId,id,reviewOwner}){
     const onClickDelete = async (e) =>{
         e.preventDefault();
          await dispatch(thunkDeleteReview(reviews[id].id))
-         console.log('REVIEWID AFTER DISPATCH',reviews)
+        //  console.log('REVIEWID AFTER DISPATCH',reviews)
 
 
         closeModal()
