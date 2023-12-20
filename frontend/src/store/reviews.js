@@ -78,6 +78,7 @@ export const thunkDeleteReview = (id) => async(dispatch) =>{
     const deletedRev = await res.json();
 
     dispatch(deleteReview(id))
+    return deletedRev
   }else{
     const errors = await res.json();
 

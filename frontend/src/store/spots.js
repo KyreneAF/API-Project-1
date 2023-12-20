@@ -5,7 +5,7 @@ const LOAD_CURRENT_SPOTS = "spots/LOAD_CURRENT_SPOTS";
 const LOAD_ALLSPOTS = "spots/LOAD_ALLSPOTS";
 const LOAD_SPOTDETAILS = "spots/LOAD_SPOTDETAILS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
-const ADD_SPOTIMAGE = "spots/ADD_SPOTIMAGE";
+
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
 
@@ -131,6 +131,7 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
 
       if (res.ok) {
         const image = await res.json();
+        console.log(image)
 
 
       }
@@ -139,7 +140,7 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
     await dispatch(createSpot(newSpot));
     return newSpot;
 
-};
+}
 }
 
 

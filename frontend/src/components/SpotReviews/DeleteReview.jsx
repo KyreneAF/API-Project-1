@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkDeleteReview } from "../../store/reviews"
 import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import { useState,useEffect } from "react";
+
 
 export function DeleteReview({currUserId,id,reviewOwner}){
     // console.log('CURRUSERID', currUserId, 'ID', id, 'OWNER ID', reviewOwner)

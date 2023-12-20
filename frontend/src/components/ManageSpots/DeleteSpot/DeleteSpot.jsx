@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../context/Modal";
-import { loadCurrentSpots, thunkDeleteSpot } from "../../../store/spots";
+import { thunkDeleteSpot } from "../../../store/spots";
 import "./DeleteSpot.css";
 
 export const DeleteSpot = ({ id }) => {

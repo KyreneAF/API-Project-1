@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {  useState } from "react";
+// import { useParams } from "react-router-dom";
 import { thunkCreateReview } from "../../../store/reviews.js";
 import { thunkGetReviews } from "../../../store/reviews.js";
 import { useModal } from "../../../context/Modal.jsx";
@@ -14,10 +14,10 @@ export const CreateReview = ({spotId}) => {
    spotId =  Number(spotId)
   const dispatch = useDispatch();
 
-  const reviews = useSelector(state => state.reviews)
+  // const reviews = useSelector(state => state.reviews)
 
   const [review, setReview] = useState("");
-  const [validations, setValidations] = useState({});
+  // const [validations, setValidations] = useState({});
   const { closeModal } = useModal();
   const [stars, setStars] = useState(0);
   const [errors, setErrors] = useState({})
