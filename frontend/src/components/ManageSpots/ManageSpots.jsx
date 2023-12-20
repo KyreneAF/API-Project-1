@@ -4,6 +4,8 @@ import { thunkLoadCurrSpots } from "../../store/spots";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import {DeleteSpot} from "./DeleteSpot/DeleteSpot"
 import { useEffect } from "react";
+import './ManageSpots.css';
+
 
 export const ManageSpots = () =>{
 
@@ -29,6 +31,11 @@ export const ManageSpots = () =>{
         navigate(`/spots/new`)
     }
 
+   const onClickNav = (id) => {
+    console.log('ID',id)
+        navigate(`/spots/${id}`)
+
+    }
 
 
     if(!spots) return null
@@ -38,13 +45,14 @@ export const ManageSpots = () =>{
             <div className='curr-text-header' >
                 <h1>Manage Your Spots</h1>
                 <button className='curr-new-spot-bttn' onClick={handleOnClick}>Create a New Spot</button>
+                {/* < NavLink className='nav-link' to="/spots/new" >Create a New Spot</ NavLink > */}
             </div>
 
-            <div className ='curr-spot-container'>
+            <div className ='curr-spot-container' >
             { spots.length && spots.map(spot =>(
-                        <div key={spot.id} className='spot-tile' >
+                        <div key={spot.id} className='manage-spot-tile'onClick={() => onClickNav(spot.id)}>
                          {spot.previewImage ? (
-                            <img className='img' src={spot.previewImage} onError={e => {
+                            <img className='manage-img' src={spot.previewImage} onError={e => {
                         e.target.src = 'https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0';
                     }} />
 
@@ -56,12 +64,12 @@ export const ManageSpots = () =>{
                         />
                       )}
 
-                        <div className='city-stars'>
+                        <div className='manage-city-stars'>
                             <div>{spot.city}, {spot.state}</div>
-                            <div>&#9733; {spot.avgRating}</div>
+                            <div>&#9733; {spot.avgRating && spot.avgRating.toFixed(1)}</div>
 
                         </div>
-                            <div className='price'>${spot.price} night</div>
+                            <div className='manage-price'>${spot.price.toFixed(2)} night</div>
 
                             <div className='curr-bttn-container'>
 
