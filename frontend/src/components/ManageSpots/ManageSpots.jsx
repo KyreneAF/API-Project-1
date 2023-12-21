@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 // import { thunkLoadCurrSpots } from "../../store/spots";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import {DeleteSpot} from "./DeleteSpot/DeleteSpot"
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import './ManageSpots.css';
-import { thunkDeleteSpot  } from "../../store/spots";
+import { thunkDeleteSpot, thunkGetAllSpots  } from "../../store/spots";
 
 
 export const ManageSpots = () =>{
@@ -23,7 +23,12 @@ export const ManageSpots = () =>{
     const dispatch = useDispatch()
 
 
+    console.log('SPOTS FIRST',spots, 'FILTERED SPOTS FIRST', filteredSpots, 'ALL SPOTS FIRST',allSpots)
 
+    useEffect(() =>{
+        dispatch(thunkGetAllSpots())
+        console.log('SPOTS SECOND',spots, 'FILTERED SPOTS SECOND', filteredSpots, 'ALL SPOTS SECOND',allSpots)
+    },[dispatch])
 
 
     const handleOnClick = () =>{
@@ -48,7 +53,11 @@ export const ManageSpots = () =>{
     // console.log('SPOTS IN MANAGE',spots)
 
     // if(!spots) return null
-    if(!spots) return null
+    if(filteredSpots.length === 0){
+        console.log('SPOTS THIRD',spots, 'FILTERED SPOTS THIRD', filteredSpots, 'ALL SPOTS THIRD',allSpots)
+        return null
+    }
+    console.log('SPOTS FOURTH',spots, 'FILTERED SPOTS FOURTH', filteredSpots, 'ALL SPOTS FOURTH',allSpots)
 
     return(
         <div className='curr-main-container'>
@@ -59,7 +68,8 @@ export const ManageSpots = () =>{
             </div>
 
             <div className ='curr-spot-container' >
-            { spots.length && spots.map(spot =>(
+            {/* { spots.length > 0 && spots.map(spot =>( */}
+            { filteredSpots.map(spot =>(
                         <div key={spot.id} className='manage-spot-tile'>
 
                          {spot.previewImage ? (
