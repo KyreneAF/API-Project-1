@@ -18,9 +18,11 @@ export function SpotReviews({ ownerId, avgRating, numReviews}){
   let currUserId = useSelector(state => state.session.user?.id)
 
 
-  const reviewsArr = Object.values(reviews).sort()
-  const dispatch = useDispatch()
+  const reviewsArr = Object.values(reviews).sort((a, b) => b.id - a.id);
 
+
+  const dispatch = useDispatch()
+  console.log('REVIEWS ARR',reviewsArr)
   // console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,)
   // console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
 
