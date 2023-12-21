@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 // import { thunkLoadCurrSpots } from "../../store/spots";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import {DeleteSpot} from "./DeleteSpot/DeleteSpot"
-import { useState,useEffect } from "react";
+import { useState} from "react";
 import './ManageSpots.css';
-import { thunkDeleteSpot, thunkGetAllSpots } from "../../store/spots";
+import { thunkDeleteSpot  } from "../../store/spots";
 
 
 export const ManageSpots = () =>{
@@ -20,9 +20,9 @@ export const ManageSpots = () =>{
 
     const filteredSpots = Object.values(allSpots).filter(spot => spot.ownerId === user)
     const [spots, setCurrSpots] = useState(filteredSpots)
-    const [deleted, setDelete] = useState(false)
-
     const dispatch = useDispatch()
+
+
 
 
 
@@ -32,7 +32,7 @@ export const ManageSpots = () =>{
     }
 
    const onClickNav = (id) => {
-    console.log('ID',id)
+    // console.log('ID',id)
         navigate(`/spots/${id}`)
 
     }
@@ -45,7 +45,7 @@ export const ManageSpots = () =>{
 
     }
 
-    console.log('SPOTS IN MANAGE',spots)
+    // console.log('SPOTS IN MANAGE',spots)
 
     // if(!spots) return null
     if(!spots) return null

@@ -10,7 +10,7 @@ export const DeleteSpot = ({ id, onDelete }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [spotId,setSpotId] = useState(id)
-  console.log('id', id, 'spotId', spotId)
+  // console.log('id', id, 'spotId', spotId)
   // const spot = useSelector((state) => state.spots);
   // const spotID = Number (spot.id)
   // console.log('SPOT', spot)
