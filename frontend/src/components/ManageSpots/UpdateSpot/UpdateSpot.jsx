@@ -73,8 +73,23 @@ export const UpdateSpot = () => {
               Images.push({url: image4, preview: false});
             }
 
-            let newSpot = {
-                Spot: {
+            // let newSpot = {
+            //     Spot: {
+            //         address,
+            //         city,
+            //         state,
+            //         country,
+            //         lat: lat || 0,
+            //         lng: lng || 0,
+            //         name,
+            //         price,
+            //         description
+            //     }
+
+            // }
+              let newSpot = {
+                Spot:{
+
                     address,
                     city,
                     state,
@@ -84,9 +99,10 @@ export const UpdateSpot = () => {
                     name,
                     price,
                     description
-                },
-                Images,
+
+                  }
             }
+
 
             newSpot = await dispatch(thunkUpdateSpot(spotId,newSpot))
 
@@ -191,6 +207,7 @@ export const UpdateSpot = () => {
                     <label>
                       <textarea
                         type='textArea'
+                        rows='10'
                         name='description'
                         placeholder="Please write at least 30 characters"
                         value={description}
