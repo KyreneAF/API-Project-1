@@ -90,6 +90,7 @@
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
+  box-shadow: 3px 3px 8px 8px rgb(231, 229, 229);
 }
 
 .text-main-container {

@@ -149,7 +149,8 @@ export const reviewsReducer = (state = initialState, action) => {
       // console.log ('NEW STATE', newState)
       // return {[action.review.id]:{...action.review},...state}
       // trying to add to top of reviews list still not working below still does not add to top
-      return  { ...state, [action.review.id]: { ...action.review, ...state[action.review.id] } }
+      // return  { ...state, [action.review.id]: { ...action.review, ...state[action.review.id] } }
+      return {[action.review.id]:{...action.review}, ...state }
       // return newState;
 
     }
