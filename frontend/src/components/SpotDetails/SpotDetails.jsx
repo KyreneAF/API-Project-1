@@ -20,7 +20,7 @@ export const SpotDetails = () => {
   }, [dispatch, id]);
 
   // console.log("THIS IS SPOTDETAILS", spotDetails);
-  if (!spotDetails || !spotDetails.SpotImages.length) {
+  if (!spotDetails || spotDetails.SpotImages.length === 0) {
     return null;
   }
 
@@ -29,9 +29,9 @@ export const SpotDetails = () => {
   const imageContCreator = () =>{
 
     const bigImg = spotDetails.SpotImages[0]
-    console.log('BIG IMG', bigImg)
+    // console.log('BIG IMG', bigImg)
     const smallImgs = spotDetails.SpotImages.slice(1)
-    console.log('small img', smallImgs)
+    // console.log('small img', smallImgs)
 
     return(
       <div className="spot-img-container">

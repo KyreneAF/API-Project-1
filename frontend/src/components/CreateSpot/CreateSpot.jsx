@@ -77,7 +77,8 @@ export const CreateSpot = () => {
       }
 
       let newSpot = {
-        Spot: {
+
+
           address,
           city,
           state,
@@ -87,13 +88,15 @@ export const CreateSpot = () => {
           name,
           price,
           description,
-        },
-        Images,
+
       };
 
-      newSpot = await dispatch(thunkCreateSpot(newSpot));
+      // console.log('NEW SPOT', newSpot, 'IMAGES', Images)
 
-      navigate(`/spots/${newSpot.id}`);
+    const createdSpot = await dispatch(thunkCreateSpot(newSpot,Images));
+      // console.log('CREATED SPOT COMPONENT',create
+
+      navigate(`/spots/${createdSpot.id}`);
     }
   };
 
@@ -199,6 +202,7 @@ export const CreateSpot = () => {
               <label>
                 <textarea
                   type="textArea"
+                  rows='15'
                   name="description"
                   placeholder="Please write at least 30 characters"
                   value={description}
