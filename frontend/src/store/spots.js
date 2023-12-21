@@ -1,7 +1,7 @@
 import { csrfFetch } from "./csrf";
 //ACTION TYPE
 
-const LOAD_CURRENT_SPOTS = "spots/LOAD_CURRENT_SPOTS";
+// const LOAD_CURRENT_SPOTS = "spots/LOAD_CURRENT_SPOTS";
 const LOAD_ALLSPOTS = "spots/LOAD_ALLSPOTS";
 const LOAD_SPOTDETAILS = "spots/LOAD_SPOTDETAILS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
@@ -25,15 +25,7 @@ export const loadSpotDetails = (spots) => {
   };
 };
 
-// ADD AN IMAGE TO SPOT
-// const addSpotImage = (image ) => {
-//   console.log("IMG IN ADD IMG ACTION CREATOR",image);
-//   return {
-//     type: ADD_SPOTIMAGE,
-//     image,
 
-//   };
-// };
 
 //  CREATE A SPOT
 export const createSpot = (spot,images) => {
@@ -46,13 +38,13 @@ export const createSpot = (spot,images) => {
 };
 
 // GET ALL SPOTS CURRENT USER
-export const loadCurrentSpots = (spots) => {
-  // console.log("LOAD SPOTS", spots);
-  return {
-    type: LOAD_CURRENT_SPOTS,
-    spots,
-  };
-};
+// export const loadCurrentSpots = (spots) => {
+//   console.log("LOAD SPOTS METHOD", spots);
+//   return {
+//     type: LOAD_CURRENT_SPOTS,
+//     spots,
+//   };
+// };
 
 export const updateSpot = (spot) => {
   return {
@@ -147,21 +139,22 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
 
 
 // THUNK LOAD CURRENT SPOT
-export const thunkLoadCurrSpots = () => async (dispatch) => {
-  const res = await csrfFetch("/api/spots/current");
+// export const thunkLoadCurrSpots = () => async (dispatch) => {
+//   const res = await csrfFetch("/api/spots/current");
 
-  const currSpots = await res.json();
-  if (res.ok) {
-    dispatch(loadCurrentSpots(currSpots));
-    // console.log('res is good')
-    return currSpots
-  }
+//   const currSpots = await res.json();
+//   if (res.ok) {
+//     // console.log("spots in curr method",spots)
+//     dispatch(loadCurrentSpots(currSpots));
+//     // console.log('res is good')
+//     return currSpots
+//   }
 
-};
+// };
 
 
 //  THUNK UPDATE A SPOT
-export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
+export const thunkUpdateSpot = (spotId, spot,Images) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: {
@@ -175,6 +168,7 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
     // console.log("hi i am data in thunk", data);
     // dispatch(updateSpot(data));
     dispatch(updateSpot(data));
+    return data
   }
 };
 
@@ -189,7 +183,7 @@ export const thunkDeleteSpot = (id) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
 
-    dispatch(deleteSpot(data));
+    dispatch(deleteSpot(id));
   }
   return res;
 };
@@ -240,16 +234,17 @@ export const spotReducer = (state = initialState, action) => {
     }
 
 
-    case LOAD_CURRENT_SPOTS: {
-      let newState = { ...state };
+    // case LOAD_CURRENT_SPOTS: {
+    //   let newState = { ...state };
 
-      // action.spots.Spots.forEach(spot =>{
-      action.spots.forEach((spot) => {
-        let newSpot = { ...spot, SpotImages: [], Owner: {} };
-        newState[spot.id] = { ...state[spot.id], ...newSpot };
-      });
-      return newState;
-    }
+    //   // action.spots.Spots.forEach(spot =>{
+    //     console.log('NEW STATE CURR', newState, 'ACTION.SPOTS', action.spots)
+    //   action.spots.forEach((spot) => {
+    //     let newSpot = { ...spot, SpotImages: [], Owner: {} };
+    //     newState[spot.id] = { ...state[spot.id], ...newSpot };
+    //   });
+    //   return newState;
+    // }
 
     case UPDATE_SPOT: {
       let newState = { ...state };
@@ -258,6 +253,8 @@ export const spotReducer = (state = initialState, action) => {
       newState[newSpot.id] = { ...state[action.spot.id], ...newSpot };
       return newState;
     }
+
+
 
     case DELETE_SPOT: {
       let newState = { ...state };
