@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import './LoginForm.css';
+import './LoginFormModal.css';
 
 function LoginFormModal() {
 
@@ -49,13 +49,15 @@ function LoginFormModal() {
 
 
   return (
-    <>
-      <h1>Log In</h1>
+    <div className='login-main-container'>
+      <div className='login-title-container'>Log In</div>
       <form onSubmit={handleSubmit}>
-        {errors.message && <div>{errors.message}</div>}
+        {errors.message && <div className='error-text'>{errors.message}</div>}
+        <div className='login-input-cont'>
         <label>
           Username or Email
           <input
+            className='login-input-text-cont'
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
@@ -65,22 +67,26 @@ function LoginFormModal() {
         <label>
           Password
           <input
+            className='login-input-text-cont'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
+
+
         <button
+        className={ !errors.message ? "login-bttn" : "failed-login-bttn" }
         disabled={credential.length < 4 || password.length < 6}
         type="submit">Log In</button>
+        </div>
       </form>
-      <button type='button' onClick={demoUserLogin} className='demoLoginButton'>Demo User</button>
+      {/* <div onClick={navAfterLogin}>Demo User</div> */}
+      <button  type='button' onClick={demoUserLogin} className='demoLoginButton'>Demo User</button>
+      {/* {createNavLink(demoUserLogin)} */}
 
-    </>
+    </div>
   );
 }
 

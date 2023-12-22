@@ -19,7 +19,7 @@ export const ManageSpots = () =>{
     const users = useSelector(state => state.session.user)
     let user;
     users ?  user = users.id : null
-    console.log('USERS',users)
+    // console.log('USERS',users)
     // const user = users.id
 
     const filteredSpots = Object.values(allSpots).filter(spot => spot.ownerId === user)
@@ -27,11 +27,11 @@ export const ManageSpots = () =>{
     const dispatch = useDispatch()
 
 
-    console.log('SPOTS FIRST',spots, 'FILTERED SPOTS FIRST', filteredSpots, 'ALL SPOTS FIRST',allSpots)
+    // console.log('SPOTS FIRST',spots, 'FILTERED SPOTS FIRST', filteredSpots, 'ALL SPOTS FIRST',allSpots)
 
     useEffect(() =>{
         dispatch(thunkGetAllSpots())
-        console.log('SPOTS SECOND',spots, 'FILTERED SPOTS SECOND', filteredSpots, 'ALL SPOTS SECOND',allSpots)
+        // console.log('SPOTS SECOND',spots, 'FILTERED SPOTS SECOND', filteredSpots, 'ALL SPOTS SECOND',allSpots)
     },[dispatch])
 
 

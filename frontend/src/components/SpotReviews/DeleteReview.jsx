@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkDeleteReview } from "../../store/reviews"
 import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import { thunkGetDetailsSpot } from "../../store/spots";
 
 
 export function DeleteReview({currUserId,id,reviewOwner}){
@@ -10,6 +11,7 @@ export function DeleteReview({currUserId,id,reviewOwner}){
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const reviews = useSelector(state => state.reviews)
+    // const spots = useSelector(state => state.spots)
     // console.log('review',reviews)
     // console.log('REVIEWS BEFORE DISPATCH',reviews)
 
@@ -28,9 +30,11 @@ export function DeleteReview({currUserId,id,reviewOwner}){
         e.preventDefault();
          await dispatch(thunkDeleteReview(reviews[id].id))
         //  console.log('REVIEWID AFTER DISPATCH',reviews)
+        await dispatch(thunkGetDetailsSpot(id)).then(() =>{
+          closeModal()
+        })
 
 
-        closeModal()
 
     }
 

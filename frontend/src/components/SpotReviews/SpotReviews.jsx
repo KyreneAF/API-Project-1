@@ -20,9 +20,9 @@ export function SpotReviews({ ownerId, avgRating, numReviews}){
 
   const reviewsArr = Object.values(reviews).sort((a, b) => b.id - a.id);
 
-
+  // console.log('REVIEWS IN SPOT REVIEWS',reviews)
   const dispatch = useDispatch()
-  console.log('REVIEWS ARR',reviewsArr)
+  // console.log('REVIEWS ARR',reviewsArr)
   // console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,)
   // console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
 
@@ -73,7 +73,7 @@ const addReviewClick =  () =>{
       { <OpenModalButton
 
           buttonText='Post Your Review'
-          modalComponent={<CreateReview spotId={spotId}/>}
+          modalComponent={<CreateReview spotId={spotId} reviews={reviews}/>}
       /> }
 
   </div>

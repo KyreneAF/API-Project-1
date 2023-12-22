@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetDetailsSpot } from "../../store/spots";
+import { thunkGetReviews, clearState } from "../../store/reviews";
 import { SpotReviews } from "../SpotReviews/SpotReviews";
 import "./SpotDetails.css";
 
@@ -11,18 +12,33 @@ export const SpotDetails = () => {
 
   // const spotDetails = useSelector((state) => state.spots[id]);
   const spots = useSelector(state => state.spots)
-  const spotDetails =spots[id]
+  const reviews = useSelector(state => state.reviews)
 
+  const spotDetails =spots[id]
+  // const [numReviews, setNumReviews] = useState('');
+  // const [avgRating, setAvgRating] = useState('');
+  console.log('REVIEWS IN SPOT DETAILS',reviews)
 
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
+
+    // return () => dispatch(thunkGetReviews(id))
   }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(thunkGetReviews(id));
+    console.log('REVIEWS INSIDE UE',reviews)
+    // return () => dispatch(thunkGetReviews(id))
+    return () => dispatch(clearState())
+  }, [dispatch, id]);
+
 
   // console.log("THIS IS SPOTDETAILS", spotDetails);
   if (!spotDetails || spotDetails.SpotImages.length === 0) {
     return null;
   }
+
 
 
 
@@ -120,7 +136,7 @@ export const SpotDetails = () => {
 
           <div className="review-main-container">
 
-            <SpotReviews  ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
+            <SpotReviews reviews={reviews} ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
           </div>
         </>
       )}

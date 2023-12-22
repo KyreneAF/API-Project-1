@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import {  useState } from "react";
+import {  useState,useEffect } from "react";
 // import { useParams } from "react-router-dom";
 import { thunkCreateReview } from "../../../store/reviews.js";
 import { thunkGetReviews } from "../../../store/reviews.js";
+import { thunkGetDetailsSpot } from "../../../store/spots.js";
 import { useModal } from "../../../context/Modal.jsx";
 import "./CreateReview.css";
 // import './OpenModalButton/OpenModalButton.css'
@@ -10,7 +11,7 @@ import "./CreateReview.css";
 
 
 
-export const CreateReview = ({spotId}) => {
+export const CreateReview = ({spotId }) => {
   // const {id}  = useParams(); // <- this seems to not work bc there isn't a route. maybe findSpot instead?
    spotId =  Number(spotId)
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ export const CreateReview = ({spotId}) => {
 
     const currUser = useSelector((state) => state.session.user)
     const currSpot = useSelector((state) => state.spots)
+    const reviews = useSelector((state) => state.reviews)
+
+    console.log('REVIEWS IN CREATE REVIEWS',reviews)
 
 
     const user = {
@@ -36,7 +40,6 @@ export const CreateReview = ({spotId}) => {
         firstName:currUser.firstName,
         lastName:currUser.lastName
     }
-
 
 
 
@@ -66,7 +69,7 @@ export const CreateReview = ({spotId}) => {
       review,
       stars,
     }
-    console.log('CREATED REVIEW', createdReview)
+    // console.log('CREATED REVIEW', createdReview)
 
     if(Object.values(errors).length === 0){
       console.log('ERRORS', errors)
@@ -79,6 +82,7 @@ export const CreateReview = ({spotId}) => {
     closeModal();
 
     dispatch(thunkGetReviews(spotId))
+    dispatch(thunkGetDetailsSpot(spotId))
 
         // return () => dispatch(thunkGetReviews(spotId))
 

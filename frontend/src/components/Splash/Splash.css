@@ -5,14 +5,35 @@
     margin:40px;
 }
 
-.spots-main-container {
+/* .spots-main-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     height: 100%;
     width: 100%;
     gap: 20px;
-}
+} */
+.spot-tile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap:20px;
+
+
+  }
+
+  .spots-main-container {
+    display: grid;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+
+    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    max-height: 0;
+    aspect-ratio: 1;
+  }
 
 
 
@@ -25,6 +46,7 @@
     max-width: 100%;
     border: 1px solid grey;
     border-radius: 10px;
+    z-index: 1;
 }
 
 
@@ -52,34 +74,42 @@
 .tool-tip{
     visibility: hidden;
     border: 1px solid black;
-
+    position:relative;
+    z-index: 3;
+    /* background-color: white; */
 
 
 
 }
 .spot-tile:hover.tool-tip{
-    display:block
+    /* display:block; */
+    visibility:visible;
 }
 
-
-
-
-.spots-main-container {
-  display: grid;
-  flex-wrap: wrap;
-  /* justify-content: center; */
-  height: 100%;
-  width: 100%;
-  gap: 30px;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.spot-tile {
+/* .spots-main-container {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+
     height: 100%;
     width: 100%;
-    gap:20px;
+    gap: 30px;
+
+  } */
 
 
-  }
+
+
+    .star-num-text{
+        display: flex;
+        flex-direction: row;
+    }
+  /* .spots-main-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 30px;
+    height: 100%;
+    aspect-ratio: 1;
+  } */

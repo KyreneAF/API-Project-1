@@ -1,0 +1,71 @@
+.login-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:20px;
+    width:80%;
+  }
+
+  .login-input-cont {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    height:100%;
+  }
+
+  #modal-content{
+    height:300px;
+    width: 300px;
+  }
+
+  .login-input-cont > label{
+    display: flex;
+    flex-direction: column;
+    color:rgba(0, 0, 0, 0.5);
+    /* font-size: 12px; */
+  }
+
+  .login-input-text-cont{
+    background-color: rgb(206, 229, 236);
+  }
+
+  .login-title-container{
+    align-self: center;
+    font-size: 20px;
+    /* bottom-border: */
+  }
+
+.login-bttn{
+    padding:10px;
+    color:rgba(0, 0, 0, 0.5);
+    box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
+    background-color: #fff;
+    border: 1px, solid rgb(231, 229, 229) ;
+    width:100%;
+    align-self: center;
+    border-radius: 3px;
+
+  }
+
+  .failed-login-bttn{
+    padding:10px;
+    color:rgba(0, 0, 0, 0.7);
+    box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
+    background-color: red;
+    border: 1px, solid rgb(231, 229, 229) ;
+    width:100%;
+    align-self: center;
+    border-radius: 3px;
+
+  }
+
+  .error-text{
+    color:red;
+    margin-bottom:10px;
+  }
+
+  .demoLoginButton{
+    background-color: white;
+    border:none;
+    text-decoration: underline;
+  }
