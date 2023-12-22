@@ -16,7 +16,11 @@ export const ManageSpots = () =>{
     const navigate = useNavigate()
 
     const allSpots = useSelector(state => state.spots);
-    const user = useSelector(state => state.session.user.id)
+    const users = useSelector(state => state.session.user)
+    let user;
+    users ?  user = users.id : null
+    console.log('USERS',users)
+    // const user = users.id
 
     const filteredSpots = Object.values(allSpots).filter(spot => spot.ownerId === user)
     const [spots, setCurrSpots] = useState(filteredSpots)
