@@ -17,7 +17,7 @@ export const SpotDetails = () => {
   const spotDetails =spots[id]
   // const [numReviews, setNumReviews] = useState('');
   // const [avgRating, setAvgRating] = useState('');
-  console.log('REVIEWS IN SPOT DETAILS',reviews)
+
 
 
   useEffect(() => {
@@ -28,13 +28,13 @@ export const SpotDetails = () => {
 
   useEffect(() => {
     dispatch(thunkGetReviews(id));
-    console.log('REVIEWS INSIDE UE',reviews)
+
     // return () => dispatch(thunkGetReviews(id))
     return () => dispatch(clearState())
   }, [dispatch, id]);
 
 
-  // console.log("THIS IS SPOTDETAILS", spotDetails);
+
   if (!spotDetails || spotDetails.SpotImages.length === 0) {
     return null;
   }
@@ -45,9 +45,9 @@ export const SpotDetails = () => {
   const imageContCreator = () =>{
 
     const bigImg = spotDetails.SpotImages[0]
-    // console.log('BIG IMG', bigImg)
+
     const smallImgs = spotDetails.SpotImages.slice(1)
-    // console.log('small img', smallImgs)
+
 
     return(
       <div className="spot-img-container">
