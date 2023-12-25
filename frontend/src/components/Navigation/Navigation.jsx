@@ -22,11 +22,13 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <>
+        <div className='manage-spots-pb-cont'>
         < NavLink className='nav-link' to="/spots/new" >
           Create a New Spot
         </ NavLink >
         <div className='user-prof-bttn'>
           <ProfileButton user={sessionUser} />
+        </div>
         </div>
       </>
     );
@@ -40,12 +42,12 @@ function Navigation({ isLoaded }) {
             modalComponent={<LoginFormModal />}
           />
         </div>
-        <li>
+        <div>
           <OpenModalButton
             buttonText="Sign Up"
             modalComponent={<SignupFormModal />}
           />
-        </li>
+        </div>
       </>
     );
   }

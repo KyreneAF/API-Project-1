@@ -6,10 +6,12 @@ import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import { NavLink } from "react-router-dom";
 // import './Navigation.css'
+import './ProfileButton.css'
 
 
 
 function ProfileButton({ user }) {
+  console.log('USER',user)
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -49,21 +51,23 @@ function ProfileButton({ user }) {
         <i className="fa-solid fa-bars user-icon"></i>
         <i className="fas fa-user-circle user-icon" />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <div className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>{user.username}</li>
-            <li>
+          <div className='drop-down-box-cont'  >
+            <div className='pb-block' >
+            <div>Hello, {user.firstName}</div>
+            {/* <div>
               {user.firstName} {user.lastName}
-            </li>
-            <li>
-              <NavLink to="/spots/current">Manage Spots</NavLink>
-            </li>
-            <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
-          </>
+            </div> */}
+            <div>{user.email}</div>
+            </div>
+            <div className='pb-block'>
+              <NavLink className='ms-Nav'to="/spots/current">Manage Spots</NavLink>
+            </div>
+            <div className='pb-block pb-block-bttn' >
+              <button className='lo-bttn' onClick={logout}>Log Out</button>
+            </div>
+          </div>
         ) : (
           <>
             <OpenModalMenuItem
@@ -78,7 +82,7 @@ function ProfileButton({ user }) {
             />
           </>
         )}
-      </ul>
+      </div>
     </>
   );
 }

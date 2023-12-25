@@ -46,7 +46,7 @@
     max-width: 100%;
     border: 1px solid grey;
     border-radius: 10px;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 

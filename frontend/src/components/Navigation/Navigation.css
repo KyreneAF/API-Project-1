@@ -75,14 +75,19 @@
     border-radius: 20px;
     width: 250px;
     overflow: hidden;
+
 }
 .hidden {
     display: none;
 }
 
 .nav-link {
+    display: flex;
+    flex-direction: row;
     text-decoration: none;
     color:inherit;
+    align-self: center;
+    margin-right: 20px;
 
 }
 

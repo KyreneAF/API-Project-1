@@ -1,0 +1,47 @@
+.manage-spots-pb-cont {
+    display: flex;
+  }
+
+.drop-down-box-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border: 1px solid #717171;
+    color: #717171;
+    font-size: 15px;
+    padding: 20px;
+    position: absolute;
+    background-color: white;
+    height: 100px;
+    right:80px;
+
+  }
+
+  .pb-block {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    width: 80%;
+    padding: 10px;
+    gap:10px
+  }
+  .ms-Nav {
+    color:#717171;
+    text-decoration: none;
+    border: none;
+
+  }
+  .ms-nav .active{
+    border:none;
+  }
+
+  .pb-block-bttn{
+    border-bottom: none;
+  }
+
+  .lo-bttn{
+    color:white;
+    background-color: rgb(71, 69, 69);
+    border-radius: 25px;
+  }
