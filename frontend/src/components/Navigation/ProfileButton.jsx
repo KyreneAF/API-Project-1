@@ -5,16 +5,18 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import './Navigation.css'
 import './ProfileButton.css'
 
 
 
 function ProfileButton({ user }) {
-  console.log('USER',user)
+
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const navigate = useNavigate()
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -41,6 +43,7 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    navigate('/')
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -70,6 +73,7 @@ function ProfileButton({ user }) {
           </div>
         ) : (
           <>
+          <div>
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
@@ -80,6 +84,7 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
+            </div>
           </>
         )}
       </div>

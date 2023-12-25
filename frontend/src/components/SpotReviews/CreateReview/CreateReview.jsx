@@ -113,6 +113,7 @@ export const CreateReview = ({spotId }) => {
                 star,
                 index //<- only way I can think to add a unique key
               ) => (
+                <label key='index'>
                 <input
                   key={index}
                   type="radio"
@@ -122,6 +123,10 @@ export const CreateReview = ({spotId }) => {
                   checked={stars === star}
                   onChange={(e) => setStars(Number(e.target.value))}
                 />
+                <i className="fa-light fa-star"></i>
+                </label>
+
+
               )
             )}
             Stars
