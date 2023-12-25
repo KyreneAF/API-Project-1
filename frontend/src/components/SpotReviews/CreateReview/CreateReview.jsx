@@ -119,11 +119,13 @@ export const CreateReview = ({spotId }) => {
                   type="radio"
                   name="stars"
                   value={star}
+                  min={1}
+                  max={5}
                   id={`star-${star}`}
                   checked={stars === star}
                   onChange={(e) => setStars(Number(e.target.value))}
                 />
-                <i className="fa-light fa-star"></i>
+                {/* <i className="fa-light fa-star"></i> */}
                 </label>
 
 
