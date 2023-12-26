@@ -23,13 +23,14 @@
     font-size: 25px;
   }
 .review-submit-btn{
-        padding:10px;
+        padding:15px;
         color:white;
-        box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
+        box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
         background-color: rgba(0, 0, 0, 0.3);
-        border: 1px, solid rgb(231, 229, 229) ;
+        border: 1px, solid rgba(0, 0, 0, 0.3) ;
         width:300px;
         align-self: center;
         border-radius: 10px;
+        font-size: 14px;
 
 }
