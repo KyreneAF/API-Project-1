@@ -97,10 +97,10 @@ export const CreateReview = ({spotId }) => {
     <>
 
       <div className="create-review-container">
-        <h1>How was your stay?</h1>
+        <div className='cr-title-cont' >How was your stay?</div>
         { Object.keys(errors) && <div >{Object.values(errors).map((msg,index) => <div key={index}>{msg}</div>)}</div>}
 
-        <form onSubmit={onSubmit}>
+        <form className='form-cr-cont' onSubmit={onSubmit}>
           <textarea
             placeholder="Leave your review here..."
             value={review}
@@ -135,6 +135,7 @@ export const CreateReview = ({spotId }) => {
           </div>
           <div>
             <button
+            disabled={stars <= 0 || review.length < 10}
               type="submit"
               className="review-submit-btn"
               // disabled={validations.review || validations.stars || errors.same}
