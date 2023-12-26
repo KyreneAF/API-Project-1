@@ -54,7 +54,7 @@
     padding:10px;
     color:rgba(0, 0, 0, 0.7);
     box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
-    background-color: red;
+    background-color: rgb(255,55,93);
     border: 1px, solid rgb(231, 229, 229) ;
     width:100%;
     align-self: center;
@@ -63,7 +63,7 @@
   }
 
   .error-text{
-    color:red;
+    color:rgb(255,55,93);
     margin-bottom:10px;
   }
 

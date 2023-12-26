@@ -24,12 +24,12 @@
   }
 .review-submit-btn{
         padding:10px;
-        color:rgba(0, 0, 0, 0.5);
+        color:white;
         box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
-        background-color: #fff;
+        background-color: rgba(0, 0, 0, 0.3);
         border: 1px, solid rgb(231, 229, 229) ;
-        width:200px;
+        width:300px;
         align-self: center;
-        border-radius: 3px;
+        border-radius: 10px;
 
 }

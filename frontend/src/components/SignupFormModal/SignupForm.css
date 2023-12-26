@@ -12,9 +12,10 @@
 
   }
 
-  #modal-content {
+ #modal-content {
     height: 420px;
     width: 400px;
+
   }
 
   .su-title-cont{
@@ -57,12 +58,12 @@
 }
 
 .error-cont-su{
-  color: red;
+  color: rgb(255,55,93);
   font-size:12px
 }
 
 .failed-su-bttn{
-  background-color: red;
+  background-color: rgb(255,55,93);
   padding:10px;
   box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
   border: 1px, solid rgb(231, 229, 229) ;

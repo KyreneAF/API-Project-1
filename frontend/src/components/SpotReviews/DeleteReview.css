@@ -1,0 +1,28 @@
+.delete-review-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .delete-review-button-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .delete-review-button-container > button{
+    padding:15px;
+    width:300px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color:#ffffff;
+  }
+.rd-title{
+    font-size: 25px;
+}
