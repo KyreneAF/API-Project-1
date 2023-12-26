@@ -118,7 +118,7 @@
   font-weight: 350;
   margin-bottom: 20px;
   font-size: 15px;
-  width:60%;
+  width:100%;
 
 }
 
@@ -128,4 +128,10 @@
   justify-content: space-evenly;
   margin-right: 0px;
   gap: 12px;
+}
+
+.host-deets-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 }

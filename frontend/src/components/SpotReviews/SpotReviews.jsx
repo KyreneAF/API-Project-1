@@ -50,13 +50,12 @@ const reviewSumCreator = () => {
   }if(reviewsArr.length <= 0 && ownerId == currUserId){
     return <div className='new-cont'>&#9733; New</div>
   }
-  else{
+
+  if(numReviews > 1){
     return(
       <div className='rating-sum-container' >
-
-      {/* <div>&#9733;</div> */}
       <i className="fa-solid fa-star"></i>
-     <div>{ avgRating && avgRating.toFixed(1)}</div>
+     <div>{ avgRating &&  avgRating.toFixed(1)}</div>
 
     <div>&middot;</div>
     <div>
@@ -66,6 +65,21 @@ const reviewSumCreator = () => {
     </div>
 
     )
+  }else{
+    return(
+      <div className='rating-sum-container' >
+      <i className="fa-solid fa-star"></i>
+     <div>{ avgRating &&  avgRating.toFixed(1)}</div>
+
+    <div>&middot;</div>
+    <div>
+      {numReviews} review
+    </div>
+
+    </div>
+
+    )
+
   }
 }
 

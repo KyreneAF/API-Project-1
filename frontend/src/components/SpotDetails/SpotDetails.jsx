@@ -75,6 +75,27 @@ export const SpotDetails = () => {
     )
 
   }
+//   <div>&#9733; {spotDetails.avgRating <= 0 ? 'New' : spotDetails.avgRating.toFixed(1) }</div>
+//   {spotDetails.numReviews > 1 ?
+//   <div>{spotDetails.numReviews} reviews</div> :
+//   <div>{spotDetails.numReviews} review</div>
+//   }
+// </div>
+  const numReviewCreator = () =>{
+    if(spotDetails.avgRating < 1){
+      return(
+        <div>&#9733; New</div>
+      )
+    }
+    if(spotDetails.numReviews > 1){
+      return(
+        <div>&#9733; {spotDetails.numReviews.toFixed(1)} reviews</div>
+      )
+    }else{
+      return <div>&#9733; {spotDetails.numReviews} review</div>
+    }
+
+  }
 
 
 
@@ -121,11 +142,12 @@ export const SpotDetails = () => {
                 </div>
 
                 <div className='right-cont'>
-                  <div>&#9733; {spotDetails.avgRating <= 0 ? 'New' : spotDetails.avgRating.toFixed(1) }</div>
-                  {/* <div>&#9733; {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)} </div> */}
-                  {spotDetails.numReviews > 0 &&
-                  <div>{spotDetails.numReviews} reviews</div>
-                  }
+                  {numReviewCreator()}
+                  {/* <div>&#9733; {spotDetails.avgRating <= 0 ? 'New' : spotDetails.avgRating.toFixed(1) }</div>
+                  {spotDetails.numReviews > 1 ?
+                  <div>{spotDetails.numReviews} reviews</div> :
+                  <div>{spotDetails.numReviews} review</div>
+                  } */}
                 </div>
 
 
