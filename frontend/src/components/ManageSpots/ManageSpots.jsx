@@ -5,6 +5,7 @@ import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import {DeleteSpot} from "./DeleteSpot/DeleteSpot"
 import { useEffect, useState} from "react";
 import './ManageSpots.css';
+import './DeleteSpot/DeleteSpot.css'
 import { thunkDeleteSpot, thunkGetAllSpots  } from "../../store/spots";
 
 
@@ -18,6 +19,9 @@ export const ManageSpots = () =>{
     const allSpots = useSelector(state => state.spots);
     const users = useSelector(state => state.session.user)
     let user;
+    // console.log('users',users)
+    if(!users) navigate('*')
+    // !users? navigate('*') : null
     users ?  user = users.id : null
     // console.log('USERS',users)
     // const user = users.id
@@ -57,11 +61,11 @@ export const ManageSpots = () =>{
     // console.log('SPOTS IN MANAGE',spots)
 
     // if(!spots) return null
-    if(filteredSpots.length === 0){
-        console.log('SPOTS THIRD',spots, 'FILTERED SPOTS THIRD', filteredSpots, 'ALL SPOTS THIRD',allSpots)
-        return null
-    }
-    console.log('SPOTS FOURTH',spots, 'FILTERED SPOTS FOURTH', filteredSpots, 'ALL SPOTS FOURTH',allSpots)
+    // if(filteredSpots.length === 0){
+    //     // console.log('SPOTS THIRD',spots, 'FILTERED SPOTS THIRD', filteredSpots, 'ALL SPOTS THIRD',allSpots)
+    //     return null
+    // }
+    // console.log('SPOTS FOURTH',spots, 'FILTERED SPOTS FOURTH', filteredSpots, 'ALL SPOTS FOURTH',allSpots)
 
     return(
         <div className='curr-main-container'>
@@ -103,13 +107,16 @@ export const ManageSpots = () =>{
                             <button onClick={() => navigate(`/spots/${spot.id}/edit`)}>
                                 Update</button>
 
-                            <div >
+
+
                                 { <OpenModalButton
+
                                     buttonText='Delete'
+
                                     modalComponent={<DeleteSpot id={spot.id} onDelete={onDelete}/>}
                                 /> }
 
-                            </div>
+
 
                             </div>
 

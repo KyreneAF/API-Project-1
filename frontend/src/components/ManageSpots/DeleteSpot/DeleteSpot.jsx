@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useModal } from "../../../context/Modal";
 import { thunkDeleteSpot } from "../../../store/spots";
 import "./DeleteSpot.css";
+// import './ManageSpots.css'
 
 export const DeleteSpot = ({ id, onDelete }) => {
   id = Number(id)

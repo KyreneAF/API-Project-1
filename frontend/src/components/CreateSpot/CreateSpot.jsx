@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./CreateSpot.css";
 import { thunkCreateSpot } from "../../store/spots";
 
@@ -22,6 +22,11 @@ export const CreateSpot = () => {
   const [image2, setImage2] = useState("");
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
+
+  // const users = useSelector(state => state.session.user)
+  // console.log('users',users)
+
+  // if(!users) return navigate('*')
 
   //THIS WILL KEEP FORM FROM SUBMITTING BUT I WANT IT TO SUBMIT AND THEN RETURN ERROR SO I MOVED DOWN
   // useEffect(() => {

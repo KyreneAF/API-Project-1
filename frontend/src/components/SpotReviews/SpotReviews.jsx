@@ -34,12 +34,23 @@ export function SpotReviews({ ownerId, avgRating, numReviews}){
 
 
 
+// console.log('REVIEWS',reviews,'REVIEWARR',reviewsArr)
 const reviewSumCreator = () => {
 
 
-  if(!reviewsArr.length && ownerId !== currUserId){
-   return <h3>Be the first to post a review!</h3>
-  }else{
+  if(reviewsArr.length <= 0 && ownerId !== currUserId){
+   return (
+    <div className='new-cont'>
+      <div>&#9733; New</div>
+      <h3>Be the first to post a review!</h3>
+    </div>
+   )
+
+
+  }if(reviewsArr.length <= 0 && ownerId == currUserId){
+    return <div className='new-cont'>&#9733; New</div>
+  }
+  else{
     return(
       <div className='rating-sum-container' >
 
