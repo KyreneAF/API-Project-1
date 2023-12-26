@@ -135,3 +135,7 @@
   flex-direction: column;
   width: 50%;
 }
+
+.new-cont > h3{
+  font-weight: 350;
+}
