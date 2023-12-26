@@ -19,23 +19,21 @@ export const ManageSpots = () =>{
     const allSpots = useSelector(state => state.spots);
     const users = useSelector(state => state.session.user)
     let user;
-    // console.log('users',users)
+
     if(!users) navigate('*')
-    // !users? navigate('*') : null
     users ?  user = users.id : null
-    // console.log('USERS',users)
-    // const user = users.id
+
 
     const filteredSpots = Object.values(allSpots).filter(spot => spot.ownerId === user)
     const [spots, setCurrSpots] = useState(filteredSpots)
     const dispatch = useDispatch()
 
 
-    // console.log('SPOTS FIRST',spots, 'FILTERED SPOTS FIRST', filteredSpots, 'ALL SPOTS FIRST',allSpots)
+
 
     useEffect(() =>{
         dispatch(thunkGetAllSpots())
-        // console.log('SPOTS SECOND',spots, 'FILTERED SPOTS SECOND', filteredSpots, 'ALL SPOTS SECOND',allSpots)
+
     },[dispatch])
 
 
@@ -58,14 +56,6 @@ export const ManageSpots = () =>{
 
     }
 
-    // console.log('SPOTS IN MANAGE',spots)
-
-    // if(!spots) return null
-    // if(filteredSpots.length === 0){
-    //     // console.log('SPOTS THIRD',spots, 'FILTERED SPOTS THIRD', filteredSpots, 'ALL SPOTS THIRD',allSpots)
-    //     return null
-    // }
-    // console.log('SPOTS FOURTH',spots, 'FILTERED SPOTS FOURTH', filteredSpots, 'ALL SPOTS FOURTH',allSpots)
 
     return(
         <div className='curr-main-container'>
@@ -81,13 +71,13 @@ export const ManageSpots = () =>{
                         <div key={spot.id} className='manage-spot-tile'>
 
                          {spot.previewImage ? (
-                            <img className='manage-img' src={spot.previewImage} onClick={() => onClickNav(spot.id)} onError={e => {
+                            <img className='img-ms' src={spot.previewImage} onClick={() => onClickNav(spot.id)} onError={e => {
                         e.target.src = 'https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0';
                     }} />
 
                     ) : (
                         <img
-                        className='manage-img'
+                        className='img-ms'
                           src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"
                           alt="Fallback Image"
                           onClick={() => onClickNav(spot.id)}
@@ -96,7 +86,8 @@ export const ManageSpots = () =>{
 
                         <div className='manage-city-stars' onClick={() => onClickNav(spot.id)}>
                             <div>{spot.city}, {spot.state}</div>
-                            <div>&#9733; {spot.avgRating && spot.avgRating.toFixed(1)}</div>
+                            {spot.avgRating && spot.avgRating > 0? <div>&#9733; {spot.avgRating  && spot.avgRating.toFixed(1)}</div> : <div>&#9733; New</div>}
+                            {/* // <div>&#9733; {spot.avgRating  && spot.avgRating.toFixed(1)}</div> */}
 
                         </div>
                             <div className='manage-price'onClick={() => onClickNav(spot.id)}>${spot.price.toFixed(2)} night</div>

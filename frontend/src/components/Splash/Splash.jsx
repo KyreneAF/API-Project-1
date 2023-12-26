@@ -65,8 +65,7 @@ const avgReviewsCreator = (spot) =>{
                     {spot.city}, {spot.state}
                   </div>
                   <div className='star-num-text'>
-                    &#9733;{" "}
-                    {avgReviewsCreator(spot)}
+                    &#9733; {avgReviewsCreator(spot)}
                     {/* {spot.avgRating !== null && spot.avgRating.toFixed(1)} */}
                   </div>
                 </div>
