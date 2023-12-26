@@ -7,6 +7,7 @@ import { DeleteReview } from "./DeleteReview";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import { CreateReview } from "./CreateReview/CreateReview";
 import './SpotReviews.css'
+import '../OpenModalButton/OpenModalButton.css'
 
 export function SpotReviews({ ownerId, avgRating, numReviews}){
 
@@ -17,11 +18,9 @@ export function SpotReviews({ ownerId, avgRating, numReviews}){
   let currUserId = useSelector(state => state.session.user?.id)
 
 
-  const reviewsArr = Object.values(reviews)
-  const dispatch = useDispatch()
+  const reviewsArr = Object.values(reviews).sort((a, b) => b.id - a.id);
 
-  // console.log('SPOTID',spotId ,'OWNERID',ownerId ,'AVGRATE',avgRating,'NUMREVIEWS',numReviews,'CURRUSER',currUserId,)
-  // console.log('REVIEWSARR',reviewsArr,'REVIEWS',reviews)
+  const dispatch = useDispatch()
 
 
 
@@ -35,18 +34,28 @@ export function SpotReviews({ ownerId, avgRating, numReviews}){
 
 
 
+// console.log('REVIEWS',reviews,'REVIEWARR',reviewsArr)
 const reviewSumCreator = () => {
 
 
-  if(!reviewsArr.length && ownerId !== currUserId){
-   return <h3>Be the first to post a review!</h3>
-  }else{
+  if(reviewsArr.length <= 0 && ownerId !== currUserId){
+   return (
+    <div className='new-cont'>
+      <div>&#9733; New</div>
+      <h3>Be the first to post a review!</h3>
+    </div>
+   )
+
+
+  }if(reviewsArr.length <= 0 && ownerId == currUserId){
+    return <div className='new-cont'>&#9733; New</div>
+  }
+
+  if(numReviews > 1){
     return(
       <div className='rating-sum-container' >
-
-      {/* <div>&#9733;</div> */}
       <i className="fa-solid fa-star"></i>
-     <div>{ avgRating && avgRating.toFixed(1)}</div>
+     <div>{ avgRating &&  avgRating.toFixed(1)}</div>
 
     <div>&middot;</div>
     <div>
@@ -56,6 +65,21 @@ const reviewSumCreator = () => {
     </div>
 
     )
+  }else{
+    return(
+      <div className='rating-sum-container' >
+      <i className="fa-solid fa-star"></i>
+     <div>{ avgRating &&  avgRating.toFixed(1)}</div>
+
+    <div>&middot;</div>
+    <div>
+      {numReviews} review
+    </div>
+
+    </div>
+
+    )
+
   }
 }
 
@@ -68,8 +92,9 @@ const addReviewClick =  () =>{
     return(
       <div >
       { <OpenModalButton
+
           buttonText='Post Your Review'
-          modalComponent={<CreateReview spotId={spotId}/>}
+          modalComponent={<CreateReview spotId={spotId} reviews={reviews}/>}
       /> }
 
   </div>

@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkDeleteReview } from "../../store/reviews"
 import { useModal } from "../../context/Modal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
-
+import { thunkGetDetailsSpot } from "../../store/spots";
+import './DeleteReview.css'
 
 export function DeleteReview({currUserId,id,reviewOwner}){
     // console.log('CURRUSERID', currUserId, 'ID', id, 'OWNER ID', reviewOwner)
@@ -10,6 +11,7 @@ export function DeleteReview({currUserId,id,reviewOwner}){
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const reviews = useSelector(state => state.reviews)
+    // const spots = useSelector(state => state.spots)
     // console.log('review',reviews)
     // console.log('REVIEWS BEFORE DISPATCH',reviews)
 
@@ -28,20 +30,22 @@ export function DeleteReview({currUserId,id,reviewOwner}){
         e.preventDefault();
          await dispatch(thunkDeleteReview(reviews[id].id))
         //  console.log('REVIEWID AFTER DISPATCH',reviews)
+        await dispatch(thunkGetDetailsSpot(id)).then(() =>{
+          closeModal()
+        })
 
 
-        closeModal()
 
     }
 
     const onModalOpen = () => {
         return(
             <div className="delete-review-main-container">
-            <div>Confirm Delete</div>
+            <div className='rd-title' >Confirm Delete</div>
            <div>Are you sure you want to delete this review?</div>
            <div className="delete-review-button-container">
-             <button onClick={onClickDelete}>Yes (Delete review)</button>
-             <button onClick={closeModal}>No (Keep review)</button>
+             <button className='yes-delete' onClick={onClickDelete}>Yes (Delete review)</button>
+             <button className='no-delete' onClick={closeModal}>No (Keep review)</button>
            </div>
          </div>
 

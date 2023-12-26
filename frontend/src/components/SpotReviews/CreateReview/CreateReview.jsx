@@ -1,15 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
-import {  useState } from "react";
+import {  useState,useEffect } from "react";
 // import { useParams } from "react-router-dom";
 import { thunkCreateReview } from "../../../store/reviews.js";
 import { thunkGetReviews } from "../../../store/reviews.js";
+import { thunkGetDetailsSpot } from "../../../store/spots.js";
 import { useModal } from "../../../context/Modal.jsx";
 import "./CreateReview.css";
+// import './OpenModalButton/OpenModalButton.css'
 
 
 
 
-export const CreateReview = ({spotId}) => {
+export const CreateReview = ({spotId }) => {
   // const {id}  = useParams(); // <- this seems to not work bc there isn't a route. maybe findSpot instead?
    spotId =  Number(spotId)
   const dispatch = useDispatch();
@@ -28,6 +30,9 @@ export const CreateReview = ({spotId}) => {
 
     const currUser = useSelector((state) => state.session.user)
     const currSpot = useSelector((state) => state.spots)
+    const reviews = useSelector((state) => state.reviews)
+
+    console.log('REVIEWS IN CREATE REVIEWS',reviews)
 
 
     const user = {
@@ -35,7 +40,6 @@ export const CreateReview = ({spotId}) => {
         firstName:currUser.firstName,
         lastName:currUser.lastName
     }
-
 
 
 
@@ -65,7 +69,7 @@ export const CreateReview = ({spotId}) => {
       review,
       stars,
     }
-    console.log('CREATED REVIEW', createdReview)
+    // console.log('CREATED REVIEW', createdReview)
 
     if(Object.values(errors).length === 0){
       console.log('ERRORS', errors)
@@ -78,6 +82,7 @@ export const CreateReview = ({spotId}) => {
     closeModal();
 
     dispatch(thunkGetReviews(spotId))
+    dispatch(thunkGetDetailsSpot(spotId))
 
         // return () => dispatch(thunkGetReviews(spotId))
 
@@ -92,10 +97,10 @@ export const CreateReview = ({spotId}) => {
     <>
 
       <div className="create-review-container">
-        <h1>How was your stay?</h1>
+        <div className='cr-title-cont' >How was your stay?</div>
         { Object.keys(errors) && <div >{Object.values(errors).map((msg,index) => <div key={index}>{msg}</div>)}</div>}
 
-        <form onSubmit={onSubmit}>
+        <form className='form-cr-cont' onSubmit={onSubmit}>
           <textarea
             placeholder="Leave your review here..."
             value={review}
@@ -108,21 +113,29 @@ export const CreateReview = ({spotId}) => {
                 star,
                 index //<- only way I can think to add a unique key
               ) => (
+                <label key='index'>
                 <input
                   key={index}
                   type="radio"
                   name="stars"
                   value={star}
+                  min={1}
+                  max={5}
                   id={`star-${star}`}
                   checked={stars === star}
                   onChange={(e) => setStars(Number(e.target.value))}
                 />
+                {/* <i className="fa-light fa-star"></i> */}
+                </label>
+
+
               )
             )}
             Stars
           </div>
           <div>
             <button
+            disabled={stars <= 0 || review.length < 10}
               type="submit"
               className="review-submit-btn"
               // disabled={validations.review || validations.stars || errors.same}

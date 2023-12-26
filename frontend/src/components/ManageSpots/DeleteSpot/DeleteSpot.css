@@ -1,0 +1,55 @@
+.curr-bttn-container .bttn-modal{
+
+        padding: 5px;
+        width: 60px;
+        /* color: rgba(0, 0, 0, 0.5); */
+        color: #ffffff;
+        border: 0.9px solid rgba(0, 0, 0, 0.5);
+        border-radius: 2px;
+        box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+        background-color: rgb(204, 200, 200);
+
+}
+
+.delete-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90%;
+    justify-content: space-evenly;
+    width:80%;
+  }
+
+  .delete-title-cont-ms {
+    font-size: 25px;
+  }
+
+  .delete-title-cont-ms {
+    font-size: 30px;
+  }
+
+
+.delete-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+.delete-button-container > button{
+    padding:15px;
+    width:300px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color:#ffffff;
+}
+
+.yes-delete{
+    background-color: rgb(255,55,93);
+}
+.no-delete{
+    background-color: rgba(0, 0, 0, 0.3);
+}

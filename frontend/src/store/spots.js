@@ -5,7 +5,6 @@ import { csrfFetch } from "./csrf";
 const LOAD_ALLSPOTS = "spots/LOAD_ALLSPOTS";
 const LOAD_SPOTDETAILS = "spots/LOAD_SPOTDETAILS";
 const CREATE_SPOT = "spots/CREATE_SPOT";
-
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
 
@@ -38,13 +37,14 @@ export const createSpot = (spot,images) => {
 };
 
 // GET ALL SPOTS CURRENT USER
-// export const loadCurrentSpots = (spots) => {
-//   console.log("LOAD SPOTS METHOD", spots);
-//   return {
-//     type: LOAD_CURRENT_SPOTS,
-//     spots,
-//   };
-// };
+export const loadCurrentSpots = (spots) => {
+
+  return {
+    type: LOAD_CURRENT_SPOTS,
+    spots
+
+  };
+};
 
 export const updateSpot = (spot) => {
   return {
@@ -67,6 +67,8 @@ export const thunkGetAllSpots = () => async (dispatch) => {
   if (res.ok) {
     const spots = await res.json();
     dispatch(loadSpots(spots));
+    return spots
+
   } else {
     return await res.json();
   }
@@ -79,7 +81,6 @@ export const thunkGetDetailsSpot = (id) => async (dispatch) => {
 
   if (res.ok) {
     const data = await res.json();
-    console.log('SPOT DETAILS AFTER JSON',data)
     dispatch(loadSpotDetails(data));
   } else {
     //Below is a possible refactor see createSpot.
@@ -201,7 +202,7 @@ export const spotReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case LOAD_ALLSPOTS: {
-        let newState = { ...state };
+        let newState = {...state};
 
         action.spots.Spots.forEach((spot) => {
           let newSpot = { ...spot, SpotImages: [], Owner: {} };
@@ -226,12 +227,14 @@ export const spotReducer = (state = initialState, action) => {
     }
 
     case CREATE_SPOT:{
-      console.log("action.spot", action.spot)
+      // console.log("action.spot", action.spot)
       let newState = {...state,[action.spot.id]:{Owner:{},SpotImages:[],...action.spot}}
       // console.log('STATE IN REDUCER', newState)
       return newState
 
     }
+
+
 
 
     // case LOAD_CURRENT_SPOTS: {

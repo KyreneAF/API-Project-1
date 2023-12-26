@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetDetailsSpot } from "../../store/spots";
+import { thunkGetReviews, clearState } from "../../store/reviews";
 import { SpotReviews } from "../SpotReviews/SpotReviews";
 import "./SpotDetails.css";
 
@@ -11,27 +12,42 @@ export const SpotDetails = () => {
 
   // const spotDetails = useSelector((state) => state.spots[id]);
   const spots = useSelector(state => state.spots)
+  const reviews = useSelector(state => state.reviews)
+
   const spotDetails =spots[id]
+  // const [numReviews, setNumReviews] = useState('');
+  // const [avgRating, setAvgRating] = useState('');
 
 
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
+
+    // return () => dispatch(thunkGetReviews(id))
   }, [dispatch, id]);
 
-  // console.log("THIS IS SPOTDETAILS", spotDetails);
+  useEffect(() => {
+    dispatch(thunkGetReviews(id));
+
+    // return () => dispatch(thunkGetReviews(id))
+    return () => dispatch(clearState())
+  }, [dispatch, id]);
+
+
+
   if (!spotDetails || spotDetails.SpotImages.length === 0) {
     return null;
   }
 
 
 
+
   const imageContCreator = () =>{
 
     const bigImg = spotDetails.SpotImages[0]
-    // console.log('BIG IMG', bigImg)
+
     const smallImgs = spotDetails.SpotImages.slice(1)
-    // console.log('small img', smallImgs)
+
 
     return(
       <div className="spot-img-container">
@@ -57,6 +73,27 @@ export const SpotDetails = () => {
         </div>
       </div>
     )
+
+  }
+//   <div>&#9733; {spotDetails.avgRating <= 0 ? 'New' : spotDetails.avgRating.toFixed(1) }</div>
+//   {spotDetails.numReviews > 1 ?
+//   <div>{spotDetails.numReviews} reviews</div> :
+//   <div>{spotDetails.numReviews} review</div>
+//   }
+// </div>
+  const numReviewCreator = () =>{
+    if(spotDetails.avgRating < 1){
+      return(
+        <div>&#9733; New</div>
+      )
+    }
+    if(spotDetails.numReviews > 1){
+      return(
+        <div>&#9733; {spotDetails.numReviews.toFixed(1)} reviews</div>
+      )
+    }else{
+      return <div>&#9733; {spotDetails.numReviews} review</div>
+    }
 
   }
 
@@ -98,15 +135,22 @@ export const SpotDetails = () => {
 
             <div className="reserve-main-container">
               <div className="price-container">
-                <div></div>
-                <div style={{ fontWeight: "bold" }}>
-                  ${spotDetails.price.toFixed(2)} night
-                  <div className="star-container">
-                    <div>&#9733;</div>
-                    {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)}
-                    <div>{spotDetails.numReviews} reviews</div>
-                  </div>
+
+                <div className='left-cont'>
+                  <div>${spotDetails.price.toFixed(2)} night</div>
+
                 </div>
+
+                <div className='right-cont'>
+                  {numReviewCreator()}
+                  {/* <div>&#9733; {spotDetails.avgRating <= 0 ? 'New' : spotDetails.avgRating.toFixed(1) }</div>
+                  {spotDetails.numReviews > 1 ?
+                  <div>{spotDetails.numReviews} reviews</div> :
+                  <div>{spotDetails.numReviews} review</div>
+                  } */}
+                </div>
+
+
               </div>
               <button onClick={() => window.alert("Feature Coming Soon...")}>
                 Reserve
@@ -116,7 +160,7 @@ export const SpotDetails = () => {
 
           <div className="review-main-container">
 
-            <SpotReviews  ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
+            <SpotReviews reviews={reviews} ownerId={spotDetails.ownerId} avgRating={spotDetails.avgRating} numReviews={spotDetails.numReviews}/>
           </div>
         </>
       )}

@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 // import { thunkLoadCurrSpots } from "../../store/spots";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import {DeleteSpot} from "./DeleteSpot/DeleteSpot"
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import './ManageSpots.css';
-import { thunkDeleteSpot  } from "../../store/spots";
+import './DeleteSpot/DeleteSpot.css'
+import { thunkDeleteSpot, thunkGetAllSpots  } from "../../store/spots";
 
 
 export const ManageSpots = () =>{
@@ -16,7 +17,12 @@ export const ManageSpots = () =>{
     const navigate = useNavigate()
 
     const allSpots = useSelector(state => state.spots);
-    const user = useSelector(state => state.session.user.id)
+    const users = useSelector(state => state.session.user)
+    let user;
+
+    if(!users) navigate('*')
+    users ?  user = users.id : null
+
 
     const filteredSpots = Object.values(allSpots).filter(spot => spot.ownerId === user)
     const [spots, setCurrSpots] = useState(filteredSpots)
@@ -24,6 +30,11 @@ export const ManageSpots = () =>{
 
 
 
+
+    useEffect(() =>{
+        dispatch(thunkGetAllSpots())
+
+    },[dispatch])
 
 
     const handleOnClick = () =>{
@@ -45,10 +56,6 @@ export const ManageSpots = () =>{
 
     }
 
-    // console.log('SPOTS IN MANAGE',spots)
-
-    // if(!spots) return null
-    if(!spots) return null
 
     return(
         <div className='curr-main-container'>
@@ -59,17 +66,18 @@ export const ManageSpots = () =>{
             </div>
 
             <div className ='curr-spot-container' >
-            { spots.length && spots.map(spot =>(
+            {/* { spots.length > 0 && spots.map(spot =>( */}
+            { filteredSpots.map(spot =>(
                         <div key={spot.id} className='manage-spot-tile'>
 
                          {spot.previewImage ? (
-                            <img className='manage-img' src={spot.previewImage} onClick={() => onClickNav(spot.id)} onError={e => {
+                            <img className='img-ms' src={spot.previewImage} onClick={() => onClickNav(spot.id)} onError={e => {
                         e.target.src = 'https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0';
                     }} />
 
                     ) : (
                         <img
-                        className='manage-img'
+                        className='img-ms'
                           src="https://play-lh.googleusercontent.com/1zfN_BL13q20v0wvBzMWiZ_sL_t4KcCJBeAMRpOZeT3p34quM-4-pO-VcLj8PJNXPA0"
                           alt="Fallback Image"
                           onClick={() => onClickNav(spot.id)}
@@ -78,7 +86,8 @@ export const ManageSpots = () =>{
 
                         <div className='manage-city-stars' onClick={() => onClickNav(spot.id)}>
                             <div>{spot.city}, {spot.state}</div>
-                            <div>&#9733; {spot.avgRating && spot.avgRating.toFixed(1)}</div>
+                            {spot.avgRating && spot.avgRating > 0? <div>&#9733; {spot.avgRating  && spot.avgRating.toFixed(1)}</div> : <div>&#9733; New</div>}
+                            {/* // <div>&#9733; {spot.avgRating  && spot.avgRating.toFixed(1)}</div> */}
 
                         </div>
                             <div className='manage-price'onClick={() => onClickNav(spot.id)}>${spot.price.toFixed(2)} night</div>
@@ -89,13 +98,16 @@ export const ManageSpots = () =>{
                             <button onClick={() => navigate(`/spots/${spot.id}/edit`)}>
                                 Update</button>
 
-                            <div >
+
+
                                 { <OpenModalButton
+
                                     buttonText='Delete'
+
                                     modalComponent={<DeleteSpot id={spot.id} onDelete={onDelete}/>}
                                 /> }
 
-                            </div>
+
 
                             </div>
 

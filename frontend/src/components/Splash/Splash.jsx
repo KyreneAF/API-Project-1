@@ -20,6 +20,16 @@ export const Splash = () => {
     navigate(`/spots/${id}`);
   };
 
+const avgReviewsCreator = (spot) =>{
+
+  if(!spot.avgRating){
+    return "New"
+  }else if(spot.avgRating && spot.avgRating > 0){
+    return  spot.avgRating.toFixed(1)
+  }
+}
+
+
   if (!allSpots || !spots.length) return null;
 
   return (
@@ -54,9 +64,9 @@ export const Splash = () => {
                   <div>
                     {spot.city}, {spot.state}
                   </div>
-                  <div>
-                    &#9733;{" "}
-                    {spot.avgRating !== null && spot.avgRating.toFixed(1)}
+                  <div className='star-num-text'>
+                    &#9733; {avgReviewsCreator(spot)}
+                    {/* {spot.avgRating !== null && spot.avgRating.toFixed(1)} */}
                   </div>
                 </div>
                 <div className="price">${spot.price.toFixed(2)} night</div>

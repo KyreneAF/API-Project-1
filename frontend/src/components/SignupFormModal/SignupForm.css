@@ -1,0 +1,74 @@
+.signup-form-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    justify-content: center;
+  }
+  .su-label-cont{
+    display: flex;
+    flex-direction: column;
+
+  }
+
+ #modal-content {
+    height: 420px;
+    width: 400px;
+
+  }
+
+  .su-title-cont{
+    margin-bottom: 20px;
+    align-self: center;
+    font-size: 20px;
+    /* bottom-border: */
+  }
+
+  /* .signup-form-main-container > form{
+    height:100%;
+  } */
+
+  .su-input-main-cont {
+    height: 80%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    width:300px;
+  }
+
+  /* .su-input-main-cont > p{
+    margin:0px;
+    color: red;
+    font-size: 12px;
+
+  } */
+.su-bttn{
+  padding:10px;
+  color:rgba(0, 0, 0, 0.5);
+  box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
+  background-color: #fff;
+  border: 1px, solid rgb(231, 229, 229) ;
+  width:100%;
+  align-self: center;
+  border-radius: 3px;
+}
+.su-label-cont > input{
+  background-color: rgb(206, 229, 236);
+}
+
+.error-cont-su{
+  color: rgb(255,55,93);
+  font-size:12px
+}
+
+.failed-su-bttn{
+  background-color: rgb(255,55,93);
+  padding:10px;
+  box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
+  border: 1px, solid rgb(231, 229, 229) ;
+  width:100%;
+  align-self: center;
+  border-radius: 3px;
+  color:white
+}
