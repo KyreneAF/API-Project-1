@@ -13,13 +13,14 @@
   }
 
   #modal-content {
-    height: 600px;
+    height: 420px;
     width: 400px;
   }
 
   .su-title-cont{
+    margin-bottom: 20px;
     align-self: center;
-    font-size: 25px;
+    font-size: 20px;
     /* bottom-border: */
   }
 
@@ -30,17 +31,17 @@
   .su-input-main-cont {
     height: 80%;
     display: flex;
-    gap: 20px;
+    gap: 10px;
     flex-direction: column;
     width:300px;
   }
 
-  .su-input-main-cont > p{
+  /* .su-input-main-cont > p{
     margin:0px;
     color: red;
     font-size: 12px;
 
-  }
+  } */
 .su-bttn{
   padding:10px;
   color:rgba(0, 0, 0, 0.5);
@@ -53,4 +54,20 @@
 }
 .su-label-cont > input{
   background-color: rgb(206, 229, 236);
+}
+
+.error-cont-su{
+  color: red;
+  font-size:12px
+}
+
+.failed-su-bttn{
+  background-color: red;
+  padding:10px;
+  box-shadow: 3px 3px 6px 6px rgb(231, 229, 229);
+  border: 1px, solid rgb(231, 229, 229) ;
+  width:100%;
+  align-self: center;
+  border-radius: 3px;
+  color:white
 }

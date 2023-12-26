@@ -121,9 +121,11 @@ export const SpotDetails = () => {
                 </div>
 
                 <div className='right-cont'>
-                  <div>&#9733; {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)} </div>
+                  <div>&#9733; {spotDetails.avgRating <= 0 ? 'New' : spotDetails.avgRating.toFixed(1) }</div>
+                  {/* <div>&#9733; {spotDetails.avgRating && spotDetails.avgRating.toFixed(1)} </div> */}
+                  {spotDetails.numReviews > 0 &&
                   <div>{spotDetails.numReviews} reviews</div>
-
+                  }
                 </div>
 
 

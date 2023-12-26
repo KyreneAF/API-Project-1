@@ -25,6 +25,7 @@ function SignupFormModal() {
 
     if (password === confirmPassword) {
       setErrors({});
+      let errObj = {}
       return dispatch(
         sessionActions.signup({
           email,
@@ -39,6 +40,7 @@ function SignupFormModal() {
           const data = await res.json();
           console.log(data)
           if (data?.errors) {
+            errObj.errors = data.errors
             setErrors(data.errors);
           }
         });
@@ -46,11 +48,13 @@ function SignupFormModal() {
     return setErrors({
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
+
   };
 
   return (
     <div className='signup-form-main-container' >
       <div className='su-title-cont'>Sign Up</div>
+      {Object.values(errors) && Object.values(errors).map((err,index) => <div className='error-cont-su' key={index}>{err}</div>)}
       <form onSubmit={handleSubmit}>
         <div className='su-input-main-cont' >
         <label className='su-label-cont' >
@@ -62,7 +66,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {/* {errors.email && <p>{errors.email}</p>} */}
         <label className='su-label-cont'>
           Username
           <input
@@ -72,7 +76,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {/* {errors.username && <p>{errors.username}</p>} */}
         <label className='su-label-cont'>
           First Name
           <input
@@ -82,7 +86,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {/* {errors.firstName && <p>{errors.firstName}</p>} */}
         <label className='su-label-cont' >
           Last Name
           <input
@@ -92,7 +96,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {/* {errors.lastName && <p>{errors.lastName}</p>} */}
         <label className='su-label-cont' >
           Password
           <input
@@ -102,7 +106,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {/* {errors.password && <p>{errors.password}</p>} */}
         <label className='su-label-cont' >
           Confirm Password
           <input
@@ -112,10 +116,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
-        )}
-        <button className='su-bttn' disabled={!disable || username.length < 4 || password.length < 6} type="submit">Sign Up</button>
+        {/* {errors.confirmPassword && (
+         <p>{errors.confirmPassword}</p>
+         )} */}
+        <button className={Object.values(errors).length > 0? 'failed-su-bttn' : 'su-bttn'} disabled={!disable || username.length < 4 || password.length < 6} type="submit">
+          Sign Up</button>
         </div>
       </form>
     </div>
