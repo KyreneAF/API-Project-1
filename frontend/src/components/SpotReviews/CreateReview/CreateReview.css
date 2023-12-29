@@ -50,11 +50,9 @@
 
 
 .star-container > li {
-  /* color: (231, 229, 229); */
+
   color: rgb(155, 149, 149);
   display: flex;
-
-
 
 }
 
