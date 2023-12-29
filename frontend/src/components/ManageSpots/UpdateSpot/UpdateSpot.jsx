@@ -23,7 +23,26 @@ export const UpdateSpot = () => {
 
 
 
+
     const [address,setAddress] = useState('');
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const spot = useSelector((state) => state.spots)
+    const oldSpot = spot[id]
+
+    console.log('OLD SPOT',oldSpot)
+
+
+
+
+    // const [image1, setImage1] = useState(oldSpot.SpotImages[1].url);
+    // const [image2, setImage2] = useState(oldSpot.SpotImages[2].url);
+    // const [image3, setImage3] = useState(oldSpot.SpotImages[3].url);
+    // const [image4, setImage4] = useState(oldSpot.SpotImages[4].url);
+
+    const [address,setAddress] = useState("");
+
     const [city,setCity] = useState('');
     const [state,setState] = useState('');
     const [country,setCountry] = useState('');
@@ -40,8 +59,6 @@ export const UpdateSpot = () => {
     const [image4, setImage4] = useState('');
 
 
-
-
     useEffect(() =>{
 
       dispatch(thunkGetDetailsSpot(spotId))
@@ -49,9 +66,11 @@ export const UpdateSpot = () => {
     },[dispatch,spotId])
 
 
+
+
     useEffect(() => {
       if (oldSpot) {
-        console.log('spot',oldSpot)
+
         setAddress(oldSpot.address);
         setCity(oldSpot.city);
         setState(oldSpot.state);
@@ -61,6 +80,7 @@ export const UpdateSpot = () => {
         setName(oldSpot.name)
         setDescription(oldSpot.description);
         setPrice(oldSpot.price);
+
 
 
           let prevImg = oldSpot.SpotImages.find(imgObj => imgObj.preview === true)
@@ -79,20 +99,29 @@ export const UpdateSpot = () => {
     }, [oldSpot]);
 
 
+
     const onSubmit = async(e) =>{
         e.preventDefault();
-        const errObj ={}
+        let errObj ={}
+
+
 
         if(!address) errObj.address = 'Address is required';
         if(!city) errObj.city = 'City is required';
         if(!state) errObj.state = 'State is required';
         if(!country) errObj.country = 'Country is required';
         if(!description || description.length < 30) errObj.description = 'Description needs 30 or more characters';
+
         // if(!previewImg) errObj.previewImg = 'Preview Image is required'; // checklist says optional
         if(!price) errObj.price = "Price per night is required";
         if(isNaN(Number(price))) {errObj.price = 'Must be valid price'};
+
+        if(!previewImg) errObj.previewImg = 'Preview Image is required'; // checklist says optional
+        if(!price) errObj.price = "Price per night is required"
+
         if(!name) errObj.name = 'Title for Spot is required'
 
+        console.log('err object',errObj)
         setValidations(errObj)
         console.log('errObj',errObj,'check',!Object.values(errObj).length)
         if(Object.values(errObj).length) return
@@ -120,6 +149,7 @@ export const UpdateSpot = () => {
             //   Images.push({url: image4, preview: false});
             // }
 
+
             // let newSpot = {
             //     Spot: {
             //         address,
@@ -135,8 +165,6 @@ export const UpdateSpot = () => {
 
             // }
               let newSpot = {
-                Spot:{
-
                     address,
                     city,
                     state,
@@ -147,15 +175,16 @@ export const UpdateSpot = () => {
                     price,
                     description
 
-                  }
+
             }
 
 
             newSpot = await dispatch(thunkUpdateSpot(spotId,newSpot))
 
-            console.log('!!!!', newSpot)
+            console.log('new spot after dispatch', newSpot)
             navigate(`/spots/${spotId}`)
         }
+
 
     }
 
@@ -352,8 +381,10 @@ export const UpdateSpot = () => {
                 // disabled={Object.values(validations).length > 0}
 
                 >
+
                   Update your spot!
                   </button>
+
               </div>
             </form>
           </div>
