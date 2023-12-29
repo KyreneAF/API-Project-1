@@ -108,7 +108,7 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
   if(!res.ok){
     const errors = res.json()
     console.log('ERRORS',errors)
-    return errors
+    return errors.errors
   }
 
   if (res.ok) {
@@ -155,21 +155,21 @@ export const thunkCreateSpot = (spot,Images) => async (dispatch) => {
 
 
 //  THUNK UPDATE A SPOT
-export const thunkUpdateSpot = (spotId, spot,Images) => async (dispatch) => {
+export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(spot.Spot),
+    body: JSON.stringify(spot),
   });
 
   if (res.ok) {
-    const data = await res.json();
-    // console.log("hi i am data in thunk", data);
-    // dispatch(updateSpot(data));
-    dispatch(updateSpot(data));
-    return data
+    const updatedSpot = await res.json();
+
+
+    dispatch(updateSpot(updatedSpot));
+    return updatedSpot
   }
 };
 

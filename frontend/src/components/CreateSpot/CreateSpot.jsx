@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./CreateSpot.css";
 import { thunkCreateSpot } from "../../store/spots";
+import { createValidations } from './validations';
+
+
 
 export const CreateSpot = () => {
   const dispatch = useDispatch();
@@ -47,19 +50,20 @@ export const CreateSpot = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const errObj = {};
+    const errObj = createValidations(address,city,state,country,name,description,price,previewImg,image1,image2,image3,image4,);
+    setValidations(errObj)
 
-    if (!address) errObj.address = "Address is required";
-    if (!city) errObj.city = "City is required";
-    if (!state) errObj.state = "State is required";
-    if (!country) errObj.country = "Country is required";
-    if (!description || description.length < 30)
-      errObj.description = "Description needs 30 or more characters";
-    if (!previewImg) errObj.previewImg = "Preview Image is required";
-    if (!price) errObj.price = "Price per night is required";
-    if (!name) errObj.name = "Title for Spot is required";
+    // if (!address) errObj.address = "Address is required";
+    // if (!city) errObj.city = "City is required";
+    // if (!state) errObj.state = "State is required";
+    // if (!country) errObj.country = "Country is required";
+    // if (!description || description.length < 30)
+    //   errObj.description = "Description needs 30 or more characters";
+    // if (!previewImg) errObj.previewImg = "Preview Image is required";
+    // if (!price) errObj.price = "Price per night is required";
+    // if (!name) errObj.name = "Title for Spot is required";
 
-    setValidations(errObj);
+    console.log(validations)
 
     if (!Object.values(validations).length) {
       const newPreviewImage = {
@@ -99,6 +103,8 @@ export const CreateSpot = () => {
       // console.log('NEW SPOT', newSpot, 'IMAGES', Images)
 
     const createdSpot = await dispatch(thunkCreateSpot(newSpot,Images));
+
+
       // console.log('CREATED SPOT COMPONENT',create
 
       navigate(`/spots/${createdSpot.id}`);
