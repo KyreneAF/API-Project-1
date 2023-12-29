@@ -24,14 +24,6 @@ export const UpdateSpot = () => {
 
 
 
-    const [address,setAddress] = useState('');
-
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const spot = useSelector((state) => state.spots)
-    const oldSpot = spot[id]
-
-    console.log('OLD SPOT',oldSpot)
 
 
 
