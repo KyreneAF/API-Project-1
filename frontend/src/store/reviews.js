@@ -102,18 +102,19 @@ export const thunkCreateReview = (id, user, review) => async (dispatch) => {
 
   if (res.ok) {
     const review = await res.json();
-    console.log('review in thunk', review)
+
     review.User = {
       id: user.id,
       firsName: user.firstName,
       lastName: user.lastName,
     };
-
-    // console.log('review with user', review)
     dispatch(createReview(review));
     dispatch(thunkGetReviews(id));
+    return review
+    // console.log('review with user', review)
   }
-  return res;
+
+
 };
 
 

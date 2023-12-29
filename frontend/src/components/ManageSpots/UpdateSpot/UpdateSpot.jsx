@@ -16,25 +16,9 @@ export const UpdateSpot = () => {
    const navigate = useNavigate()
    const spot = useSelector((state) => state.spots)
    const oldSpot = spot[id]
-    // console.log('IM SPOTID',spotId)
 
-    // const spot = useSelector((state) => state.spots)
-
-
-
-
-
-
-
-
-
-    // const [image1, setImage1] = useState(oldSpot.SpotImages[1].url);
-    // const [image2, setImage2] = useState(oldSpot.SpotImages[2].url);
-    // const [image3, setImage3] = useState(oldSpot.SpotImages[3].url);
-    // const [image4, setImage4] = useState(oldSpot.SpotImages[4].url);
 
     const [address,setAddress] = useState("");
-
     const [city,setCity] = useState('');
     const [state,setState] = useState('');
     const [country,setCountry] = useState('');
