@@ -50,22 +50,21 @@ export const CreateSpot = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const errObj = createValidations(address,city,state,country,name,description,price,previewImg,image1,image2,image3,image4,);
+    const errObj = {}
+
+    if (!address) errObj.address = "Address is required";
+    if (!city) errObj.city = "City is required";
+    if (!state) errObj.state = "State is required";
+    if (!country) errObj.country = "Country is required";
+    if (!description || description.length < 30)errObj.description = "Description needs 30 or more characters";
+    if (!previewImg) errObj.previewImg = "Preview Image is required";
+    if(isNaN(Number(price))) {errObj.price = 'Must be valid price'};
+    if (!price) errObj.price = "Price per night is required";
+    if (!name) errObj.name = "Title for Spot is required";
+
     setValidations(errObj)
 
-    // if (!address) errObj.address = "Address is required";
-    // if (!city) errObj.city = "City is required";
-    // if (!state) errObj.state = "State is required";
-    // if (!country) errObj.country = "Country is required";
-    // if (!description || description.length < 30)
-    //   errObj.description = "Description needs 30 or more characters";
-    // if (!previewImg) errObj.previewImg = "Preview Image is required";
-    // if (!price) errObj.price = "Price per night is required";
-    // if (!name) errObj.name = "Title for Spot is required";
-
-    console.log(validations)
-
-    if (!Object.values(validations).length) {
+    if (!Object.values(errObj).length) {
       const newPreviewImage = {
         url: previewImg,
         preview: true,
