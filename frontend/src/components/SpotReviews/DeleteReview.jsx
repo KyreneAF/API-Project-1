@@ -5,19 +5,21 @@ import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import { thunkGetDetailsSpot } from "../../store/spots";
 import './DeleteReview.css'
 
-export function DeleteReview({id}){
+export function DeleteReview({id,spotId}){
 
-
+    console.log(id)
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const reviews = useSelector(state => state.reviews)
+    const spotIdConvert = Number(spotId)
+    console.log('spotId',spotIdConvert)
 
 
     const onClickDelete = async (e) =>{
         e.preventDefault();
          await dispatch(thunkDeleteReview(reviews[id].id))
 
-        await dispatch(thunkGetDetailsSpot(id)).then(() =>{
+        await dispatch(thunkGetDetailsSpot(spotId)).then(() =>{
           closeModal()
         })
 

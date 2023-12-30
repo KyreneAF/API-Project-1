@@ -69,7 +69,7 @@ export const CreateReview = ({ spotId }) => {
 
 
   };
-console.log('ERRORS',errors,'STARS',stars)
+// console.log('ERRORS',errors,'STARS',stars)
 
   return (
     <div className="create-review-container">

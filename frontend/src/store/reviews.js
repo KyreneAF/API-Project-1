@@ -33,6 +33,7 @@ const deleteReview = (id) =>{
   }
 }
 export const clearState = () => {
+  console.log('clear state was hit')
   return {
     type:CLEAR_STATE
   }

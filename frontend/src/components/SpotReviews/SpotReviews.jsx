@@ -129,7 +129,7 @@ return(
         />
 
         } */}
-        {review.userId === currUserId && <DeleteReview currUserId={review.userId} id={review.id} reviewOwner={review.userId}/>}
+        {review.userId === currUserId && <DeleteReview  id={review.id} spotId={id}/>}
         </div>
       ))
       }
