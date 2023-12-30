@@ -41,14 +41,14 @@ const reviewSumCreator = () => {
   if(reviewsArr.length <= 0 && ownerId !== currUserId){
    return (
     <div className='new-cont'>
-      <div>&#9733; New</div>
+      <div>&#9733; 0.0</div>
       <h3>Be the first to post a review!</h3>
     </div>
    )
 
 
   }if(reviewsArr.length <= 0 && ownerId == currUserId){
-    return <div className='new-cont'>&#9733; New</div>
+    return <div className='new-cont'>&#9733; 0.0</div>
   }
 
   if(numReviews > 1){

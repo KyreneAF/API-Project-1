@@ -116,7 +116,7 @@ export const CreateSpot = () => {
                 <div className="error-text">{validations.country}</div>
               )}
               <label>
-                Address
+               Street Address
                 <input
                   type="text"
                   name="Address"

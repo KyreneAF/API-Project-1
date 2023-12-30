@@ -23,7 +23,7 @@ export const DeleteSpot = ({ id, onDelete }) => {
     <>
       <div className="delete-main-container" >
         <div className='delete-title-cont-ms' >Confirm Delete</div>
-        <div className='delete-text-cont-ms' >Are you sure you want to remove this spot from the listings?</div>
+        <div className='delete-text-cont-ms' >Are you sure you want to remove this spot?</div>
         <div className="delete-button-container">
           <button className='yes-delete'onClick={removeSpot}>Yes (Delete Spot)</button>
           <button className='no-delete'onClick={closeModal}>No (Keep Spot)</button>

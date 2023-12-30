@@ -1,7 +1,7 @@
 .spl-main-cont {
     display: flex;
     justify-items: center;
-    margin-top: 40px;
+    margin-top: 60px;
     /* margin:40px; */
 }
 
@@ -62,18 +62,24 @@
 
 }
 
-.tool-tip{
+.tool-tip {
     visibility: hidden;
     border: 1px solid black;
-    position:absolute;
+    position: absolute;
+    background-color: white;
     z-index: 3;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    transform: translate(10px, 10px);
+    box-shadow: 3px 3px 3px gray;
+    font-size: 10px;
+  }
 
-}
-
-.spot-tile:hover.tool-tip{
+.spot-tile:hover .tool-tip{
     visibility:visible;
-    position:absolute;
-    z-index: 3;
+    /* position:absolute;
+    z-index: 3; */
 }
 
 
