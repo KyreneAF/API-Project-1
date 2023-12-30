@@ -66,7 +66,7 @@ function Navigation({ isLoaded }) {
 
           <i className="fa-brands fa-airbnb icon-img"></i>
           <NavLink className="nav-link home-title" to="/">
-            airbnb
+            ZenLair
           </NavLink>
         </div>
         <div className="signin-container">{isLoaded && sessionLinks}</div>

@@ -130,7 +130,7 @@ export const SpotDetails = () => {
                 </div>
               </div>
               <div className="desc-container">
-                <div>{spotDetails.description}</div>
+                {spotDetails.description}
               </div>
             </div>
 
