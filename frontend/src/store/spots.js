@@ -37,14 +37,14 @@ export const createSpot = (spot,images) => {
 };
 
 // GET ALL SPOTS CURRENT USER
-export const loadCurrentSpots = (spots) => {
+// export const loadCurrentSpots = (spots) => {
 
-  return {
-    type: LOAD_CURRENT_SPOTS,
-    spots
+//   return {
+//     type: LOAD_CURRENT_SPOTS,
+//     spots
 
-  };
-};
+//   };
+// };
 
 export const updateSpot = (spot) => {
   return {
@@ -182,7 +182,7 @@ export const thunkDeleteSpot = (id) => async (dispatch) => {
   });
 
   if (res.ok) {
-    const data = await res.json();
+     await res.json();
 
     dispatch(deleteSpot(id));
   }

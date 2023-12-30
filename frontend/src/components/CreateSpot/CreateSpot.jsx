@@ -38,7 +38,7 @@ export const CreateSpot = () => {
     if (!country) errObj.country = "Country is required";
     if (!description || description.length < 30)errObj.description = "Description needs 30 or more characters";
     if (!previewImg) errObj.previewImg = "Preview Image is required";
-    if(isNaN(Number(price))) {errObj.price = 'Must be valid price'};
+    if(isNaN(Number(price))) errObj.price = 'Must be valid price';
     if (!price) errObj.price = "Price per night is required";
     if (!name) errObj.name = "Title for Spot is required";
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetDetailsSpot } from "../../store/spots";
@@ -10,26 +10,27 @@ export const SpotDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  // const spotDetails = useSelector((state) => state.spots[id]);
+
   const spots = useSelector(state => state.spots)
   const reviews = useSelector(state => state.reviews)
 
   const spotDetails =spots[id]
-  // const [numReviews, setNumReviews] = useState('');
-  // const [avgRating, setAvgRating] = useState('');
+
 
 
 
   useEffect(() => {
     dispatch(thunkGetDetailsSpot(id));
 
-    // return () => dispatch(thunkGetReviews(id))
+
   }, [dispatch, id]);
+
+
 
   useEffect(() => {
     dispatch(thunkGetReviews(id));
 
-    // return () => dispatch(thunkGetReviews(id))
+
     return () => dispatch(clearState())
   }, [dispatch, id]);
 

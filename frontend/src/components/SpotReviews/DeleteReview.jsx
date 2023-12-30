@@ -5,31 +5,18 @@ import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import { thunkGetDetailsSpot } from "../../store/spots";
 import './DeleteReview.css'
 
-export function DeleteReview({currUserId,id,reviewOwner}){
-    // console.log('CURRUSERID', currUserId, 'ID', id, 'OWNER ID', reviewOwner)
+export function DeleteReview({id}){
+
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const reviews = useSelector(state => state.reviews)
-    // const spots = useSelector(state => state.spots)
-    // console.log('review',reviews)
-    // console.log('REVIEWS BEFORE DISPATCH',reviews)
 
-    // let newReviews = {...reviews}
-    // console.log('NEW REVIEWS BEFORE', newReviews)
-    // console.log('CHECKING KEY',newReviews[id] )
-    // delete newReviews[id]
-    // console.log('NEW REVIEWS AFTER', newReviews)
-    // console.log('FINAL NEW REVIEWS',newReviews)
-        // Update the local state when the id prop changes
-
-
-    // console.log('!!!!!!! REVIEW ID',reviews[id].id)
 
     const onClickDelete = async (e) =>{
         e.preventDefault();
          await dispatch(thunkDeleteReview(reviews[id].id))
-        //  console.log('REVIEWID AFTER DISPATCH',reviews)
+
         await dispatch(thunkGetDetailsSpot(id)).then(() =>{
           closeModal()
         })

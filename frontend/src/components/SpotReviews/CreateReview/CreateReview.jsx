@@ -55,7 +55,7 @@ export const CreateReview = ({ spotId }) => {
 
 
 
-     const resReview = await dispatch(thunkCreateReview(spotId, user, createdReview));
+     await dispatch(thunkCreateReview(spotId, user, createdReview));
 
 
 
@@ -74,7 +74,7 @@ console.log('ERRORS',errors,'STARS',stars)
   return (
     <div className="create-review-container">
       <div className="cr-title-cont">How was your stay?</div>
-      {Object.values(errors).length > 0 && Object.values(errors).map(err => <p className='err-cont'>{err}</p>)}
+      {Object.values(errors).length > 0 && Object.values(errors).map((err,i )=> <p key={i} className='err-cont'>{err}</p>)}
       <form className="form-cr-cont" onSubmit={onSubmit}>
         <textarea
           placeholder="Leave your review here..."

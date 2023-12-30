@@ -1,5 +1,4 @@
 import { useRef, useState, useContext, createContext } from 'react';
-import { NavLink } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './Modal.css';
 

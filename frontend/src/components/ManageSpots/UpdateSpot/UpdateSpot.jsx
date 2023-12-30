@@ -63,13 +63,13 @@ export const UpdateSpot = () => {
           let otherImgs = oldSpot.SpotImages.filter(imgObj => imgObj.preview === false)
 
           setPreviewImg(prevImg?prevImg.url:"");
-          setImage1(otherImgs[0]?otherImgs[0].url: "")
+          setImage1(otherImgs[0]?otherImgs[0].url: "");
           setImage2(otherImgs[1]?otherImgs[1].url: "");
           setImage3(otherImgs[2]?otherImgs[2].url: "");
           setImage4(otherImgs[3]?otherImgs[3].url: "");
 
 
-        // console.log('PREV IMG',prevImg,'OTHER IMG',otherImgs)
+
 
       }
     }, [oldSpot]);
@@ -90,7 +90,7 @@ export const UpdateSpot = () => {
 
         // if(!previewImg) errObj.previewImg = 'Preview Image is required'; // checklist says optional
         if(!price) errObj.price = "Price per night is required";
-        if(isNaN(Number(price))) {errObj.price = 'Must be valid price'};
+        if(isNaN(Number(price))) {errObj.price = 'Must be valid price'}
 
         if(!previewImg) errObj.previewImg = 'Preview Image is required'; // checklist says optional
         if(!price) errObj.price = "Price per night is required"
