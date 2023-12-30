@@ -55,6 +55,23 @@ let usersArr =[
     hashedPassword:bcrypt.hashSync('password6'),
 
   },
+  {
+    firstName:'Tony',
+    lastName:'Soprano',
+    username:'DiMeoFam',
+    email:'TonySop@user.io',
+    hashedPassword:bcrypt.hashSync('varsityathlete'),
+
+  },
+  {
+    firstName:'Jim',
+    lastName:'Lahey',
+    username:'jimbo1',
+    email:'jimbo@user.io',
+    hashedPassword:bcrypt.hashSync('password7'),
+
+  },
+
 
 ]
 module.exports = {
