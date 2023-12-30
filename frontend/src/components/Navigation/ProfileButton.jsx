@@ -7,7 +7,7 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // import './Navigation.css'
-import './ProfileButton.css'
+// import './ProfileButton.css'
 
 
 
@@ -73,12 +73,15 @@ function ProfileButton({ user }) {
           </div>
         ) : (
           <>
-          <div>
+          <div className='drop-down-box-cont'>
+            <div className='pb-block'>
             <OpenModalMenuItem
+            className='lI-text'
               itemText="Log In"
               onItemClick={closeMenu}
               modalComponent={<LoginFormModal />}
             />
+            </div>
             <OpenModalMenuItem
               itemText="Sign Up"
               onItemClick={closeMenu}

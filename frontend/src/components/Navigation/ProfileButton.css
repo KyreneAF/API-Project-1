@@ -1,5 +1,7 @@
 .manage-spots-pb-cont {
     display: flex;
+    /* width: 400px; */
+    justify-content: space-between;
   }
 
 .drop-down-box-cont{
@@ -13,14 +15,19 @@
     position: absolute;
     background-color: white;
     height: 125px;
-    right:80px;
+    right:60px;
+    width:165px;
+    overflow: hidden;
 
   }
+
 
   .pb-block {
     display: flex;
     flex-direction: column;
     align-content: center;
+    justify-content: center; /* Center contents vertically */
+    align-items: center;
     border-bottom: 1px solid rgba(0,0,0,0.3);
     width: 80%;
     padding: 10px;
@@ -45,3 +52,27 @@
     background-color: rgb(71, 69, 69);
     border-radius: 25px;
   }
+
+  .create-nav-link{
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color:inherit;
+    align-self: center;
+    margin-right: 20px;
+
+}
+
+.Li-text{
+  color:#717171;
+}
+
+
+
+/* .dropDownLoginSignup.deleteModalButton {
+  color: #717171;
+  display: flex;
+  font-size: 15px;
+  align-items: center;
+  justify-content: center;
+} */
