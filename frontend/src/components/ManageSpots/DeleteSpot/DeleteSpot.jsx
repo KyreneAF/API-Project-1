@@ -1,33 +1,32 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../context/Modal";
-import { thunkDeleteSpot } from "../../../store/spots";
+// import { thunkDeleteSpot } from "../../../store/spots";
 import "./DeleteSpot.css";
+// import './ManageSpots.css'
 
-export const DeleteSpot = ({ id }) => {
-  const dispatch = useDispatch();
+export const DeleteSpot = ({ id, onDelete }) => {
+  id = Number(id)
+
   const { closeModal } = useModal();
-  const spot = useSelector((state) => state.spots[id]);
-  // const spotID = Number (spot.id)
+  const [spotId] = useState(id)
 
-  if(!spot)return null
 
   const removeSpot = async () => {
-    // console.log('SPOTID',spot.id)
-    await dispatch(thunkDeleteSpot(spot.id));
 
 
-    closeModal();
+      onDelete(spotId);
+      closeModal();
   };
 
   return (
     <>
-      <div className="delete-main-container">
-        <div>Confirm Delete</div>
-        <div>Are you sure you want to delete this review?</div>
+      <div className="delete-main-container" >
+        <div className='delete-title-cont-ms' >Confirm Delete</div>
+        <div className='delete-text-cont-ms' >Are you sure you want to remove this spot?</div>
         <div className="delete-button-container">
-          <button onClick={removeSpot}>Yes (Delete Spot)</button>
-          <button onClick={closeModal}>No (Keep Spot)</button>
+          <button className='yes-delete'onClick={removeSpot}>Yes (Delete Spot)</button>
+          <button className='no-delete'onClick={closeModal}>No (Keep Spot)</button>
         </div>
       </div>
     </>

@@ -1,0 +1,74 @@
+.create-review-container {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    width:90%
+  }
+
+  .form-cr-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 60%;
+    width:90%;
+
+  }
+
+  .cr-title-cont{
+    font-size: 25px;
+  }
+.review-submit-btn{
+        padding:15px;
+        color:white;
+        box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+        background-color: rgba(0, 0, 0, 0.3);
+        border: 1px, solid rgba(0, 0, 0, 0.3) ;
+        width:300px;
+        align-self: center;
+        border-radius: 10px;
+        font-size: 14px;
+
+}
+
+.form-cr-cont > ul{
+  display: flex;
+  /* vertical-align: middle; */
+  flex-direction: row-reverse;
+  gap: 10px;
+  /* size: 100px; */
+}
+
+.star-container > li > i {
+  font-size:20px;
+
+}
+
+
+.star-container > li {
+
+  color: rgb(155, 149, 149);
+  display: flex;
+
+}
+
+.stars-text{
+  color:black;
+  font-weight: 500;
+
+}
+
+
+.filled{
+
+  color:black;
+}
+
+.err-cont{
+  gap:0px;
+  color:red;
+}

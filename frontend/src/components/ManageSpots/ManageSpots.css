@@ -1,0 +1,95 @@
+
+.curr-text-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+    margin-top: 10px;
+  }
+.curr-text-header > button{
+    padding: 5px;
+    width: 200px;
+    color:#ffffff;
+    border: .9px solid rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+    background-color: rgb(204, 200, 200);
+}
+.curr-text-header > h1{
+    font-weight: 300;
+    font-size: 25px;
+
+}
+.curr-spot-container {
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    gap: 30px;
+
+  }
+
+  .manage-spot-tile {
+
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 200px;
+    gap: 20px;
+    font-size:15px;
+    font-size: 15px;
+
+
+  }
+
+
+
+.manage-spot-tile .img-ms {
+
+    height:150px;
+    width:100%;
+    border-radius: 10px;
+    border: 1px solid grey;
+    object-fit: cover;
+}
+
+.manage-city-stars{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+
+}
+
+
+
+.curr-bttn-container {
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    margin-bottom: 10px;
+
+
+  }
+  .curr-bttn-container > button {
+    padding: 3px;
+    width: 60px;
+    color:#ffffff;
+    border: .9px solid rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+    background-color: rgb(204, 200, 200);
+
+  }
+  .delete-bttn-cont-ms{
+
+    padding: 3px;
+    width: 60px;
+    color: #ffffff;
+    border: 0.9px solid rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    box-shadow: 3px 3px 5px 5px rgb(231, 229, 229);
+    background-color: rgb(204, 200, 200);
+
+}

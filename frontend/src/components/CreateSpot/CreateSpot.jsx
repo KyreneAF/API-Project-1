@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import "./CreateSpot.css";
 import { thunkCreateSpot } from "../../store/spots";
 
+
+
+
 export const CreateSpot = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,40 +26,25 @@ export const CreateSpot = () => {
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
 
-  //THIS WILL KEEP FORM FROM SUBMITTING BUT I WANT IT TO SUBMIT AND THEN RETURN ERROR SO I MOVED DOWN
-  // useEffect(() => {
-  //   const errObj ={}
 
-  //   if(!address) errObj.address = 'Address is required';
-  //   if(!city) errObj.city = 'City is required';
-  //   if(!state) errObj.state = 'State is required';
-  //   if(!country) errObj.country = 'Country is required';
-  //   if(!description || description.length < 30) errObj.description = 'Description needs 30 or more characters';
-  //   if(!previewImg) errObj.previewImg = 'Preview Image is required';
-  //   if(!price) errObj.price = "Price per night is required"
-  //   if(!name) errObj.name = 'Title for Spot is required'
-
-  //   setValidations(errObj)
-
-  // },[address,city,state,country,name,description,price,previewImg,image1,image2,image3,image4])
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const errObj = {};
+    const errObj = {}
 
     if (!address) errObj.address = "Address is required";
     if (!city) errObj.city = "City is required";
     if (!state) errObj.state = "State is required";
     if (!country) errObj.country = "Country is required";
-    if (!description || description.length < 30)
-      errObj.description = "Description needs 30 or more characters";
+    if (!description || description.length < 30)errObj.description = "Description needs 30 or more characters";
     if (!previewImg) errObj.previewImg = "Preview Image is required";
+    if(isNaN(Number(price))) errObj.price = 'Must be valid price';
     if (!price) errObj.price = "Price per night is required";
     if (!name) errObj.name = "Title for Spot is required";
 
-    setValidations(errObj);
+    setValidations(errObj)
 
-    if (!Object.values(validations).length) {
+    if (!Object.values(errObj).length) {
       const newPreviewImage = {
         url: previewImg,
         preview: true,
@@ -77,7 +65,7 @@ export const CreateSpot = () => {
       }
 
       let newSpot = {
-        Spot: {
+
           address,
           city,
           state,
@@ -87,13 +75,17 @@ export const CreateSpot = () => {
           name,
           price,
           description,
-        },
-        Images,
+
       };
 
-      newSpot = await dispatch(thunkCreateSpot(newSpot));
 
-      navigate(`/spots/${newSpot.id}`);
+
+    const createdSpot = await dispatch(thunkCreateSpot(newSpot,Images));
+
+
+
+
+      navigate(`/spots/${createdSpot.id}`);
     }
   };
 
@@ -124,7 +116,7 @@ export const CreateSpot = () => {
                 <div className="error-text">{validations.country}</div>
               )}
               <label>
-                Address
+               Street Address
                 <input
                   type="text"
                   name="Address"
@@ -199,6 +191,7 @@ export const CreateSpot = () => {
               <label>
                 <textarea
                   type="textArea"
+                  rows='15'
                   name="description"
                   placeholder="Please write at least 30 characters"
                   value={description}

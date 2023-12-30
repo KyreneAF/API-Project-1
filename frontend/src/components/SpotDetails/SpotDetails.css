@@ -3,35 +3,48 @@
   margin-right: 40px;
 }
 
-.spot-img-container {
-  /* display: flex; */
-  height: 20%;
-  /* flex-direction: row; */
-  width: 100%;
-}
+
 
 .spot-img-container {
   display: flex;
-  height: 100%;
-  width: 50%;
+  height: 10%;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.big-img-container {
+  flex: 1;
+  max-width: 50%;
 }
 
 .big-img {
-  height: 400px;
+  width: 100%;
+  /* height: 100%; */
+  height: 100%;
+  object-fit: cover;
+  border-radius:10px
 }
 
-.small-img-container {
-  display: flex;
-  flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
-  /* align-content: center; */
+.smallImgs-main-container {
+  display: grid;
+  grid-area: auto;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 50%;
 }
 
 .small-img {
-  height: 200px;
-  width: 200px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius:10px
 }
+
+
+
 
 .spot-info {
   display: flex;
@@ -45,7 +58,7 @@
 }
 
 .reserve-main-container {
-  padding: 12px;
+  padding: 25px;
   gap: 10px;
   width: 300px;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -57,15 +70,13 @@
 }
 
 .price-container {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   width: 100%;
+  justify-content: space-between;
 }
 
-.price-container > div {
-  display: inline-block;
-  margin-right: 10px;
-}
+
 
 .star-container {
   display: inline-block;
@@ -79,6 +90,7 @@
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
+  box-shadow: 3px 3px 8px 8px rgb(231, 229, 229);
 }
 
 .text-main-container {
@@ -88,10 +100,42 @@
   padding-top: 30px;
   padding-bottom: 30px;
 }
-<<<<<<< HEAD
 
-/* .review-main-container{
+
+
+.spot-main-container {
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+.host-name-container > div{
+  font-weight: 350;
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+
+.desc-container{
+  font-weight: 350;
+  margin-bottom: 20px;
+  font-size: 15px;
+  width:100%;
+
+}
+
+.right-cont {
   display: flex;
-} */
-=======
->>>>>>> 9b4df69a61b076f5630e4767d6249e2e1da0ec40
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-right: 0px;
+  gap: 12px;
+}
+
+.host-deets-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.new-cont > h3{
+  font-weight: 350;
+}

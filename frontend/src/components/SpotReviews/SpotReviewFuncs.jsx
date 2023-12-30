@@ -26,3 +26,7 @@ export const dateFormater = ({review}) => {
     return newDate;
   }
 };
+
+// export const timeComparer = ({reviewArr}) =>{
+
+// }

@@ -2,15 +2,17 @@ import { csrfFetch } from "./csrf";
 
 const GET_SPOT_REVIEWS = "reviews/GET_SPOTS_REVIEWS";
 const CREATE_REVIEW = "reviews/CREATE_REVIEW";
+const DELETE_REVIEW = 'reviews/delete_review';
+const CLEAR_STATE = 'reviews/clear_state'
 
 
 
-
-
-export const loadSpotsRev = (reviews) => {
+export const loadSpotsRev = (reviews, id) => {
   return {
     type: GET_SPOT_REVIEWS,
-    reviews
+    reviews,
+    id
+
   };
 };
 
@@ -23,32 +25,67 @@ export const createReview = (review) => {
   };
 };
 
+const deleteReview = (id) =>{
 
-
+  return{
+    type: DELETE_REVIEW,
+    id
+  }
+}
+export const clearState = () => {
+  // console.log('clear state was hit')
+  return {
+    type:CLEAR_STATE
+  }
+}
 
 
 
 // THUNK
 export const thunkGetReviews = (id) => async (dispatch) => {
-  try{
+
 
     const res = await csrfFetch(`/api/spots/${id}/reviews`);
 
     if (res.ok) {
       const reviews = await res.json();
+      // console.log('REVIEWS IN THUNK', reviews)
 
-      dispatch(loadSpotsRev(reviews));
-    }else{
+      dispatch(loadSpotsRev(reviews,id));
+    } else if (res.status === 404) {
+      console.log('Reviews not found for this spot.');
+    }
+    else{
       const errors = await res.json()
       console.log('ERRORS',errors)
       return errors
     }
-  }catch(e){
-    console.errors(e)
-  }
+
 
 };
 
+
+export const thunkDeleteReview = (id) => async(dispatch) =>{
+
+  const res = await csrfFetch(`/api/reviews/${id}`,{
+    method:"DELETE",
+    headers:{
+      "Content-Type":"application/json"
+    }
+  })
+
+
+  if(res.ok){
+    const deletedRev = await res.json();
+
+    dispatch(deleteReview(id))
+    return deletedRev
+  }else{
+    const errors = await res.json();
+
+    return errors
+  }
+}
 
 
 
@@ -58,20 +95,27 @@ export const thunkCreateReview = (id, user, review) => async (dispatch) => {
   // console.log(review,'from thunk!!!!')
   const res = await csrfFetch(`/api/spots/${id}/reviews`, {
     method: "POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
     body: JSON.stringify(review),
   });
 
   if (res.ok) {
-    const data = await res.json();
-    data.User = {
+    const review = await res.json();
+
+    review.User = {
       id: user.id,
       firsName: user.firstName,
       lastName: user.lastName,
     };
-
-    dispatch(createReview(data));
+    dispatch(createReview(review));
+    dispatch(thunkGetReviews(id));
+    return review
+    // console.log('review with user', review)
   }
-  return res;
+
+
 };
 
 
@@ -85,21 +129,35 @@ export const reviewsReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case GET_SPOT_REVIEWS:{
-      let newObj = {}
-      action.reviews.Reviews.forEach(review => {
-        newObj[review.id] = review
-        newObj[review.id].User = {...review.User}
-        newObj[review.id].ReviewImages = [...review.ReviewImages]
-      })
+      let newObj = {};
+       action.reviews.Reviews.forEach((review) => {
+          newObj[review.id] = review;
 
-      return {...state,...newObj}
+      });
+
+      return {...newObj};
+    }
+
+
+    case DELETE_REVIEW: {
+      let newState = {...state}
+      delete newState[action.id]
+      return newState
+    }
+    case CLEAR_STATE:{
+      return {}
+    }
+    case CREATE_REVIEW:{
+      // console.log ('NEW STATE', newState)
+      // return {[action.review.id]:{...action.review},...state}
+      // trying to add to top of reviews list still not working below still does not add to top
+      // return  { ...state, [action.review.id]: { ...action.review, ...state[action.review.id] } }
+      return {[action.review.id]:{...action.review}, ...state }
+      // return newState;
 
     }
 
-    // case CREATE_REVIEW:
-    //   newState = { [action.review.id]: action.review };
 
-    //   return newState;
 
     default:
       return state;
