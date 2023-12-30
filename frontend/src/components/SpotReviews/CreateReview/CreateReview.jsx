@@ -108,7 +108,7 @@ console.log('ERRORS',errors,'STARS',stars)
           className='review-submit-btn'
           disabled={review.length < 10 || stars === ""}
         >
-          Submit your review
+          Submit Your Review
         </button>
       </form>
     </div>

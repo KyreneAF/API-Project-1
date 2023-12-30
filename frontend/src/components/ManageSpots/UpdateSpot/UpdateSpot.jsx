@@ -358,7 +358,7 @@ export const UpdateSpot = () => {
 
                 >
 
-                  Update your spot!
+                  Update your Spot!
                   </button>
 
               </div>
