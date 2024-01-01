@@ -107,19 +107,24 @@ export const CreateSpot = () => {
                 <input
                   type="text"
                   name="Country"
+                  maxLength={20}
                   placeholder="Country"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
+
                 />
               </label>
               {validations.country && (
                 <div className="error-text">{validations.country}</div>
               )}
+
+
               <label>
                Street Address
                 <input
                   type="text"
                   name="Address"
+                  maxLength={100}
                   placeholder="Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -128,12 +133,14 @@ export const CreateSpot = () => {
               {validations.address && (
                 <div className="error-text">{validations.address}</div>
               )}
+
               <div className="side-by-side">
                 <label>
                   City
                   <input
                     type="text"
                     name="City"
+                    maxLength={20}
                     placeholder="City"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
@@ -142,12 +149,15 @@ export const CreateSpot = () => {
                 {validations.city && (
                   <div className="error-text">{validations.city}</div>
                 )}
+
+
                 <div className="comma"> , </div>
                 <label>
                   State
                   <input
                     type="text"
                     name="State"
+                    maxLength={20}
                     placeholder="State"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
@@ -156,12 +166,14 @@ export const CreateSpot = () => {
                 {validations.state && (
                   <div className="error-text">{validations.state}</div>
                 )}
+
+
               </div>
               <div className="side-by-side-2">
                 <label>
                   Latitude
                   <input
-                    type="text"
+                    type="number"
                     name="lat"
                     placeholder="Latitude"
                     value={lat}
@@ -172,11 +184,12 @@ export const CreateSpot = () => {
                 <label>
                   Longitude
                   <input
-                    type="text"
+                    type="number"
                     name="lng"
                     placeholder="Longitude"
                     value={lng}
                     onChange={(e) => setLng(e.target.value)}
+
                   />
                 </label>
               </div>
@@ -193,14 +206,18 @@ export const CreateSpot = () => {
                   type="textArea"
                   rows='15'
                   name="description"
+                  maxLength={255}
                   placeholder="Please write at least 30 characters"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+
                 />
               </label>
               {validations.description && (
                 <div className="error-text">{validations.description}</div>
               )}
+
+
             </div>
             <div className="sec">
               <h3>Create a title for your spot</h3>
@@ -213,6 +230,7 @@ export const CreateSpot = () => {
                   type="text"
                   name="name"
                   placeholder="Name of your spot"
+                  maxLength={50}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -220,6 +238,8 @@ export const CreateSpot = () => {
               {validations.name && (
                 <div className="error-text">{validations.name}</div>
               )}
+
+
             </div>
             <div className="sec">
               <h3>Set a base price for your spot</h3>
@@ -231,8 +251,9 @@ export const CreateSpot = () => {
                 <div> $ </div>
                 <label>
                   <input
-                    type="text"
+                    type="number"
                     name="price"
+                    // maxLength='10'
                     placeholder="Price per night (USD)"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
@@ -249,10 +270,11 @@ export const CreateSpot = () => {
                 Submit a link to at least one photo to publish your spot.
               </div>
               <label>
-                {/* {"previewImg" in validations && <p>{validations.previewImg}</p>} */}
+
                 <input
                   type="text"
                   name="preview url"
+                  maxLength='255'
                   placeholder="Preview Image URL"
                   value={previewImg}
                   onChange={(e) => setPreviewImg(e.target.value)}
@@ -261,42 +283,51 @@ export const CreateSpot = () => {
               {validations.previewImg && (
                 <div className="error-text">{validations.previewImg}</div>
               )}
+            {previewImg.length === 255 && <span className='error-text'>Character limit reached</span>}
               <label>
                 <input
                   type="text"
                   name="photo url"
+                  maxLength='255'
                   placeholder="Image URL"
                   value={image1}
                   onChange={(e) => setImage1(e.target.value)}
                 />
               </label>
+              {image1.length === 255 && <span className='error-text'>Character limit reached</span>}
               <label>
                 <input
                   type="text"
                   name="photo url"
+                  maxLength='255'
                   placeholder="Image URL"
                   value={image2}
                   onChange={(e) => setImage2(e.target.value)}
                 />
               </label>
+              {image2.length === 255 && <span className='error-text'>Character limit reached</span>}
               <label>
                 <input
                   type="text"
                   name="photo url"
+                  maxLength='255'
                   placeholder="Image URL"
                   value={image3}
                   onChange={(e) => setImage3(e.target.value)}
                 />
               </label>
+              {image3.length === 255 && <span className='error-text'>Character limit reached</span>}
               <label>
                 <input
                   type="text"
                   name="photo url"
+                  maxLength='255'
                   placeholder="Image URL"
                   value={image4}
                   onChange={(e) => setImage4(e.target.value)}
                 />
               </label>
+              {image4.length === 255 && <span className='error-text'>Character limit reached</span>}
             </div>
             <div className="button-container">
               <button

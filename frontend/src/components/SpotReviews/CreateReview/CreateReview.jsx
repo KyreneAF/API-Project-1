@@ -78,6 +78,7 @@ export const CreateReview = ({ spotId }) => {
       <form className="form-cr-cont" onSubmit={onSubmit}>
         <textarea
           placeholder="Leave your review here..."
+          maxLength='100'
           value={review}
           onChange={(e) => setReview(e.target.value)}
         />
