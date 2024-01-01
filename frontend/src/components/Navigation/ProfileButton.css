@@ -14,6 +14,7 @@
     background-color: white;
     height: 125px;
     right:80px;
+    z-index: 2;
 
 
   }

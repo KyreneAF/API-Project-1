@@ -62,6 +62,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={email}
+            maxLength={30}
             onChange={(e) => {setEmail(e.target.value); setDisable(true)}}
             required
           />
@@ -72,6 +73,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={username}
+            maxLength={30}
             onChange={(e) => {setUsername(e.target.value); setDisable(true)}}
             required
           />
@@ -82,6 +84,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={firstName}
+            maxLength={10}
             onChange={(e) => {setFirstName(e.target.value); setDisable(true)}}
             required
           />
@@ -92,6 +95,7 @@ function SignupFormModal() {
           <input
             type="text"
             value={lastName}
+            maxLength={10}
             onChange={(e) => {setLastName(e.target.value); setDisable(true)}}
             required
           />
@@ -101,6 +105,7 @@ function SignupFormModal() {
           Password
           <input
             type="password"
+            maxLength={30}
             value={password}
             onChange={(e) => {setPassword(e.target.value); setDisable(true)}}
             required
@@ -111,6 +116,7 @@ function SignupFormModal() {
           Confirm Password
           <input
             type="password"
+            maxLength={30}
             value={confirmPassword}
             onChange={(e) =>{ setConfirmPassword(e.target.value); setDisable(true)}}
             required

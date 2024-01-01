@@ -32,6 +32,8 @@ function LoginFormModal() {
         //   console.log('data.errors',data.errors)
         //   setErrors(data.errors);
         // }
+        // setCredential('')
+        // setPassword('')
       });
   };
 

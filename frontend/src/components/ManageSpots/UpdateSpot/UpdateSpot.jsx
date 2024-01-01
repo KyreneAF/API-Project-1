@@ -187,6 +187,7 @@ export const UpdateSpot = () => {
                   <input
                     type='text'
                     name='Country'
+                    maxLength={20}
                     placeholder="Country"
                     value={country}
                     onChange={e => setCountry(e.target.value)}
@@ -194,10 +195,11 @@ export const UpdateSpot = () => {
                 </label>
                 {validations.country && <div className='error-text' >{validations.country}</div> }
                 <label>
-                  Address
+                  Street Address
                   <input
                     type='text'
                     name='Address'
+                    maxLength={100}
                     placeholder="Address"
                     value={address}
                     onChange={e => setAddress(e.target.value)}
@@ -210,6 +212,7 @@ export const UpdateSpot = () => {
                   <input
                     type='text'
                     name='City'
+                    maxLength={20}
                     placeholder="City"
                     value={city}
                     onChange={e => setCity(e.target.value)}
@@ -222,6 +225,7 @@ export const UpdateSpot = () => {
                   <input
                     type='text'
                     name='State'
+                    maxLength={20}
                     placeholder="State"
                     value={state}
                     onChange={e => setState(e.target.value)}
@@ -261,6 +265,7 @@ export const UpdateSpot = () => {
                     type='textArea'
                     rows='10'
                     name='description'
+                    maxLength={255}
                     placeholder="Please write at least 30 characters"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
@@ -275,6 +280,7 @@ export const UpdateSpot = () => {
                   <input
                     type='text'
                     name='name'
+                    maxLength={50}
                     placeholder="Name of your spot"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -308,48 +314,63 @@ export const UpdateSpot = () => {
                   <input
                     type='text'
                     name='preview url'
+                    maxLength='255'
                     placeholder="Preview Image URL"
                     value={previewImg}
                     onChange={e => setPreviewImg(e.target.value)}
                   />
                 </label>
                 {validations.previewImg && <div className='error-text' >{validations.previewImg}</div> }
+                {previewImg.length === 255 && <span className='error-text'>Character limit reached</span>}
+
                 <label>
                   <input
                     type='text'
                     name='photo url'
+                    maxLength='255'
                     placeholder="Image URL"
                     value={image1}
                     onChange={e => setImage1(e.target.value)}
                   />
                 </label>
+                {image1.length === 255 && <span className='error-text'>Character limit reached</span>}
+
                 <label>
                   <input
                     type='text'
                     name='photo url'
+                    maxLength='255'
                     placeholder="Image URL"
                     value={image2}
                     onChange={e => setImage2(e.target.value)}
                   />
                 </label>
+                {image2.length === 255 && <span className='error-text'>Character limit reached</span>}
+
                 <label>
                   <input
                     type='text'
                     name='photo url'
+                    maxLength='255'
                     placeholder="Image URL"
                     value={image3}
                     onChange={e => setImage3(e.target.value)}
                   />
                 </label>
+                {image3.length === 255 && <span className='error-text'>Character limit reached</span>}
+
                 <label>
                   <input
                     type='text'
                     name='photo url'
+                    maxLength='255'
                     placeholder="Image URL"
                     value={image4}
                     onChange={e => setImage4(e.target.value)}
                   />
                 </label>
+                {image4.length === 255 && <span className='error-text'>Character limit reached</span>}
+
               </div>
               <div className='button-container'>
                 <button
